@@ -5,7 +5,7 @@ The official PHP client for the [Referalli](https://referalli.com) API: attribut
 - One method per API operation, with PHPStan/Psalm array shapes for every request and response (`Referalli\Models`).
 - Retries with backoff, idempotency keys, timeouts, auto-paging generators and one exception class per error code.
 - Webhook signature verification and typed webhook events.
-- No dependencies beyond `ext-json` (and `ext-openssl` for HTTPS). PHP 8.1+.
+- No dependencies beyond `ext-json` (and `ext-openssl` for HTTPS). PHP 8.2+.
 
 Docs: <https://referalli.com/docs>.
 
