@@ -17,6 +17,15 @@ composer require referalli/referalli-php
 
 Without Composer, `require 'path/to/referalli-php/autoload.php';`.
 
+Until the package is listed on Packagist, add the GitHub repository to your `composer.json` first:
+
+```json
+{
+  "repositories": [{ "type": "vcs", "url": "https://github.com/Referalli/referalli-php" }],
+  "require": { "referalli/referalli-php": "dev-main" }
+}
+```
+
 ## Quickstart
 
 Keep the `rk_` API key on your server.
