@@ -1,0 +1,24 @@
+{
+  "name": "referalli/referalli-php",
+  "description": "Official Referalli SDK: attribution-first affiliate and referral programs.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["referral", "affiliate", "attribution", "referalli", "webhooks"],
+  "homepage": "https://github.com/Referalli/referalli-php",
+  "support": {
+    "docs": "https://referalli.com/docs",
+    "source": "https://github.com/Referalli/referalli-php",
+    "issues": "https://github.com/Referalli/referalli-php/issues"
+  },
+  "authors": [{ "name": "Referalli" }],
+  "require": {
+    "php": ">=8.1",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Referalli\\": "src/"
+    }
+  },
+  "minimum-stability": "stable"
+}
