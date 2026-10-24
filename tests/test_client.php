@@ -65,7 +65,7 @@ try {
     check(false, 'bad mode accepted');
 } catch (\InvalidArgumentException) {
 }
-check(Version::VERSION === '0.1.0', 'version');
+check(Version::VERSION === '0.2.0', 'version');
 
 // README samples: every block lints and calls real methods.
 $readme = file_get_contents(__DIR__ . '/../README.md');
