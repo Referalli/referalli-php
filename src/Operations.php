@@ -47,6 +47,7 @@ namespace Referalli;
  * @phpstan-import-type CommissionLine from Models
  * @phpstan-import-type Settlement from Models
  * @phpstan-import-type CommissionRule from Models
+ * @phpstan-import-type BillingFilter from Models
  * @phpstan-import-type ValueMapping from Models
  * @phpstan-import-type ValueMappingPreviewValue from Models
  * @phpstan-import-type ValueMappingPreviewWouldRecordItem from Models
@@ -58,8 +59,14 @@ namespace Referalli;
  * @phpstan-import-type BillingConnection from Models
  * @phpstan-import-type CreatedBillingConnection from Models
  * @phpstan-import-type BillingEvent from Models
+ * @phpstan-import-type InternalCustomer from Models
+ * @phpstan-import-type IdentityProviderSampleHookOption1 from Models
+ * @phpstan-import-type IdentityProviderMetadataPaths from Models
+ * @phpstan-import-type IdentityProvider from Models
  * @phpstan-import-type WebhookEndpointRotation from Models
+ * @phpstan-import-type WebhookEndpointLastFailureOption1 from Models
  * @phpstan-import-type WebhookEndpoint from Models
+ * @phpstan-import-type HealthCheck from Models
  * @phpstan-import-type WebhookDelivery from Models
  * @phpstan-import-type PayoutProfile from Models
  * @phpstan-import-type TaxProfile from Models
@@ -208,6 +215,10 @@ namespace Referalli;
  * @phpstan-import-type PrivacyRequestCompletedEvent from Models
  * @phpstan-import-type WebhookEndpointDisabledEventData from Models
  * @phpstan-import-type WebhookEndpointDisabledEvent from Models
+ * @phpstan-import-type WebhookEndpointFailingEventData from Models
+ * @phpstan-import-type WebhookEndpointFailingEvent from Models
+ * @phpstan-import-type WebhookEndpointRecoveredEventData from Models
+ * @phpstan-import-type WebhookEndpointRecoveredEvent from Models
  * @phpstan-import-type PostTOrgTokenVisitResponse from Models
  * @phpstan-import-type GetTOrgTokenCodesCodeResponseRefereeRewardOption1 from Models
  * @phpstan-import-type GetTOrgTokenCodesCodeResponse from Models
@@ -227,6 +238,17 @@ namespace Referalli;
  * @phpstan-import-type GetWellKnownAssetlinksJsonResponseValueItemTarget from Models
  * @phpstan-import-type GetWellKnownAssetlinksJsonResponseValueItem from Models
  * @phpstan-import-type GetWellKnownAssetlinksJsonResponse from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseCheckers from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetCookieDaysOption2 from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItemPurpose from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItem from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippet from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItemPurpose from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItem from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbed from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfaces from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseChangesItem from Models
+ * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponse from Models
  * @phpstan-import-type PostAgentsRegisterResponse from Models
  * @phpstan-import-type PostTOrgTokenAgentAttributeResponse from Models
  * @phpstan-import-type PostTOrgTokenAgentNegotiateResponse from Models
@@ -235,6 +257,7 @@ namespace Referalli;
  * @phpstan-import-type GetVersionsResponse from Models
  * @phpstan-import-type GetAuthProvidersResponseDetailsItem from Models
  * @phpstan-import-type GetAuthProvidersResponse from Models
+ * @phpstan-import-type PostAuthBackchannelLogoutResponse from Models
  * @phpstan-import-type PostAuthLogoutResponse from Models
  * @phpstan-import-type PostOrgsResponse from Models
  * @phpstan-import-type GetMeResponseUserOption1 from Models
@@ -242,12 +265,26 @@ namespace Referalli;
  * @phpstan-import-type GetMeResponseApiKey from Models
  * @phpstan-import-type GetMeResponseOrg from Models
  * @phpstan-import-type GetMeResponse from Models
+ * @phpstan-import-type GetPortalAuthCurrentResponse from Models
+ * @phpstan-import-type GetOrgPortalAuthResponseAdaptersItem from Models
+ * @phpstan-import-type GetOrgPortalAuthResponse from Models
+ * @phpstan-import-type PutOrgPortalAuthResponseAdaptersItem from Models
+ * @phpstan-import-type PutOrgPortalAuthResponse from Models
+ * @phpstan-import-type PostOrgPortalAuthTestResponse from Models
  * @phpstan-import-type GetHostsCurrentResponseValueOption1Branding from Models
  * @phpstan-import-type GetHostsCurrentResponseValueOption1ProgramsItem from Models
+ * @phpstan-import-type GetHostsCurrentResponseValueOption1ConsentTagsItem from Models
+ * @phpstan-import-type GetHostsCurrentResponseValueOption1ConsentSettingsLinkOption1 from Models
+ * @phpstan-import-type GetHostsCurrentResponseValueOption1ConsentBuiltin from Models
+ * @phpstan-import-type GetHostsCurrentResponseValueOption1Consent from Models
+ * @phpstan-import-type GetHostsCurrentResponseValueOption1ChatOption1TagsItem from Models
+ * @phpstan-import-type GetHostsCurrentResponseValueOption1ChatOption1 from Models
  * @phpstan-import-type GetHostsCurrentResponseValueOption1 from Models
  * @phpstan-import-type GetHostsCurrentResponseValueOption2 from Models
  * @phpstan-import-type GetHostsCurrentResponseValueOption3 from Models
  * @phpstan-import-type GetHostsCurrentResponse from Models
+ * @phpstan-import-type GetChatlyIdentityResponseIdentityOption1 from Models
+ * @phpstan-import-type GetChatlyIdentityResponse from Models
  * @phpstan-import-type PostMobilePurchasesResponse from Models
  * @phpstan-import-type PatchOrgResponse from Models
  * @phpstan-import-type GetOrgMembersResponse from Models
@@ -327,6 +364,7 @@ namespace Referalli;
  * @phpstan-import-type PutBillingConnectionsIdValueMappingResponse from Models
  * @phpstan-import-type PostBillingConnectionsIdRotateSecretResponse from Models
  * @phpstan-import-type GetBillingEventsResponse from Models
+ * @phpstan-import-type PostBillingInternalCustomersResponse from Models
  * @phpstan-import-type PutPartnersIdPayoutProfileResponse from Models
  * @phpstan-import-type PatchPartnersIdPayoutProfileResponse from Models
  * @phpstan-import-type PostPayoutRunsIdExecuteResponse from Models
@@ -422,17 +460,22 @@ namespace Referalli;
  * @phpstan-import-type PostPartnerProgramsProgramIdApplyResponse from Models
  * @phpstan-import-type PostWebhookEndpointsResponse from Models
  * @phpstan-import-type GetWebhookEndpointsResponse from Models
+ * @phpstan-import-type PatchWebhookEndpointsIdResponse from Models
  * @phpstan-import-type PostWebhookEndpointsIdRotateSecretResponse from Models
  * @phpstan-import-type GetWebhookDeliveriesResponse from Models
  * @phpstan-import-type GetWebhookEndpointsIdDeliveriesResponse from Models
  * @phpstan-import-type GetWebhookDeliveriesIdResponse from Models
+ * @phpstan-import-type PostWebhookEndpointsIdReplayResponse from Models
  * @phpstan-import-type PostSandboxSimulateResponse from Models
  * @phpstan-import-type PostImportProviderResponse from Models
  * @phpstan-import-type GetOpenapiJsonResponse from Models
+ * @phpstan-import-type GetBrandingResponseWarningsItem from Models
  * @phpstan-import-type GetBrandingResponse from Models
  * @phpstan-import-type PostBrandingLinkDomainResponse from Models
  * @phpstan-import-type PostBrandingLinkDomainVerifyResponse from Models
  * @phpstan-import-type PostBrandingDomainResponse from Models
+ * @phpstan-import-type PutBrandingResponseWarningsItem from Models
+ * @phpstan-import-type PutBrandingResponse from Models
  * @phpstan-import-type PostEmbedTokensResponse from Models
  * @phpstan-import-type GetEmbedSummaryResponsePartner from Models
  * @phpstan-import-type GetEmbedSummaryResponseBalancesItem from Models
@@ -476,6 +519,11 @@ namespace Referalli;
  * @phpstan-import-type GetRewardsResponse from Models
  * @phpstan-import-type GetRewardsLookupCodeResponse from Models
  * @phpstan-import-type PostRewardsRedeemByCodeResponse from Models
+ * @phpstan-import-type PostRewardsResponse from Models
+ * @phpstan-import-type GetRewardsGrantedResponseValueItem from Models
+ * @phpstan-import-type GetRewardsGrantedResponse from Models
+ * @phpstan-import-type PutRewardsRulesKeyResponse from Models
+ * @phpstan-import-type DeleteRewardsRulesKeyResponse from Models
  * @phpstan-import-type GetProgramsIdGroupsResponse from Models
  * @phpstan-import-type PutProgramsIdPartnersPartnerIdGroupResponse from Models
  * @phpstan-import-type GetProgramsIdPromotionsResponse from Models
@@ -590,7 +638,9 @@ namespace Referalli;
  * @phpstan-import-type PostPartnerSecurityTotpEnableResponse from Models
  * @phpstan-import-type PostPartnerSecurityTotpDisableResponse from Models
  * @phpstan-import-type GetPartnerSecurityResponse from Models
+ * @phpstan-import-type GetAuthConnectionsProvidersResponse from Models
  * @phpstan-import-type GetAuthConnectionsResponse from Models
+ * @phpstan-import-type PutAuthConnectionsIdSecretResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdRotateSecretResponse from Models
  * @phpstan-import-type PatchAuthConnectionsIdResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdRevokePreviousSecretResponse from Models
@@ -598,6 +648,8 @@ namespace Referalli;
  * @phpstan-import-type PostAuthConnectionsIdSignupsResponseReasoning from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsResponsePartner from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsResponse from Models
+ * @phpstan-import-type PostAuthConnectionsIdPartnersResponsePartner from Models
+ * @phpstan-import-type PostAuthConnectionsIdPartnersResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdEraseResponseCustomerOption1 from Models
  * @phpstan-import-type PostAuthConnectionsIdEraseResponsePartnerOption1 from Models
  * @phpstan-import-type PostAuthConnectionsIdEraseResponse from Models
@@ -612,6 +664,8 @@ namespace Referalli;
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponseReversedItem from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponsePartnerOption1 from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponse from Models
+ * @phpstan-import-type PostAuthConnectionsInstallResponse from Models
+ * @phpstan-import-type PostOauthTokenResponse from Models
  * @phpstan-import-type GetOrgSsoResponseProviderOption1 from Models
  * @phpstan-import-type GetOrgSsoResponseConnectionsItem from Models
  * @phpstan-import-type GetOrgSsoResponseTicketsItem from Models
@@ -621,6 +675,8 @@ namespace Referalli;
  * @phpstan-import-type PostOrgSsoTicketsIdRevokeResponse from Models
  * @phpstan-import-type GetOrgSsoConnectionsIdSamlMetadataResponse from Models
  * @phpstan-import-type PatchOrgSsoResponse from Models
+ * @phpstan-import-type PutOrgSsoDirectResponse from Models
+ * @phpstan-import-type DeleteOrgSsoDirectResponse from Models
  * @phpstan-import-type PostPartnerAuthWalletNonceResponse from Models
  * @phpstan-import-type PostPartnerAuthWalletVerifyResponse from Models
  * @phpstan-import-type PostOnchainConnectionsResponse from Models
@@ -629,6 +685,56 @@ namespace Referalli;
  * @phpstan-import-type GetPublicProgramsHandleResponseBranding from Models
  * @phpstan-import-type GetPublicProgramsHandleResponse from Models
  * @phpstan-import-type PostPublicProgramsHandleJoinResponse from Models
+ * @phpstan-import-type GetIntegrationHealthResponse from Models
+ * @phpstan-import-type GetPlansResponsePlansItem from Models
+ * @phpstan-import-type GetPlansResponse from Models
+ * @phpstan-import-type GetEventsResponseEventsItem from Models
+ * @phpstan-import-type GetEventsResponse from Models
+ * @phpstan-import-type GetSupportContextResponsePartnerOption1 from Models
+ * @phpstan-import-type GetSupportContextResponseCustomerOption1ReferredByOption1 from Models
+ * @phpstan-import-type GetSupportContextResponseCustomerOption1RewardStateOption1 from Models
+ * @phpstan-import-type GetSupportContextResponseCustomerOption1 from Models
+ * @phpstan-import-type GetSupportContextResponseLinks from Models
+ * @phpstan-import-type GetSupportContextResponse from Models
+ * @phpstan-import-type GetSupportAppsResponseValueItemInstall from Models
+ * @phpstan-import-type GetSupportAppsResponseValueItemConfigOption1 from Models
+ * @phpstan-import-type GetSupportAppsResponseValueItem from Models
+ * @phpstan-import-type GetSupportAppsResponse from Models
+ * @phpstan-import-type PutSupportAppsAdapterResponse from Models
+ * @phpstan-import-type DeleteSupportAppsAdapterResponse from Models
+ * @phpstan-import-type PostSupportAppsAdapterTestResponse from Models
+ * @phpstan-import-type PostSupportCardsOrgIdAdapterResponse from Models
+ * @phpstan-import-type GetPrivacyExecutorsResponseValueItemInstall from Models
+ * @phpstan-import-type GetPrivacyExecutorsResponseValueItemConfigOption1 from Models
+ * @phpstan-import-type GetPrivacyExecutorsResponseValueItemHealth from Models
+ * @phpstan-import-type GetPrivacyExecutorsResponseValueItem from Models
+ * @phpstan-import-type GetPrivacyExecutorsResponse from Models
+ * @phpstan-import-type PostPrivacyExecutorKeysResponse from Models
+ * @phpstan-import-type DeletePrivacyExecutorsAdapterResponse from Models
+ * @phpstan-import-type PostPrivacyExecutorsAdapterCheckResponse from Models
+ * @phpstan-import-type GetPrivacyExecutorRequestsResponseValueItem from Models
+ * @phpstan-import-type GetPrivacyExecutorRequestsResponse from Models
+ * @phpstan-import-type PostAccountCloseResponse from Models
+ * @phpstan-import-type GetClicksConsentCoverageResponse from Models
+ * @phpstan-import-type GetClicksIdResponseConsentOption1 from Models
+ * @phpstan-import-type GetClicksIdResponse from Models
+ * @phpstan-import-type GetOrgTrackingConsentResponseAdaptersItem from Models
+ * @phpstan-import-type GetOrgTrackingConsentResponse from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseConsent from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseChatOption1 from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseServedConsentTagsItem from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseServedConsentSettingsLinkOption1 from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseServedConsentBuiltin from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseServedConsent from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseServedChatOption1TagsItem from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseServedChatOption1 from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseServed from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseAdaptersConsentItem from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseAdaptersChatItem from Models
+ * @phpstan-import-type GetOrgHostedPagesResponseAdapters from Models
+ * @phpstan-import-type GetOrgHostedPagesResponse from Models
+ * @phpstan-import-type PostOrgHostedPagesCheckResponseChecksItem from Models
+ * @phpstan-import-type PostOrgHostedPagesCheckResponse from Models
  * @phpstan-import-type PostWebhooksBillingConnectionIdResponseResultsItem from Models
  * @phpstan-import-type PostWebhooksBillingConnectionIdResponse from Models
  * @phpstan-import-type PostWebhooksAuthConnectionIdResponseResultsItem from Models
@@ -638,10 +744,20 @@ namespace Referalli;
  * @phpstan-import-type PostWebhooksOnchainConnectionIdResponse from Models
  * @phpstan-import-type PostWebhooksPayoutsProviderResponse from Models
  * @phpstan-import-type PostWebhooksStripeBillingResponse from Models
+ * @phpstan-import-type PostApiPrivacyLookupResponse from Models
+ * @phpstan-import-type PostApiPrivacyRequestsResponse from Models
+ * @phpstan-import-type GetApiPrivacyRequestsIdResponse from Models
+ * @phpstan-import-type PostApiPrivacyOrgsOrgIdLookupResponse from Models
+ * @phpstan-import-type PostApiPrivacyOrgsOrgIdRequestsResponse from Models
+ * @phpstan-import-type GetApiPrivacyOrgsOrgIdRequestsIdResponse from Models
  * @phpstan-import-type GetGraphqlResponse from Models
  * @phpstan-import-type PostGraphqlResponse from Models
  * @phpstan-import-type PostAgentsRegisterBody from Models
+ * @phpstan-import-type PostAuthBackchannelLogoutBody from Models
  * @phpstan-import-type PostOrgsBody from Models
+ * @phpstan-import-type PutOrgPortalAuthBodyOption1 from Models
+ * @phpstan-import-type PutOrgPortalAuthBodyOption2 from Models
+ * @phpstan-import-type PutOrgPortalAuthBodyOption3 from Models
  * @phpstan-import-type PostMobilePurchasesBody from Models
  * @phpstan-import-type PatchOrgBody from Models
  * @phpstan-import-type PostOrgMembersBody from Models
@@ -697,6 +813,7 @@ namespace Referalli;
  * @phpstan-import-type PostLinksBody from Models
  * @phpstan-import-type PostCouponsBody from Models
  * @phpstan-import-type PostWidgetTokensBody from Models
+ * @phpstan-import-type PostReferralsAssociateBodyConsent from Models
  * @phpstan-import-type PostReferralsAssociateBody from Models
  * @phpstan-import-type PatchReferralsIdBody from Models
  * @phpstan-import-type PostReferralsIdReassignBody from Models
@@ -724,13 +841,16 @@ namespace Referalli;
  * @phpstan-import-type PostCommissionRulesBody from Models
  * @phpstan-import-type PostCommissionsIdAdjustBody from Models
  * @phpstan-import-type PostCommissionsIdSettleBody from Models
+ * @phpstan-import-type PostBillingConnectionsBodyFilter from Models
  * @phpstan-import-type PostBillingConnectionsBody from Models
  * @phpstan-import-type PutBillingConnectionsIdSecretBody from Models
  * @phpstan-import-type PutBillingConnectionsIdCredentialsBody from Models
+ * @phpstan-import-type PatchBillingConnectionsIdBodyFilterOption1 from Models
  * @phpstan-import-type PatchBillingConnectionsIdBody from Models
  * @phpstan-import-type PutBillingConnectionsIdValueMappingBody from Models
  * @phpstan-import-type PostBillingConnectionsIdValueMappingPreviewBodyMapping from Models
  * @phpstan-import-type PostBillingConnectionsIdValueMappingPreviewBody from Models
+ * @phpstan-import-type PostBillingInternalCustomersBody from Models
  * @phpstan-import-type PutPartnersIdPayoutProfileBody from Models
  * @phpstan-import-type PatchPartnersIdPayoutProfileBody from Models
  * @phpstan-import-type PostPartnersIdTaxFormBody from Models
@@ -748,6 +868,7 @@ namespace Referalli;
  * @phpstan-import-type PutProfitabilitySettingsBody from Models
  * @phpstan-import-type PutProfitabilityProductsProductRefBody from Models
  * @phpstan-import-type PostRoiPatternsPatternReviewBody from Models
+ * @phpstan-import-type PostValueEventsBodyEventsItem from Models
  * @phpstan-import-type PostValueEventsBody from Models
  * @phpstan-import-type PostValueImportBody from Models
  * @phpstan-import-type PostPartnerKycSubmitBody from Models
@@ -777,8 +898,10 @@ namespace Referalli;
  * @phpstan-import-type PostBillingCheckoutBody from Models
  * @phpstan-import-type PostBillingActivateBody from Models
  * @phpstan-import-type PutProgramsIdRefereeRewardBody from Models
+ * @phpstan-import-type PostRewardsBody from Models
  * @phpstan-import-type PostRewardsRedeemByCodeBody from Models
  * @phpstan-import-type PostRewardsIdRedeemBody from Models
+ * @phpstan-import-type PutRewardsRulesKeyBody from Models
  * @phpstan-import-type PostProgramsIdGroupsBodyBaseOption1Option1 from Models
  * @phpstan-import-type PostProgramsIdGroupsBodyBaseOption1Option2 from Models
  * @phpstan-import-type PostProgramsIdGroupsBody from Models
@@ -829,20 +952,36 @@ namespace Referalli;
  * @phpstan-import-type PostPartnerSecurityTotpDisableBody from Models
  * @phpstan-import-type PostAuthConnectionsBodyKeys from Models
  * @phpstan-import-type PostAuthConnectionsBody from Models
+ * @phpstan-import-type PutAuthConnectionsIdSecretBody from Models
  * @phpstan-import-type PatchAuthConnectionsIdBody from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBodyReferral from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBodyRisk from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBody from Models
+ * @phpstan-import-type PostAuthConnectionsIdPartnersBody from Models
  * @phpstan-import-type PostAuthConnectionsIdEraseBody from Models
  * @phpstan-import-type PostAuthConnectionsIdAliasesBody from Models
  * @phpstan-import-type PostAuthConnectionsIdUsersBody from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsBody from Models
+ * @phpstan-import-type PostAuthConnectionsInstallBody from Models
+ * @phpstan-import-type PostOauthTokenBody from Models
  * @phpstan-import-type PatchOrgSsoBody from Models
  * @phpstan-import-type PostOrgSsoTicketsBody from Models
+ * @phpstan-import-type PutOrgSsoDirectBodyOption1 from Models
+ * @phpstan-import-type PutOrgSsoDirectBodyOption2 from Models
  * @phpstan-import-type PostPartnerAuthWalletNonceBody from Models
  * @phpstan-import-type PostPartnerAuthWalletVerifyBody from Models
  * @phpstan-import-type PostOnchainConnectionsBody from Models
  * @phpstan-import-type PostPublicProgramsHandleJoinBody from Models
+ * @phpstan-import-type PutSupportAppsAdapterBodyConfig from Models
+ * @phpstan-import-type PutSupportAppsAdapterBody from Models
+ * @phpstan-import-type PostSupportAppsAdapterTestBody from Models
+ * @phpstan-import-type PostPrivacyExecutorKeysBodyConfig from Models
+ * @phpstan-import-type PostPrivacyExecutorKeysBody from Models
+ * @phpstan-import-type PostAccountCloseBody from Models
+ * @phpstan-import-type PutOrgTrackingConsentBody from Models
+ * @phpstan-import-type PutOrgHostedPagesBodyConsent from Models
+ * @phpstan-import-type PutOrgHostedPagesBodyChatOption1 from Models
+ * @phpstan-import-type PutOrgHostedPagesBody from Models
  * @phpstan-import-type PostGraphqlBody from Models
  */
 trait Operations
@@ -853,15 +992,20 @@ trait Operations
         'deleteAssetsId' => ['DELETE', '/v1/assets/{id}', ['id'], [], false, 'json', 'deleteAssetsId', ['id'], 2],
         'deleteAuthConnectionsId' => ['DELETE', '/v1/auth/connections/{id}', ['id'], [], false, 'json', 'deleteAuthConnectionsId', ['id'], 2],
         'deleteBillingConnectionsId' => ['DELETE', '/v1/billing/connections/{id}', ['id'], [], false, 'json', 'deleteBillingConnectionsId', ['id'], 2],
+        'deleteBillingInternalCustomersCustomerRef' => ['DELETE', '/v1/billing/internal-customers/{customerRef}', ['customerRef'], [], false, 'json', 'deleteBillingInternalCustomersCustomerRef', ['customerRef'], 2],
         'deleteBrandingDomain' => ['DELETE', '/v1/branding/domain', [], [], false, 'json', 'deleteBrandingDomain', [], 1],
         'deleteBrandingLinkDomain' => ['DELETE', '/v1/branding/link-domain', [], [], false, 'json', 'deleteBrandingLinkDomain', [], 1],
         'deleteCliListenersId' => ['DELETE', '/v1/cli/listeners/{id}', ['id'], [], false, 'json', 'deleteCliListenersId', ['id'], 2],
         'deleteEmailTemplatesEventLocale' => ['DELETE', '/v1/email/templates/{event}/{locale}', ['event','locale'], [], false, 'json', 'deleteEmailTemplatesEventLocale', ['event','locale'], 3],
         'deleteIntegrationsKind' => ['DELETE', '/v1/integrations/{kind}', ['kind'], [], false, 'json', 'deleteIntegrationsKind', ['kind'], 2],
         'deleteOrgMembersUserId' => ['DELETE', '/v1/org/members/{userId}', ['userId'], [], false, 'json', 'deleteOrgMembersUserId', ['userId'], 2],
+        'deleteOrgSsoDirect' => ['DELETE', '/v1/org/sso/direct', [], [], false, 'json', 'deleteOrgSsoDirect', [], 1],
         'deletePartnersId' => ['DELETE', '/v1/partners/{id}', ['id'], [], false, 'json', 'deletePartnersId', ['id'], 2],
         'deletePayoutConnectionsProvider' => ['DELETE', '/v1/payout-connections/{provider}', ['provider'], [], false, 'json', 'deletePayoutConnectionsProvider', ['provider'], 2],
+        'deletePrivacyExecutorsAdapter' => ['DELETE', '/v1/privacy/executors/{adapter}', ['adapter'], [], false, 'json', 'deletePrivacyExecutorsAdapter', ['adapter'], 2],
         'deleteProfitabilityProductsProductRef' => ['DELETE', '/v1/profitability/products/{productRef}', ['productRef'], [], false, 'json', 'deleteProfitabilityProductsProductRef', ['productRef'], 2],
+        'deleteRewardsRulesKey' => ['DELETE', '/v1/rewards/rules/{key}', ['key'], [], false, 'json', 'deleteRewardsRulesKey', ['key'], 2],
+        'deleteSupportAppsAdapter' => ['DELETE', '/v1/support/apps/{adapter}', ['adapter'], [], false, 'json', 'deleteSupportAppsAdapter', ['adapter'], 2],
         'deleteWebhookEndpointsId' => ['DELETE', '/v1/webhook-endpoints/{id}', ['id'], [], false, 'json', 'deleteWebhookEndpointsId', ['id'], 2],
         'deleteZapierHooksId' => ['DELETE', '/v1/zapier/hooks/{id}', ['id'], [], false, 'json', 'deleteZapierHooksId', ['id'], 2],
         'getAdminMetrics' => ['GET', '/v1/admin/metrics', [], [], false, 'json', 'getAdminMetrics', [], 1],
@@ -882,14 +1026,19 @@ trait Operations
         'getAuditLogs' => ['GET', '/v1/audit-logs', [], ['actor' => 'actor', 'actorType' => 'actorType', 'action' => 'action', 'subjectType' => 'subjectType', 'subjectId' => 'subjectId', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore'], false, 'list', 'getAuditLogs', [], 11],
         'getAuthConnections' => ['GET', '/v1/auth/connections', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getAuthConnections', [], 6],
         'getAuthConnectionsIdExport' => ['GET', '/v1/auth/connections/{id}/export', ['id'], ['customerRef' => 'customerRef'], false, 'json', 'getAuthConnectionsIdExport', ['id'], 3],
+        'getAuthConnectionsProviders' => ['GET', '/v1/auth/connections/providers', [], [], false, 'json', 'getAuthConnectionsProviders', [], 1],
         'getAuthProviders' => ['GET', '/v1/auth/providers', [], [], false, 'json', 'getAuthProviders', [], 1],
         'getBillingConnections' => ['GET', '/v1/billing/connections', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getBillingConnections', [], 6],
         'getBillingConnectionsId' => ['GET', '/v1/billing/connections/{id}', ['id'], [], false, 'json', 'getBillingConnectionsId', ['id'], 2],
-        'getBillingEvents' => ['GET', '/v1/billing/events', [], ['customerRef' => 'customerRef', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getBillingEvents', [], 7],
+        'getBillingEvents' => ['GET', '/v1/billing/events', [], ['customerRef' => 'customerRef', 'status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getBillingEvents', [], 8],
+        'getBillingInternalCustomers' => ['GET', '/v1/billing/internal-customers', [], [], false, 'json', 'getBillingInternalCustomers', [], 1],
         'getBillingPlan' => ['GET', '/v1/billing/plan', [], [], false, 'json', 'getBillingPlan', [], 1],
         'getBranding' => ['GET', '/v1/branding', [], [], false, 'json', 'getBranding', [], 1],
+        'getChatlyIdentity' => ['GET', '/v1/chatly/identity', [], [], false, 'json', 'getChatlyIdentity', [], 1],
         'getCleanroomConsent' => ['GET', '/v1/cleanroom/consent', [], ['customerRef' => 'customerRef'], false, 'json', 'getCleanroomConsent', [], 2],
         'getCleanroomQuery' => ['GET', '/v1/cleanroom/query', [], ['dimension' => 'dimension'], false, 'json', 'getCleanroomQuery', [], 2],
+        'getClicksConsentCoverage' => ['GET', '/v1/clicks/consent-coverage', [], ['days' => 'days'], false, 'json', 'getClicksConsentCoverage', [], 2],
+        'getClicksId' => ['GET', '/v1/clicks/{id}', ['id'], [], false, 'json', 'getClicksId', ['id'], 2],
         'getCliDeviceCodesUserCode' => ['GET', '/v1/cli/device-codes/{userCode}', ['userCode'], [], false, 'json', 'getCliDeviceCodesUserCode', ['userCode'], 2],
         'getCliListenersIdEvents' => ['GET', '/v1/cli/listeners/{id}/events', ['id'], ['wait' => 'wait'], false, 'json', 'getCliListenersIdEvents', ['id'], 3],
         'getCliLogs' => ['GET', '/v1/cli/logs', [], ['after' => 'after', 'wait' => 'wait', 'limit' => 'limit'], false, 'json', 'getCliLogs', [], 4],
@@ -905,7 +1054,9 @@ trait Operations
         'getDisputes' => ['GET', '/v1/disputes', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getDisputes', [], 6],
         'getEmailSettings' => ['GET', '/v1/email/settings', [], [], false, 'json', 'getEmailSettings', [], 1],
         'getEmailTemplates' => ['GET', '/v1/email/templates', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getEmailTemplates', [], 6],
+        'getEmbed' => ['GET', '/v1/embed', [], ['token' => 'token'], false, 'json', 'getEmbed', [], 2],
         'getEmbedSummary' => ['GET', '/v1/embed/summary', [], [], false, 'json', 'getEmbedSummary', [], 1],
+        'getEvents' => ['GET', '/v1/events', [], ['since' => 'since', 'topics' => 'topics', 'after' => 'after', 'limit' => 'limit'], false, 'json', 'getEvents', [], 5],
         'getExportAccounting' => ['GET', '/v1/export/accounting', [], ['format' => 'format', 'year' => 'year'], false, 'text', 'getExportAccounting', [], 3],
         'getExportFull' => ['GET', '/v1/export/full', [], [], false, 'text', 'getExportFull', [], 1],
         'getFraudCases' => ['GET', '/v1/fraud/cases', [], ['status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getFraudCases', [], 7],
@@ -915,6 +1066,7 @@ trait Operations
         'getHostsCurrent' => ['GET', '/v1/hosts/current', [], [], false, 'json', 'getHostsCurrent', [], 1],
         'getHostsCurrentThemeCss' => ['GET', '/v1/hosts/current/theme.css', [], [], false, 'text', 'getHostsCurrentThemeCss', [], 1],
         'getIncrementality' => ['GET', '/v1/incrementality', [], ['programId' => 'programId'], false, 'json', 'getIncrementality', [], 2],
+        'getIntegrationHealth' => ['GET', '/v1/integration-health', [], [], false, 'json', 'getIntegrationHealth', [], 1],
         'getIntegrations' => ['GET', '/v1/integrations', [], [], false, 'json', 'getIntegrations', [], 1],
         'getIntegrationsDeliveries' => ['GET', '/v1/integrations/deliveries', [], ['kind' => 'kind', 'status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getIntegrationsDeliveries', [], 8],
         'getInvitations' => ['GET', '/v1/invitations', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getInvitations', [], 6],
@@ -931,13 +1083,16 @@ trait Operations
         'getOpenapiYaml' => ['GET', '/v1/openapi.yaml', [], [], false, 'text', 'getOpenapiYaml', [], 1],
         'getOrg' => ['GET', '/v1/org', [], [], false, 'json', 'getOrg', [], 1],
         'getOrgFxFeed' => ['GET', '/v1/org/fx-feed', [], [], false, 'json', 'getOrgFxFeed', [], 1],
+        'getOrgHostedPages' => ['GET', '/v1/org/hosted-pages', [], [], false, 'json', 'getOrgHostedPages', [], 1],
         'getOrgMembers' => ['GET', '/v1/org/members', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getOrgMembers', [], 6],
         'getOrgPayoutSchedule' => ['GET', '/v1/org/payout-schedule', [], [], false, 'json', 'getOrgPayoutSchedule', [], 1],
+        'getOrgPortalAuth' => ['GET', '/v1/org/portal-auth', [], [], false, 'json', 'getOrgPortalAuth', [], 1],
         'getOrgReferralParams' => ['GET', '/v1/org/referral-params', [], [], false, 'json', 'getOrgReferralParams', [], 1],
         'getOrgRetention' => ['GET', '/v1/org/retention', [], [], false, 'json', 'getOrgRetention', [], 1],
         'getOrgSso' => ['GET', '/v1/org/sso', [], [], false, 'json', 'getOrgSso', [], 1],
         'getOrgSsoConnectionsIdSamlMetadata' => ['GET', '/v1/org/sso/connections/{id}/saml-metadata', ['id'], [], false, 'json', 'getOrgSsoConnectionsIdSamlMetadata', ['id'], 2],
         'getOrgTaxProfile' => ['GET', '/v1/org/tax-profile', [], [], false, 'json', 'getOrgTaxProfile', [], 1],
+        'getOrgTrackingConsent' => ['GET', '/v1/org/tracking-consent', [], [], false, 'json', 'getOrgTrackingConsent', [], 1],
         'getOutreach' => ['GET', '/v1/outreach', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getOutreach', [], 6],
         'getPartnerAchievements' => ['GET', '/v1/partner/achievements', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerAchievements', [], 6],
         'getPartnerAdvance' => ['GET', '/v1/partner/advance', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerAdvance', [], 6],
@@ -981,6 +1136,10 @@ trait Operations
         'getPayoutRuns' => ['GET', '/v1/payout-runs', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPayoutRuns', [], 6],
         'getPayouts' => ['GET', '/v1/payouts', [], ['partnerId' => 'partnerId', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPayouts', [], 7],
         'getPayoutsIdInvoice' => ['GET', '/v1/payouts/{id}/invoice', ['id'], ['format' => 'format'], false, 'json', 'getPayoutsIdInvoice', ['id'], 3],
+        'getPlans' => ['GET', '/v1/plans', [], [], false, 'json', 'getPlans', [], 1],
+        'getPortalAuthCurrent' => ['GET', '/v1/portal-auth/current', [], ['org' => 'org'], false, 'json', 'getPortalAuthCurrent', [], 2],
+        'getPrivacyExecutorRequests' => ['GET', '/v1/privacy/executor-requests', [], [], false, 'json', 'getPrivacyExecutorRequests', [], 1],
+        'getPrivacyExecutors' => ['GET', '/v1/privacy/executors', [], [], false, 'json', 'getPrivacyExecutors', [], 1],
         'getPrivacyExport' => ['GET', '/v1/privacy/export', [], ['customerRef' => 'customerRef'], false, 'json', 'getPrivacyExport', [], 2],
         'getPrivacyRequests' => ['GET', '/v1/privacy/requests', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPrivacyRequests', [], 6],
         'getPrivacyRequestsId' => ['GET', '/v1/privacy/requests/{id}', ['id'], [], false, 'json', 'getPrivacyRequestsId', ['id'], 2],
@@ -1007,7 +1166,9 @@ trait Operations
         'getReportsFilteredClicks' => ['GET', '/v1/reports/filtered-clicks', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getReportsFilteredClicks', [], 6],
         'getReportsPartnerPerformance' => ['GET', '/v1/reports/partner-performance', [], ['format' => 'format'], false, 'json', 'getReportsPartnerPerformance', [], 2],
         'getRewards' => ['GET', '/v1/rewards', [], ['status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getRewards', [], 7],
+        'getRewardsGranted' => ['GET', '/v1/rewards/granted', [], [], false, 'json', 'getRewardsGranted', [], 1],
         'getRewardsLookupCode' => ['GET', '/v1/rewards/lookup/{code}', ['code'], [], false, 'json', 'getRewardsLookupCode', ['code'], 2],
+        'getRewardsRules' => ['GET', '/v1/rewards/rules', [], [], false, 'json', 'getRewardsRules', [], 1],
         'getRoiBreakdown' => ['GET', '/v1/roi/breakdown', [], ['from' => 'from', 'to' => 'to', 'programId' => 'programId', 'partnerId' => 'partnerId', 'windowDays' => 'windowDays', 'currency' => 'currency', 'format' => 'format', 'by' => 'by', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getRoiBreakdown', [], 14],
         'getRoiDataQuality' => ['GET', '/v1/roi/data-quality', [], ['from' => 'from', 'to' => 'to', 'format' => 'format'], false, 'json', 'getRoiDataQuality', [], 4],
         'getRoiGrants' => ['GET', '/v1/roi/grants', [], ['from' => 'from', 'to' => 'to', 'programId' => 'programId', 'partnerId' => 'partnerId', 'windowDays' => 'windowDays', 'currency' => 'currency', 'format' => 'format', 'status' => 'status', 'role' => 'role', 'paidBack' => 'paidBack', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getRoiGrants', [], 16],
@@ -1021,6 +1182,9 @@ trait Operations
         'getStatusIncidents' => ['GET', '/v1/status/incidents', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getStatusIncidents', [], 6],
         'getStatusIncidentsAtom' => ['GET', '/v1/status/incidents.atom', [], [], false, 'text', 'getStatusIncidentsAtom', [], 1],
         'getStatusIncidentsId' => ['GET', '/v1/status/incidents/{id}', ['id'], [], false, 'json', 'getStatusIncidentsId', ['id'], 2],
+        'getSupportApps' => ['GET', '/v1/support/apps', [], [], false, 'json', 'getSupportApps', [], 1],
+        'getSupportCardsOrgIdAdapter' => ['GET', '/v1/support/cards/{orgId}/{adapter}', ['orgId','adapter'], ['email' => 'email', 'externalId' => 'externalId'], false, 'json', 'getSupportCardsOrgIdAdapter', ['orgId','adapter'], 5],
+        'getSupportContext' => ['GET', '/v1/support/context', [], ['email' => 'email', 'customerRef' => 'customerRef', 'partnerExternalRef' => 'partnerExternalRef', 'ext' => 'ext'], false, 'json', 'getSupportContext', [], 5],
         'getTax1099' => ['GET', '/v1/tax/1099', [], ['year' => 'year', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getTax1099', [], 7],
         'getTax1099Filings' => ['GET', '/v1/tax/1099/filings', [], ['year' => 'year', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getTax1099Filings', [], 7],
         'getTax1099Preview' => ['GET', '/v1/tax/1099/preview', [], ['year' => 'year'], false, 'json', 'getTax1099Preview', [], 2],
@@ -1049,6 +1213,7 @@ trait Operations
         'patchProgramsId' => ['PATCH', '/v1/programs/{id}', ['id'], [], true, 'json', 'patchProgramsId', ['id'], 3],
         'patchReferralsId' => ['PATCH', '/v1/referrals/{id}', ['id'], [], true, 'json', 'patchReferralsId', ['id'], 3],
         'patchWebhookEndpointsId' => ['PATCH', '/v1/webhook-endpoints/{id}', ['id'], [], true, 'json', 'patchWebhookEndpointsId', ['id'], 3],
+        'postAccountClose' => ['POST', '/v1/account/close', [], [], true, 'json', 'postAccountClose', [], 2],
         'postAdminOrgsIdPlan' => ['POST', '/v1/admin/orgs/{id}/plan', ['id'], [], true, 'json', 'postAdminOrgsIdPlan', ['id'], 3],
         'postAdminOrgsIdSuspend' => ['POST', '/v1/admin/orgs/{id}/suspend', ['id'], [], true, 'json', 'postAdminOrgsIdSuspend', ['id'], 3],
         'postAdminOrgsIdUnsuspend' => ['POST', '/v1/admin/orgs/{id}/unsuspend', ['id'], [], false, 'json', 'postAdminOrgsIdUnsuspend', ['id'], 2],
@@ -1061,21 +1226,25 @@ trait Operations
         'postApiKeys' => ['POST', '/v1/api-keys', [], [], true, 'json', 'postApiKeys', [], 2],
         'postAssets' => ['POST', '/v1/assets', [], [], true, 'json', 'postAssets', [], 2],
         'postAttributionReplay' => ['POST', '/v1/attribution/replay', [], [], true, 'json', 'postAttributionReplay', [], 2],
+        'postAuthBackchannelLogout' => ['POST', '/v1/auth/backchannel-logout', [], [], true, 'json', 'postAuthBackchannelLogout', [], 2],
         'postAuthConnections' => ['POST', '/v1/auth/connections', [], [], true, 'json', 'postAuthConnections', [], 2],
         'postAuthConnectionsIdAliases' => ['POST', '/v1/auth/connections/{id}/aliases', ['id'], [], true, 'json', 'postAuthConnectionsIdAliases', ['id'], 3],
         'postAuthConnectionsIdErase' => ['POST', '/v1/auth/connections/{id}/erase', ['id'], [], true, 'json', 'postAuthConnectionsIdErase', ['id'], 3],
+        'postAuthConnectionsIdPartners' => ['POST', '/v1/auth/connections/{id}/partners', ['id'], [], true, 'json', 'postAuthConnectionsIdPartners', ['id'], 3],
         'postAuthConnectionsIdPing' => ['POST', '/v1/auth/connections/{id}/ping', ['id'], [], true, 'json', 'postAuthConnectionsIdPing', ['id'], 3],
         'postAuthConnectionsIdRevokePreviousSecret' => ['POST', '/v1/auth/connections/{id}/revoke-previous-secret', ['id'], [], false, 'json', 'postAuthConnectionsIdRevokePreviousSecret', ['id'], 2],
         'postAuthConnectionsIdRotateSecret' => ['POST', '/v1/auth/connections/{id}/rotate-secret', ['id'], [], false, 'json', 'postAuthConnectionsIdRotateSecret', ['id'], 2],
         'postAuthConnectionsIdSignals' => ['POST', '/v1/auth/connections/{id}/signals', ['id'], [], true, 'json', 'postAuthConnectionsIdSignals', ['id'], 3],
         'postAuthConnectionsIdSignups' => ['POST', '/v1/auth/connections/{id}/signups', ['id'], [], true, 'json', 'postAuthConnectionsIdSignups', ['id'], 3],
         'postAuthConnectionsIdUsers' => ['POST', '/v1/auth/connections/{id}/users', ['id'], [], true, 'json', 'postAuthConnectionsIdUsers', ['id'], 3],
+        'postAuthConnectionsInstall' => ['POST', '/v1/auth/connections/install', [], [], true, 'json', 'postAuthConnectionsInstall', [], 2],
         'postAuthLogout' => ['POST', '/v1/auth/logout', [], [], false, 'json', 'postAuthLogout', [], 1],
         'postBillingActivate' => ['POST', '/v1/billing/activate', [], [], true, 'json', 'postBillingActivate', [], 2],
         'postBillingCheckout' => ['POST', '/v1/billing/checkout', [], [], true, 'json', 'postBillingCheckout', [], 2],
         'postBillingConnections' => ['POST', '/v1/billing/connections', [], [], true, 'json', 'postBillingConnections', [], 2],
         'postBillingConnectionsIdRotateSecret' => ['POST', '/v1/billing/connections/{id}/rotate-secret', ['id'], [], false, 'json', 'postBillingConnectionsIdRotateSecret', ['id'], 2],
         'postBillingConnectionsIdValueMappingPreview' => ['POST', '/v1/billing/connections/{id}/value-mapping/preview', ['id'], [], true, 'json', 'postBillingConnectionsIdValueMappingPreview', ['id'], 3],
+        'postBillingInternalCustomers' => ['POST', '/v1/billing/internal-customers', [], [], true, 'json', 'postBillingInternalCustomers', [], 2],
         'postBillingPortal' => ['POST', '/v1/billing/portal', [], [], false, 'json', 'postBillingPortal', [], 1],
         'postBrandingDomain' => ['POST', '/v1/branding/domain', [], [], true, 'json', 'postBrandingDomain', [], 2],
         'postBrandingDomainVerify' => ['POST', '/v1/branding/domain/verify', [], [], false, 'json', 'postBrandingDomainVerify', [], 1],
@@ -1120,9 +1289,13 @@ trait Operations
         'postLinks' => ['POST', '/v1/links', [], [], true, 'json', 'postLinks', [], 2],
         'postMobilePurchases' => ['POST', '/v1/mobile/purchases', [], [], true, 'json', 'postMobilePurchases', [], 2],
         'postNotificationsIdRead' => ['POST', '/v1/notifications/{id}/read', ['id'], [], false, 'json', 'postNotificationsIdRead', ['id'], 2],
+        'postOauthToken' => ['POST', '/v1/oauth/token', [], [], true, 'json', 'postOauthToken', [], 2],
         'postOnchainConnections' => ['POST', '/v1/onchain/connections', [], [], true, 'json', 'postOnchainConnections', [], 2],
+        'postOrgHostedPagesCheck' => ['POST', '/v1/org/hosted-pages/check', [], [], false, 'json', 'postOrgHostedPagesCheck', [], 1],
         'postOrgMembers' => ['POST', '/v1/org/members', [], [], true, 'json', 'postOrgMembers', [], 2],
+        'postOrgPortalAuthTest' => ['POST', '/v1/org/portal-auth/test', [], [], false, 'json', 'postOrgPortalAuthTest', [], 1],
         'postOrgs' => ['POST', '/v1/orgs', [], [], true, 'json', 'postOrgs', [], 2],
+        'postOrgSsoDirectTest' => ['POST', '/v1/org/sso/direct/test', [], [], false, 'json', 'postOrgSsoDirectTest', [], 1],
         'postOrgSsoLink' => ['POST', '/v1/org/sso/link', [], [], false, 'json', 'postOrgSsoLink', [], 1],
         'postOrgSsoTickets' => ['POST', '/v1/org/sso/tickets', [], [], true, 'json', 'postOrgSsoTickets', [], 2],
         'postOrgSsoTicketsIdRevoke' => ['POST', '/v1/org/sso/tickets/{id}/revoke', ['id'], [], false, 'json', 'postOrgSsoTicketsIdRevoke', ['id'], 2],
@@ -1155,6 +1328,8 @@ trait Operations
         'postPayoutRunsIdCancel' => ['POST', '/v1/payout-runs/{id}/cancel', ['id'], [], false, 'json', 'postPayoutRunsIdCancel', ['id'], 2],
         'postPayoutRunsIdExecute' => ['POST', '/v1/payout-runs/{id}/execute', ['id'], [], false, 'json', 'postPayoutRunsIdExecute', ['id'], 2],
         'postPayoutRunsRunScheduled' => ['POST', '/v1/payout-runs/run-scheduled', [], [], false, 'json', 'postPayoutRunsRunScheduled', [], 1],
+        'postPrivacyExecutorKeys' => ['POST', '/v1/privacy/executor-keys', [], [], true, 'json', 'postPrivacyExecutorKeys', [], 2],
+        'postPrivacyExecutorsAdapterCheck' => ['POST', '/v1/privacy/executors/{adapter}/check', ['adapter'], [], false, 'json', 'postPrivacyExecutorsAdapterCheck', ['adapter'], 2],
         'postPrivacyForget' => ['POST', '/v1/privacy/forget', [], [], true, 'json', 'postPrivacyForget', [], 2],
         'postPrivacyLookup' => ['POST', '/v1/privacy/lookup', [], [], true, 'json', 'postPrivacyLookup', [], 2],
         'postPrivacyRequests' => ['POST', '/v1/privacy/requests', [], [], true, 'json', 'postPrivacyRequests', [], 2],
@@ -1174,10 +1349,13 @@ trait Operations
         'postReferralsIdApprove' => ['POST', '/v1/referrals/{id}/approve', ['id'], [], false, 'json', 'postReferralsIdApprove', ['id'], 2],
         'postReferralsIdReassign' => ['POST', '/v1/referrals/{id}/reassign', ['id'], [], true, 'json', 'postReferralsIdReassign', ['id'], 3],
         'postReferralsIdVoid' => ['POST', '/v1/referrals/{id}/void', ['id'], [], false, 'json', 'postReferralsIdVoid', ['id'], 2],
+        'postRewards' => ['POST', '/v1/rewards', [], [], true, 'json', 'postRewards', [], 2],
         'postRewardsIdRedeem' => ['POST', '/v1/rewards/{id}/redeem', ['id'], [], true, 'json', 'postRewardsIdRedeem', ['id'], 3],
         'postRewardsRedeemByCode' => ['POST', '/v1/rewards/redeem-by-code', [], [], true, 'json', 'postRewardsRedeemByCode', [], 2],
         'postRoiPatternsPatternReview' => ['POST', '/v1/roi/patterns/{pattern}/review', ['pattern'], [], true, 'json', 'postRoiPatternsPatternReview', ['pattern'], 3],
         'postSandboxSimulate' => ['POST', '/v1/sandbox/simulate', [], [], true, 'json', 'postSandboxSimulate', [], 2],
+        'postSupportAppsAdapterTest' => ['POST', '/v1/support/apps/{adapter}/test', ['adapter'], [], true, 'json', 'postSupportAppsAdapterTest', ['adapter'], 3],
+        'postSupportCardsOrgIdAdapter' => ['POST', '/v1/support/cards/{orgId}/{adapter}', ['orgId','adapter'], [], true, 'json', 'postSupportCardsOrgIdAdapter', ['orgId','adapter'], 4],
         'postTax1099DocumentsIdCorrect' => ['POST', '/v1/tax/1099/documents/{id}/correct', ['id'], [], false, 'json', 'postTax1099DocumentsIdCorrect', ['id'], 2],
         'postTax1099Filings' => ['POST', '/v1/tax/1099/filings', [], [], true, 'json', 'postTax1099Filings', [], 2],
         'postTax1099FilingsIdRefresh' => ['POST', '/v1/tax/1099/filings/{id}/refresh', ['id'], [], false, 'json', 'postTax1099FilingsIdRefresh', ['id'], 2],
@@ -1188,10 +1366,12 @@ trait Operations
         'postValueImport' => ['POST', '/v1/value/import', [], [], true, 'json', 'postValueImport', [], 2],
         'postWebhookDeliveriesIdReplay' => ['POST', '/v1/webhook-deliveries/{id}/replay', ['id'], [], false, 'json', 'postWebhookDeliveriesIdReplay', ['id'], 2],
         'postWebhookEndpoints' => ['POST', '/v1/webhook-endpoints', [], [], true, 'json', 'postWebhookEndpoints', [], 2],
+        'postWebhookEndpointsIdReplay' => ['POST', '/v1/webhook-endpoints/{id}/replay', ['id'], ['since' => 'since'], false, 'json', 'postWebhookEndpointsIdReplay', ['id'], 3],
         'postWebhookEndpointsIdRotateSecret' => ['POST', '/v1/webhook-endpoints/{id}/rotate-secret', ['id'], [], false, 'json', 'postWebhookEndpointsIdRotateSecret', ['id'], 2],
         'postWidgetTokens' => ['POST', '/v1/widget/tokens', [], [], true, 'json', 'postWidgetTokens', [], 2],
         'postZapierConversions' => ['POST', '/v1/zapier/conversions', [], [], true, 'json', 'postZapierConversions', [], 2],
         'postZapierHooks' => ['POST', '/v1/zapier/hooks', [], [], true, 'json', 'postZapierHooks', [], 2],
+        'putAuthConnectionsIdSecret' => ['PUT', '/v1/auth/connections/{id}/secret', ['id'], [], true, 'json', 'putAuthConnectionsIdSecret', ['id'], 3],
         'putBillingConnectionsIdCredentials' => ['PUT', '/v1/billing/connections/{id}/credentials', ['id'], [], true, 'json', 'putBillingConnectionsIdCredentials', ['id'], 3],
         'putBillingConnectionsIdSecret' => ['PUT', '/v1/billing/connections/{id}/secret', ['id'], [], true, 'json', 'putBillingConnectionsIdSecret', ['id'], 3],
         'putBillingConnectionsIdValueMapping' => ['PUT', '/v1/billing/connections/{id}/value-mapping', ['id'], [], true, 'json', 'putBillingConnectionsIdValueMapping', ['id'], 3],
@@ -1205,11 +1385,15 @@ trait Operations
         'putMeRoiDigest' => ['PUT', '/v1/me/roi-digest', [], [], true, 'json', 'putMeRoiDigest', [], 2],
         'putNetworkSettings' => ['PUT', '/v1/network/settings', [], [], true, 'json', 'putNetworkSettings', [], 2],
         'putOrgFxFeed' => ['PUT', '/v1/org/fx-feed', [], [], true, 'json', 'putOrgFxFeed', [], 2],
+        'putOrgHostedPages' => ['PUT', '/v1/org/hosted-pages', [], [], true, 'json', 'putOrgHostedPages', [], 2],
         'putOrgPayoutSchedule' => ['PUT', '/v1/org/payout-schedule', [], [], true, 'json', 'putOrgPayoutSchedule', [], 2],
+        'putOrgPortalAuth' => ['PUT', '/v1/org/portal-auth', [], [], true, 'json', 'putOrgPortalAuth', [], 2],
         'putOrgReferralParams' => ['PUT', '/v1/org/referral-params', [], [], true, 'json', 'putOrgReferralParams', [], 2],
         'putOrgRetention' => ['PUT', '/v1/org/retention', [], [], true, 'json', 'putOrgRetention', [], 2],
+        'putOrgSsoDirect' => ['PUT', '/v1/org/sso/direct', [], [], true, 'json', 'putOrgSsoDirect', [], 2],
         'putOrgTaxFiling' => ['PUT', '/v1/org/tax-filing', [], [], true, 'json', 'putOrgTaxFiling', [], 2],
         'putOrgTaxProfile' => ['PUT', '/v1/org/tax-profile', [], [], true, 'json', 'putOrgTaxProfile', [], 2],
+        'putOrgTrackingConsent' => ['PUT', '/v1/org/tracking-consent', [], [], true, 'json', 'putOrgTrackingConsent', [], 2],
         'putPartnerLocale' => ['PUT', '/v1/partner/locale', [], [], true, 'json', 'putPartnerLocale', [], 2],
         'putPartnerOrgsOrgIdPayoutProfile' => ['PUT', '/v1/partner/orgs/{orgId}/payout-profile', ['orgId'], [], true, 'json', 'putPartnerOrgsOrgIdPayoutProfile', ['orgId'], 3],
         'putPartnerOrgsOrgIdPostback' => ['PUT', '/v1/partner/orgs/{orgId}/postback', ['orgId'], [], true, 'json', 'putPartnerOrgsOrgIdPostback', ['orgId'], 3],
@@ -1226,6 +1410,8 @@ trait Operations
         'putProgramsIdPartnersPartnerIdGroup' => ['PUT', '/v1/programs/{id}/partners/{partnerId}/group', ['id','partnerId'], [], true, 'json', 'putProgramsIdPartnersPartnerIdGroup', ['id','partnerId'], 4],
         'putProgramsIdPayoutSchedule' => ['PUT', '/v1/programs/{id}/payout-schedule', ['id'], [], true, 'json', 'putProgramsIdPayoutSchedule', ['id'], 3],
         'putProgramsIdRefereeReward' => ['PUT', '/v1/programs/{id}/referee-reward', ['id'], [], true, 'json', 'putProgramsIdRefereeReward', ['id'], 3],
+        'putRewardsRulesKey' => ['PUT', '/v1/rewards/rules/{key}', ['key'], [], true, 'json', 'putRewardsRulesKey', ['key'], 3],
+        'putSupportAppsAdapter' => ['PUT', '/v1/support/apps/{adapter}', ['adapter'], [], true, 'json', 'putSupportAppsAdapter', ['adapter'], 3],
     ];
 
     /**
@@ -1281,6 +1467,19 @@ trait Operations
     public function deleteBillingConnectionsId(string $id, ?string $idempotencyKey = null): mixed
     {
         return $this->request('DELETE', '/v1/billing/connections/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Remove an internal customer. DELETE /v1/billing/internal-customers/{customerRef}
+     *
+     * Their payments earn again from now on (events already ignored stay ignored). Audited.
+     *
+     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return Ok
+     */
+    public function deleteBillingInternalCustomersCustomerRef(string $customerRef, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/billing/internal-customers/' . self::seg($customerRef) . '', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -1362,6 +1561,19 @@ trait Operations
     }
 
     /**
+     * Remove your identity provider. DELETE /v1/org/sso/direct
+     *
+     * Removes the org's own IdP configuration; team SSO and "require SSO" turn off, so nobody is locked out. Owner only.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * @return DeleteOrgSsoDirectResponse
+     */
+    public function deleteOrgSsoDirect(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/org/sso/direct', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Delete a partner. DELETE /v1/partners/{id}
      *
      * Deletes a partner that never did anything, with its enrollments, links, coupons and payout profile. A partner with any clicks, referrals, commissions, payouts or other history is `409`: archive it instead (`status: "archived"`). Audited.
@@ -1388,6 +1600,19 @@ trait Operations
     }
 
     /**
+     * Disconnect a DSAR tool. DELETE /v1/privacy/executors/{adapter}
+     *
+     * Removes the tool, its key and settings; its URL answers 404 from now on. The request log stays.
+     *
+     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return DeletePrivacyExecutorsAdapterResponse
+     */
+    public function deletePrivacyExecutorsAdapter(string $adapter, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/privacy/executors/' . self::seg($adapter) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Delete a product margin. DELETE /v1/profitability/products/{productRef}
      *
      * Removes a product from the margin catalog; its payments fall back to the program or org margin. Audited.
@@ -1398,6 +1623,32 @@ trait Operations
     public function deleteProfitabilityProductsProductRef(string $productRef, ?string $idempotencyKey = null): mixed
     {
         return $this->request('DELETE', '/v1/profitability/products/' . self::seg($productRef) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Delete a reward rule. DELETE /v1/rewards/rules/{key}
+     *
+     * Deletes the rule. Rewards already granted through it stay.
+     *
+     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return DeleteRewardsRulesKeyResponse
+     */
+    public function deleteRewardsRulesKey(string $key, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/rewards/rules/' . self::seg($key) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Disconnect a support tool. DELETE /v1/support/apps/{adapter}
+     *
+     * Removes the tool and its secret; its card URL answers 404 from now on.
+     *
+     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return DeleteSupportAppsAdapterResponse
+     */
+    public function deleteSupportAppsAdapter(string $adapter, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/support/apps/' . self::seg($adapter) . '', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -1872,6 +2123,19 @@ trait Operations
     }
 
     /**
+     * List identity connectors. GET /v1/auth/connections/providers
+     *
+     * Every auth provider you can connect (Atlas, Clerk, Auth0, Supabase, Firebase, Cognito, Stytch, Kinde, WorkOS, generic, your own auth), with how it connects, who issues the secret, the setup steps, a copyable template where the vendor has no native webhook, and where the referral metadata lands.
+     *
+     * **Auth:** an API key with `integrations:read` (or `full`), or a session of any role.
+     * @return GetAuthConnectionsProvidersResponse
+     */
+    public function getAuthConnectionsProviders(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/auth/connections/providers', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * List sign-in providers. GET /v1/auth/providers
      *
      * The identity providers configured on this deployment, for rendering sign-in buttons.
@@ -1928,7 +2192,7 @@ trait Operations
     /**
      * List billing events. GET /v1/billing/events
      *
-     * Payments, refunds and other billing events received from every connection, newest first. Filter with `customerRef`.
+     * Payments, refunds and other billing events received from every connection, newest first. Filter with `customerRef`, or `status=ignored_by_filter` for the events a product filter or the internal-customer list set aside (recorded, never processed).
      *
      * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
      *
@@ -1939,18 +2203,31 @@ trait Operations
      * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * @return array{object: string, data: list<BillingEvent>, has_more: bool, next_cursor: string|null}
      */
-    public function getBillingEvents(?string $customerRef = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    public function getBillingEvents(?string $customerRef = null, ?string $status = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/billing/events', ['customerRef' => $customerRef, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+        return $this->request('GET', '/v1/billing/events', ['customerRef' => $customerRef, 'status' => $status, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
     }
 
     /**
      * Every item of {@see getBillingEvents()}, following the pages.
      * @return \Generator<int, BillingEvent>
      */
-    public function getBillingEventsEach(?string $customerRef = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    public function getBillingEventsEach(?string $customerRef = null, ?string $status = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
-        return $this->paginate(fn (?string $cursor) => $this->getBillingEvents(customerRef: $customerRef, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+        return $this->paginate(fn (?string $cursor) => $this->getBillingEvents(customerRef: $customerRef, status: $status, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+    }
+
+    /**
+     * List internal customers. GET /v1/billing/internal-customers
+     *
+     * The org's own customers (staff, test accounts, your own plans) whose payments never earn on any connection. Metadata `planSource: "internal"` on the provider's customer does the same without a list.
+     *
+     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * @return list<InternalCustomer>
+     */
+    public function getBillingInternalCustomers(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/billing/internal-customers', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -1969,7 +2246,7 @@ trait Operations
     /**
      * Get branding. GET /v1/branding
      *
-     * The org's logo, theme tokens, sender address, and its custom portal and link domains with their status (`none`, `pending` DNS, `provisioning` a certificate, `active`).
+     * The org's logo, theme tokens, sender address, and its custom portal and link domains with their status (`none`, `pending` DNS, `provisioning` a certificate, `active`), and `warnings` for theme colour pairs below WCAG AA contrast.
      *
      * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
      * @return GetBrandingResponse
@@ -1977,6 +2254,19 @@ trait Operations
     public function getBranding(?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/branding', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get the support-chat identity. GET /v1/chatly/identity
+     *
+     * The signed-in merchant user or partner as a Chatly widget identity: `externalId` (`merchant:<id>` or `partner:<id>`), email, name and `userHash`, the HMAC-SHA256 of `externalId` with Referalli's identity secret. `identity` is null when signed out or when identity verification isn't configured. Never cached.
+     *
+     * **Auth:** none.
+     * @return GetChatlyIdentityResponse
+     */
+    public function getChatlyIdentity(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/chatly/identity', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2003,6 +2293,34 @@ trait Operations
     public function getCleanroomQuery(string $dimension, ?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/cleanroom/query', ['dimension' => $dimension], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get consent coverage. GET /v1/clicks/consent-coverage
+     *
+     * The share of attributed sign-ups in the last `days` (default 30) whose referral carries consent evidence, on its click or on the `associate` call. Low coverage means sign-ups are attributed from tags without a consent setting (`none`) or from server-side calls that don't pass `consent`.
+     *
+     * **Auth:** an API key with `links:read` (or `full`), or a session of any role.
+     *
+     * days: Look-back window in days.
+     * @return GetClicksConsentCoverageResponse
+     */
+    public function getClicksConsentCoverage(?int $days = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/clicks/consent-coverage', ['days' => $days], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get a click. GET /v1/clicks/{id}
+     *
+     * One click with its consent evidence: what the visitor's CMP said when the tracker stored the referral (`consent.provider`, `state`, `stamp`, `tcString`…). A redirect click (`/go`) is recorded before the landing page reads the CMP, so its evidence comes from the first consented visit beacon naming it. `consent` is null when none arrived.
+     *
+     * **Auth:** an API key with `links:read` (or `full`), or a session of any role.
+     * @return GetClicksIdResponse
+     */
+    public function getClicksId(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/clicks/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2323,6 +2641,21 @@ trait Operations
     }
 
     /**
+     * Get one org's embed manifest. GET /v1/embed
+     *
+     * The embed manifest for the org that owns `token` (its public tracking token): its link domain in the CSP origins, its longest program cookie window as the storage lifetime, and its consent default. Public, CORS `*`.
+     *
+     * **Auth:** none.
+     *
+     * token: The org's public tracking token.
+     * @return GetWellKnownForgedeckEmbedJsonResponse
+     */
+    public function getEmbed(string $token, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/embed', ['token' => $token], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Read embedded partner stats. GET /v1/embed/summary
      *
      * Called by the embed component with `Authorization: Bearer <embed token>`: the partner's name, eligible clicks, active referrals, balances and link codes. 401 for a missing, invalid or expired token.
@@ -2333,6 +2666,23 @@ trait Operations
     public function getEmbedSummary(?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/embed/summary', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List past events. GET /v1/events
+     *
+     * The org's events, oldest first, in the shape webhook deliveries carry: filter with `since` and `topics`, page with `after` (the previous page's `nextCursor`). Every event is listed whether or not an endpoint subscribed to it. `referalli events tail --since 1h` uses it to backfill before tailing live.
+     *
+     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     *
+     * since: Only events created at or after this time.
+     * topics: Comma-separated topics (default: every topic).
+     * after: The `nextCursor` of the previous page: events after this one.
+     * @return GetEventsResponse
+     */
+    public function getEvents(?string $since = null, ?string $topics = null, ?string $after = null, ?int $limit = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/events', ['since' => $since, 'topics' => $topics, 'after' => $after, 'limit' => $limit], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2480,6 +2830,19 @@ trait Operations
     public function getIncrementality(string $programId, ?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/incrementality', ['programId' => $programId], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Check integration health. GET /v1/integration-health
+     *
+     * Every connection the org depends on, each with `ok`, a `detail`, and when it fails a `fix` and `docs` link: billing connections (and when each last received an event), sign-up connections, the tracking snippet (a visit in the last 30 days), payout connections, outbound webhook endpoints, and every adapter of a connected port. `hop` names the leg that failed on a path between systems. `ok` at the top is true only when every check is.
+     *
+     * **Auth:** an API key with `integrations:read` (or `full`), or a session of any role.
+     * @return GetIntegrationHealthResponse
+     */
+    public function getIntegrationHealth(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/integration-health', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2797,6 +3160,19 @@ trait Operations
     }
 
     /**
+     * Get the hosted-page consent and chat. GET /v1/org/hosted-pages
+     *
+     * What runs on the pages Referalli hosts for you on your own portal domain (the partner portal and `/join`): your consent banner (Cookie Munch, OneTrust, Cookiebot, Usercentrics, Didomi, Osano, Termly, iubenda, a custom CMP, a built-in necessary-only notice, or none) and your support chat (Chatly, Intercom, Crisp or custom). `served` is exactly what visitors get: the head tags, the "Cookie settings" link and the Content-Security-Policy built from these adapters. Referalli's own banner and chat never run on your domain.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * @return GetOrgHostedPagesResponse
+     */
+    public function getOrgHostedPages(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/org/hosted-pages', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * List team members. GET /v1/org/members
      *
      * Members of the org with their role and email, oldest first.
@@ -2835,6 +3211,19 @@ trait Operations
     public function getOrgPayoutSchedule(?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/org/payout-schedule', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get partner sign-in settings. GET /v1/org/portal-auth
+     *
+     * How partners sign in to the org's portal: `referalli` (partner accounts, the default), `oidc` (the merchant's IdP) or `custom` (the merchant's own session, as a short-lived JWT). Includes the audience tokens must carry, the URL to send partners to, the redirect URI to register, and the last check. Never the secret.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetOrgPortalAuthResponse
+     */
+    public function getOrgPortalAuth(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/org/portal-auth', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2900,6 +3289,19 @@ trait Operations
     public function getOrgTaxProfile(?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/org/tax-profile', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get the tracker's consent default. GET /v1/org/tracking-consent
+     *
+     * How `aff.js` reads visitor consent unless the tag says otherwise (`data-consent`): `auto` detects the site's CMP (Cookie Munch, OneTrust, Cookiebot, Usercentrics, Didomi, Osano, Termly, IAB TCF and GPP, Google Consent Mode, or `window.referalliConsent`), an adapter id pins one, `pending` waits for `aff.consent(true|false)`, and `none` always stores. Until consent is granted nothing is stored or sent; the referral stays in memory for the sign-up. `noCmp` is what `auto` does on a site without a CMP. `configured: false` is an org that never chose: it serves `none`, so existing tags behave as before. Lists the adapters with their default category.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * @return GetOrgTrackingConsentResponse
+     */
+    public function getOrgTrackingConsent(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/org/tracking-consent', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -3822,6 +4224,58 @@ trait Operations
     }
 
     /**
+     * List public plans. GET /v1/plans
+     *
+     * The public plan catalog in display order: monthly price in minor units (USD, billed monthly in advance), limits and features. No authentication; cacheable for an hour. No plan charges a transaction or payout fee.
+     *
+     * **Auth:** none.
+     * @return GetPlansResponse
+     */
+    public function getPlans(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/plans', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * What a merchant's portal sign-in offers. GET /v1/portal-auth/current
+     *
+     * For the portal's sign-in page: the org (from `org`, or the merchant's portal domain this is called on) and its partner sign-in adapter, with the button label and where it starts. `referalli` with no start URL when the org uses Referalli partner accounts.
+     *
+     * **Auth:** none.
+     * @return GetPortalAuthCurrentResponse
+     */
+    public function getPortalAuthCurrent(?string $org = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/portal-auth/current', ['org' => $org], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List DSAR tool requests. GET /v1/privacy/executor-requests
+     *
+     * The last 200 requests connected DSAR tools sent: operation, outcome and the vendor request id. Subjects are kept only as hashes.
+     *
+     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetPrivacyExecutorRequestsResponse
+     */
+    public function getPrivacyExecutorRequests(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/privacy/executor-requests', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List connected DSAR tools. GET /v1/privacy/executors
+     *
+     * Every DSAR tool that can reach Referalli as a connected system (Cookie Munch cm-standard-v1, OneTrust, Transcend, DataGrail, Ketch, Osano, `custom` for any tool speaking Standard Webhooks), with the per-org URL to register, install steps and a health check. Keys are never returned.
+     *
+     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetPrivacyExecutorsResponse
+     */
+    public function getPrivacyExecutors(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/privacy/executors', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Export a customer's data. GET /v1/privacy/export
      *
      * Every stored row that references the customer, for a data-subject access request.
@@ -4314,6 +4768,19 @@ trait Operations
     }
 
     /**
+     * List partner rewards. GET /v1/rewards/granted
+     *
+     * The last 200 rewards granted through `POST /v1/rewards`, with the commission line each one posted.
+     *
+     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * @return GetRewardsGrantedResponse
+     */
+    public function getRewardsGranted(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/rewards/granted', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Look up a reward code. GET /v1/rewards/lookup/{code}
      *
      * Whether a reward code is valid (issued and unredeemed), with its kind and amount, so your checkout can apply it. Unknown codes answer `{ "valid": false }`.
@@ -4324,6 +4791,19 @@ trait Operations
     public function getRewardsLookupCode(string $code, ?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/rewards/lookup/' . self::seg($code) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List reward rules. GET /v1/rewards/rules
+     *
+     * Your rules that turn an inbound event (or a rule key) into a fixed partner reward.
+     *
+     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * @return list<PutRewardsRulesKeyResponse>
+     */
+    public function getRewardsRules(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/rewards/rules', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -4577,6 +5057,48 @@ trait Operations
     public function getStatusIncidentsId(string $id, ?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/status/incidents/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List support tool connections. GET /v1/support/apps
+     *
+     * Every support tool Referalli can show referral context in (Chatly cards and AI tools, Intercom, Zendesk, HubSpot, Front, Help Scout, custom), with its card URL, install steps and whether it is set up. Secrets are never returned.
+     *
+     * **Auth:** an API key with `partners:read` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetSupportAppsResponse
+     */
+    public function getSupportApps(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/support/apps', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Render a support card for a tool (GET). GET /v1/support/cards/{orgId}/{adapter}
+     *
+     * The same card for tools that fetch with GET (HubSpot legacy CRM cards pass the contact as query parameters). Signed as for the POST form; 404 otherwise.
+     *
+     * **Auth:** none.
+     * @return PostSupportCardsOrgIdAdapterResponse
+     */
+    public function getSupportCardsOrgIdAdapter(string $orgId, string $adapter, ?string $email = null, ?string $externalId = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/support/cards/' . self::seg($orgId) . '/' . self::seg($adapter) . '', ['email' => $email, 'externalId' => $externalId], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get referral context for a support contact. GET /v1/support/context
+     *
+     * What a support agent should know about a contact: the partner (status, tier, programs, referral link, pending/approved/paid balances, next payout, open flags) and/or the referred customer (who referred them, when, the referee reward and what is left of it). Name the contact by `partnerExternalRef`, `ext` (a tool's verified external id), `customerRef` or `email`; the email is used only when no stronger key is given. Your org's data only; `partner` and `customer` are null when nothing matches.
+     *
+     * **Auth:** an API key with `partners:read` (or `full`), or a session with role `owner`, `admin`, `support`, `finance`, `analyst`.
+     *
+     * email: Used only when no stronger key is given.
+     * ext: A support tool's verified external id: matched as a partner externalRef, then as a customer ref.
+     * @return GetSupportContextResponse
+     */
+    public function getSupportContext(?string $email = null, ?string $customerRef = null, ?string $partnerExternalRef = null, ?string $ext = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/support/context', ['email' => $email, 'customerRef' => $customerRef, 'partnerExternalRef' => $partnerExternalRef, 'ext' => $ext], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -4924,7 +5446,7 @@ trait Operations
     /**
      * Update a billing connection. PATCH /v1/billing/connections/{id}
      *
-     * Renames a connection or sets `status`: `paused` makes its webhook URL refuse events until set back to `active`. Audited.
+     * Renames a connection, sets `status` (`paused` makes its webhook URL refuse events until set back to `active`), or sets its product `filter` (`null` removes it). A filter applies to events received from then on. Audited.
      *
      * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PatchBillingConnectionsIdBody $body
@@ -5050,15 +5572,29 @@ trait Operations
     /**
      * Update a webhook endpoint. PATCH /v1/webhook-endpoints/{id}
      *
-     * Changes the URL, topics, programs (`null` or `[]` for every program) or legacy signature, or pauses it (`status: "paused"`, deliveries held). Setting `active` re-enables a paused or auto-disabled endpoint: held deliveries resume and the failure clock starts over. Audited.
+     * Changes the URL, topics, programs (`null` or `[]` for every program) or legacy signature, or pauses it (`status: "paused"`, deliveries held). Setting `active` re-enables a paused or auto-disabled endpoint: held deliveries resume and the failure clock starts over. `warnings` has `domain_changed` when the URL moves to another host. Audited.
      *
      * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PatchWebhookEndpointsIdBody $body
-     * @return WebhookEndpoint
+     * @return PatchWebhookEndpointsIdResponse
      */
     public function patchWebhookEndpointsId(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('PATCH', '/v1/webhook-endpoints/' . self::seg($id) . '', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Close your own account. POST /v1/account/close
+     *
+     * Closes the signed-in merchant user or partner account: every session ends, identity is redacted and commission records stay under a pseudonym. Send `confirm` with the account's email. Refused (409) for an organization's only owner or a partner still owed money. Step-up: `x-totp-code` when two-factor is on, otherwise a sign-in less than 15 minutes old (else 401 `step_up_required`).
+     *
+     * **Auth:** a partner session.
+     * @param PostAccountCloseBody $body
+     * @return PostAccountCloseResponse
+     */
+    public function postAccountClose(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/account/close', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -5226,6 +5762,20 @@ trait Operations
     }
 
     /**
+     * Receive an OpenID Connect back-channel logout. POST /v1/auth/backchannel-logout
+     *
+     * The `backchannel_logout_uri` of Referalli's own sign-in client. Takes a form-encoded `logout_token` (OpenID Connect Back-Channel Logout 1.0): verified against the issuer's keys, `aud`, `events`, a fresh `iat`, no `nonce`, and a single-use `jti`; then ends the Referalli sessions for its `sid` (or every session of its `sub`). Answers 503 until the deployment sets IDP_LOGOUT_SYNC=true.
+     *
+     * **Auth:** none.
+     * @param PostAuthBackchannelLogoutBody $body
+     * @return PostAuthBackchannelLogoutResponse
+     */
+    public function postAuthBackchannelLogout(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/auth/backchannel-logout', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Connect an auth platform. POST /v1/auth/connections
      *
      * Connects your sign-up system so new users are attributed server-side without calling associate: `clerk`, `supabase`, `workos` or `generic` receive the platform's user webhooks at the returned URL; `atlas` and `custom` call the signed protocol endpoints under `/v1/auth/connections/{id}/`. `autoEnrollUsers` makes every new user a partner too. Returns the signing secret once. 409 when an Atlas instance already has a connection.
@@ -5265,6 +5815,20 @@ trait Operations
     public function postAuthConnectionsIdErase(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/auth/connections/' . self::seg($id) . '/erase', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Enrol a user as a partner (signed protocol). POST /v1/auth/connections/{id}/partners
+     *
+     * A user asked to become a partner from the platform, with the code they chose: they are enrolled now (whatever `autoEnrollUsers` says), with a coupon and, when the connection has a destination, a link. 409 when the code is held by someone else. Signed like the other protocol calls (`x-referalli-signature`, `x-referalli-id`).
+     *
+     * **Auth:** none.
+     * @param PostAuthConnectionsIdPartnersBody $body
+     * @return PostAuthConnectionsIdPartnersResponse
+     */
+    public function postAuthConnectionsIdPartners(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/auth/connections/' . self::seg($id) . '/partners', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -5350,6 +5914,20 @@ trait Operations
     }
 
     /**
+     * Approve a one-click install. POST /v1/auth/connections/install
+     *
+     * The dashboard's consent step for `GET /v1/oauth/authorize`: `allow` returns the redirect back to the platform with a single-use code (10 minutes) for the chosen program; `deny` returns it with `error=access_denied`. Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostAuthConnectionsInstallBody $body
+     * @return PostAuthConnectionsInstallResponse
+     */
+    public function postAuthConnectionsInstall(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/auth/connections/install', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Sign out. POST /v1/auth/logout
      *
      * Ends the browser session (and any portal-domain sessions handed off from it) and clears the cookies. Returns the identity provider's `logoutUrl` to end the provider session too, or `null`.
@@ -5393,7 +5971,7 @@ trait Operations
     /**
      * Create a billing connection. POST /v1/billing/connections
      *
-     * Connects a billing provider (`stripe`, `paddle`, `lemonsqueezy`, `polar`, `chargebee`, `shopify`, `recurly`, `braintree`, `woocommerce`, `bigcommerce` or `generic`) so its payment webhooks become commissions. Returns the `webhookUrl` path to register with the provider and its signing secret (generated unless you pass the provider's own `webhookSecret`); the secret is returned only here. Audited.
+     * Connects a billing provider (`stripe`, `paddle`, `lemonsqueezy`, `polar`, `chargebee`, `shopify`, `recurly`, `braintree`, `woocommerce`, `bigcommerce` or `generic`) so its payment webhooks become commissions. Returns the `webhookUrl` path to register with the provider and its signing secret (generated unless you pass the provider's own `webhookSecret`); the secret is returned only here. A `filter` (`productIds`, `priceIds`, `skus` and/or exact `metadata`) limits which payments and subscription events earn when one provider account sells several products; the rest are recorded as `ignored_by_filter`. Audited.
      *
      * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PostBillingConnectionsBody $body
@@ -5429,6 +6007,20 @@ trait Operations
     public function postBillingConnectionsIdValueMappingPreview(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/billing/connections/' . self::seg($id) . '/value-mapping/preview', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Add an internal customer. POST /v1/billing/internal-customers
+     *
+     * Marks a customer ref (the provider customer id, or the `referalli_customer_ref` it is linked to) as internal: its payments are recorded as `ignored_by_filter` from now on. Idempotent; a repeat updates the note. Audited.
+     *
+     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostBillingInternalCustomersBody $body
+     * @return PostBillingInternalCustomersResponse
+     */
+    public function postBillingInternalCustomers(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/billing/internal-customers', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -6034,6 +6626,20 @@ trait Operations
     }
 
     /**
+     * Exchange an install code. POST /v1/oauth/token
+     *
+     * Server to server: the platform trades the single-use code and its PKCE `code_verifier` for a new signed-protocol connection and its signing secret (returned only here). Installing again for the same instance keeps the connection and issues a new secret, the old one verifying for 24 hours. 401 for an unknown, used, expired or mismatched code. No authentication.
+     *
+     * **Auth:** none.
+     * @param PostOauthTokenBody $body
+     * @return PostOauthTokenResponse
+     */
+    public function postOauthToken(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/oauth/token', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Create an on-chain connection. POST /v1/onchain/connections
      *
      * Connects an on-chain indexer: on-chain conversions posted to its webhook URL become billing events. Returns the webhook URL and signing secret.
@@ -6045,6 +6651,19 @@ trait Operations
     public function postOnchainConnections(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/onchain/connections', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Check the hosted-page adapters. POST /v1/org/hosted-pages/check
+     *
+     * Read-only checks against the vendors: does the Cookie Munch site exist (and a reminder to add your portal domain as its alias), does each script URL answer. Updates `status` and `lastError`. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return PostOrgHostedPagesCheckResponse
+     */
+    public function postOrgHostedPagesCheck(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/org/hosted-pages/check', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -6062,6 +6681,19 @@ trait Operations
     }
 
     /**
+     * Test partner sign-in. POST /v1/org/portal-auth/test
+     *
+     * Checks the partner sign-in configuration (JWKS reachable, or OIDC discovery) and records the result.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return PostOrgPortalAuthTestResponse
+     */
+    public function postOrgPortalAuthTest(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/org/portal-auth/test', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Create an organization. POST /v1/orgs
      *
      * Creates an organization with the signed-in user as its owner. Needs a user session (not an API key) but no `x-org-id`. Limited to 20 per hour per user. Live mode only.
@@ -6073,6 +6705,19 @@ trait Operations
     public function postOrgs(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/orgs', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Test your identity provider. POST /v1/org/sso/direct/test
+     *
+     * Checks the configuration against the IdP (OIDC discovery, or the WorkOS organization) and records the result as the configuration's last success or last error.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return PostOrgPortalAuthTestResponse
+     */
+    public function postOrgSsoDirectTest(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/org/sso/direct/test', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -6508,6 +7153,33 @@ trait Operations
     }
 
     /**
+     * Mint a DSAR executor key. POST /v1/privacy/executor-keys
+     *
+     * Enables a DSAR tool for your org and mints its executor key (a bearer key, or a `whsec_` secret for Standard Webhooks), returned once. Rotating stops the old key at once. Also stores vendor settings: a Transcend public key and API key for completion callbacks, an Osano webhook secret.
+     *
+     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostPrivacyExecutorKeysBody $body
+     * @return PostPrivacyExecutorKeysResponse
+     */
+    public function postPrivacyExecutorKeys(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/privacy/executor-keys', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Check a DSAR tool connection. POST /v1/privacy/executors/{adapter}/check
+     *
+     * Whether the tool is ready: a key or the vendor credentials it needs, and no failing requests since it was set up. Answers `{ok, detail, fix}`.
+     *
+     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return PostPrivacyExecutorsAdapterCheckResponse
+     */
+    public function postPrivacyExecutorsAdapterCheck(string $adapter, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/privacy/executors/' . self::seg($adapter) . '/check', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Erase a data subject. POST /v1/privacy/forget
      *
      * Erases (pseudonymizes, keeping the ledger balanced) a customer by `customerRef`, a partner by `partnerId`, or by `email` both the partner with that email and every customer stored under its hash. Send exactly one. 400 when nothing is found. Audited.
@@ -6766,6 +7438,20 @@ trait Operations
     }
 
     /**
+     * Reward a partner. POST /v1/rewards
+     *
+     * Rewards a partner for something outside a sale (a community answer, an event): one `earned` commission line that is approved and paid like any other. Name the partner by `partnerId` or `partnerExternalRef`; the amount is `amountMinor` (+ `currency`) or comes from a rule (`ruleKey`, or the `event` a rule maps). Idempotent on `idempotencyKey`: a retry returns the first grant with 200; the same key with a different request is 409.
+     *
+     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * @param PostRewardsBody $body
+     * @return PostRewardsResponse
+     */
+    public function postRewards(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/rewards', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Redeem a reward. POST /v1/rewards/{id}/redeem
      *
      * Records a (possibly partial) redemption: `amountMinor` (default the remaining balance) is capped at what's left, and the reward becomes `redeemed` once it is used up. `externalId` makes it idempotent (409 if reused for another reward). Publishes `credit.redeemed`.
@@ -6819,6 +7505,34 @@ trait Operations
     public function postSandboxSimulate(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/sandbox/simulate', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Preview a support card. POST /v1/support/apps/{adapter}/test
+     *
+     * Renders what the tool would show for a contact, from your own session: the context and the tool-format card. Nothing is sent to the tool.
+     *
+     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostSupportAppsAdapterTestBody $body
+     * @return PostSupportAppsAdapterTestResponse
+     */
+    public function postSupportAppsAdapterTest(string $adapter, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/support/apps/' . self::seg($adapter) . '/test', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Render a support card for a tool. POST /v1/support/cards/{orgId}/{adapter}
+     *
+     * Called by the support tool, signed in its own scheme (Chatly `x-chatly-signature`, Intercom `X-Body-Signature`, HubSpot v3, Front, Help Scout, a Zendesk app JWT, or the custom `X-Referalli-Signature`). Answers the tool's card format. An unknown org, a tool that is not connected, or a bad or stale signature all answer 404.
+     *
+     * **Auth:** none.
+     * @param array<string, mixed> $body
+     * @return PostSupportCardsOrgIdAdapterResponse
+     */
+    public function postSupportCardsOrgIdAdapter(string $orgId, string $adapter, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/support/cards/' . self::seg($orgId) . '/' . self::seg($adapter) . '', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -6946,7 +7660,7 @@ trait Operations
     /**
      * Create a webhook endpoint. POST /v1/webhook-endpoints
      *
-     * Subscribes an HTTPS URL to event topics (default `["*"]`, every event; see the `webhooks` section of this document for each topic's payload). `programIds` limits it to events about those programs (org-wide events such as payouts are then not sent). Deliveries are signed the Standard Webhooks way with the returned `secret` (`whsec_…`), shown only here. `legacySignature: true` also sends the deprecated body-only signature.
+     * Subscribes an HTTPS URL to event topics (default `["*"]`, every event; see the `webhooks` section of this document for each topic's payload). `programIds` limits it to events about those programs (org-wide events such as payouts are then not sent). Deliveries are signed the Standard Webhooks way with the returned `secret` (`whsec_…`), shown only here. `legacySignature: true` also sends the deprecated body-only signature. `alertContacts` (up to 10 emails) are emailed, with the org owner, when the endpoint has failed for 1 hour and again at 24 hours; it is disabled after 72 hours of failures or 1,000 failed attempts in a row.
      *
      * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PostWebhookEndpointsBody $body
@@ -6955,6 +7669,21 @@ trait Operations
     public function postWebhookEndpoints(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/webhook-endpoints', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Replay failed deliveries. POST /v1/webhook-endpoints/{id}/replay
+     *
+     * Requeues the endpoint's failed deliveries created at or after `since` (ISO 8601), for after an outage. Each keeps its `webhook-id`, so receivers can dedupe. Audited.
+     *
+     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     *
+     * since: Requeue failed deliveries created at or after this time.
+     * @return PostWebhookEndpointsIdReplayResponse
+     */
+    public function postWebhookEndpointsIdReplay(string $id, string $since, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/webhook-endpoints/' . self::seg($id) . '/replay', ['since' => $since], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -7013,6 +7742,20 @@ trait Operations
     }
 
     /**
+     * Set a vendor-issued secret. PUT /v1/auth/connections/{id}/secret
+     *
+     * For webhook connectors whose vendor issues the signing secret (Clerk, Stytch, WorkOS) or key set (Kinde's JWKS document): replaces the connection's secret. The previous one keeps verifying for 24 hours. Signed-protocol connections rotate instead. Audited.
+     *
+     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutAuthConnectionsIdSecretBody $body
+     * @return PutAuthConnectionsIdSecretResponse
+     */
+    public function putAuthConnectionsIdSecret(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/auth/connections/' . self::seg($id) . '/secret', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Set provider API credentials. PUT /v1/billing/connections/{id}/credentials
      *
      * For providers that send thin webhooks (Recurly, BigCommerce), the API credentials used to fetch the full event: `apiKey`, or `apiToken` plus `storeHash`, and `region`. Stored encrypted. 400 for providers that take no credentials or when a required field is missing. Audited.
@@ -7057,11 +7800,11 @@ trait Operations
     /**
      * Update branding. PUT /v1/branding
      *
-     * Sets the logo URL, theme (only the documented `--r-*` tokens, with plain CSS values) and email sender. Omitted fields keep their value.
+     * Sets the logo URL, theme (only the documented `--r-*` tokens, with plain CSS values) and email sender. Omitted fields keep their value. `warnings` lists theme text/background pairs (`--r-accent-ink` on `--r-accent`, `--r-ink` on `--r-paper`) below the 4.5:1 WCAG AA contrast; the theme is saved anyway.
      *
      * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PutBrandingBody $body
-     * @return Ok
+     * @return PutBrandingResponse
      */
     public function putBranding(array $body, ?string $idempotencyKey = null): mixed
     {
@@ -7195,6 +7938,20 @@ trait Operations
     }
 
     /**
+     * Set the hosted-page consent and chat. PUT /v1/org/hosted-pages
+     *
+     * Validates and saves the adapters. A CMP's `scriptUrl` must be https on that vendor's own hosts; `custom` needs every origin listed. `customOrigins` adds origins per CSP directive (https or wss, no wildcards, no keywords). Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutOrgHostedPagesBody $body
+     * @return GetOrgHostedPagesResponse
+     */
+    public function putOrgHostedPages(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/org/hosted-pages', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Set the org payout schedule. PUT /v1/org/payout-schedule
      *
      * When payouts run automatically for every program without its own schedule: a `schedule` (`monthly`, `weekly`, `twice_monthly` or `custom` dates), the older `dayOfMonth` form, or `null` to turn automatic payouts off. Send exactly one of `schedule` and `dayOfMonth`. Audited.
@@ -7206,6 +7963,20 @@ trait Operations
     public function putOrgPayoutSchedule(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('PUT', '/v1/org/payout-schedule', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Set partner sign-in. PUT /v1/org/portal-auth
+     *
+     * Chooses the portal sign-in adapter and its settings. `custom`: `issuer`, `jwksUrl` (https), optional `loginUrl` (your page that mints the token) and `autoEnrollProgramId`. `oidc`: `issuer`, `clientId`, `clientSecret`. `referalli` removes any configuration. Owner only.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * @param PutOrgPortalAuthBodyOption1|PutOrgPortalAuthBodyOption2|PutOrgPortalAuthBodyOption3 $body
+     * @return PutOrgPortalAuthResponse
+     */
+    public function putOrgPortalAuth(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/org/portal-auth', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -7237,6 +8008,20 @@ trait Operations
     }
 
     /**
+     * Connect your own identity provider. PUT /v1/org/sso/direct
+     *
+     * Team SSO with the org's own IdP, no broker: `adapter` `oidc` (issuer, client id and secret, the claim that holds roles) or `workos` (client id, organization id, the org's own API key). `roleMapping` maps IdP groups or roles to `admin`, `finance`, `analyst` or `support` (never owner); `defaultRole` covers everyone else, or null to keep them out; `domains` are the email domains "require SSO" applies to. The secret is encrypted and never returned; leave it out to keep the stored one. 409 while the org uses the Atlas broker. Owner only.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * @param PutOrgSsoDirectBodyOption1|PutOrgSsoDirectBodyOption2 $body
+     * @return PutOrgSsoDirectResponse
+     */
+    public function putOrgSsoDirect(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/org/sso/direct', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Connect a 1099 filing provider. PUT /v1/org/tax-filing
      *
      * Chooses who e-files 1099-NEC forms: `test` (simulated) or `tax1099` with your own API key (stored encrypted). Audited.
@@ -7262,6 +8047,20 @@ trait Operations
     public function putOrgTaxProfile(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('PUT', '/v1/org/tax-profile', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Set the tracker's consent default. PUT /v1/org/tracking-consent
+     *
+     * Sets the consent default served inside `/t/{token}/aff.js` (cached up to 5 minutes). Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutOrgTrackingConsentBody $body
+     * @return GetOrgTrackingConsentResponse
+     */
+    public function putOrgTrackingConsent(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/org/tracking-consent', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -7486,6 +8285,34 @@ trait Operations
     public function putProgramsIdRefereeReward(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('PUT', '/v1/programs/' . self::seg($id) . '/referee-reward', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Save a reward rule. PUT /v1/rewards/rules/{key}
+     *
+     * Creates or replaces a rule: the amount, the reason, an optional program and an optional `event` it rewards (one rule per event).
+     *
+     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutRewardsRulesKeyBody $body
+     * @return PutRewardsRulesKeyResponse
+     */
+    public function putRewardsRulesKey(string $key, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/rewards/rules/' . self::seg($key) . '', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Connect a support tool. PUT /v1/support/apps/{adapter}
+     *
+     * Enable a support tool and store its signing secret (vendor-issued; write-only) or, for Zendesk, the app public key in `config.publicKeyPem`. For `custom` Referalli mints the secret: it is returned once, and `rotate: true` mints a new one.
+     *
+     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutSupportAppsAdapterBody $body
+     * @return PutSupportAppsAdapterResponse
+     */
+    public function putSupportAppsAdapter(string $adapter, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/support/apps/' . self::seg($adapter) . '', [], $body, $idempotencyKey, 'json');
     }
 
 }

@@ -45,6 +45,8 @@ final class Topics
         'roi.payback_reached' => RoiPaybackReachedEvent::class,
         'tax.form_delivered' => TaxFormDeliveredEvent::class,
         'webhook_endpoint.disabled' => WebhookEndpointDisabledEvent::class,
+        'webhook_endpoint.failing' => WebhookEndpointFailingEvent::class,
+        'webhook_endpoint.recovered' => WebhookEndpointRecoveredEvent::class,
     ];
 
     public const ALL = [
@@ -81,5 +83,7 @@ final class Topics
         'roi.payback_reached',
         'tax.form_delivered',
         'webhook_endpoint.disabled',
+        'webhook_endpoint.failing',
+        'webhook_endpoint.recovered',
     ];
 }

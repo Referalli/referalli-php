@@ -48,6 +48,7 @@ namespace Referalli;
  * @phpstan-type CommissionLine array{id: string, programId: string, partnerId: string, referralId: string|null, type: 'earned'|'approved'|'paid'|'reversed'|'adjusted', amountMinor: int, currency: string, relatedCommissionId: string|null, holdUntil: string|null, level: int|null, memo: string|null, settlementMethod?: string|null, settlementReference?: string|null, ts: string, billingEventId?: string|null, netMinor?: int, state?: 'pending'|'approved'|'paid', events?: list<CommissionEvent>}
  * @phpstan-type Settlement array{commissionId: string, paidEventId: string, partnerId: string, programId: string, amountMinor: int, currency: string, method: 'store_credit'|'merchant_credit', reference: string, status: 'paid'}
  * @phpstan-type CommissionRule array{id: string, programId: string, version: int, config: GetOpenapiJsonResponse, createdAt: string}
+ * @phpstan-type BillingFilter array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
  * @phpstan-type ValueMapping array{cash?: string, creditApplied?: string, discount?: string, cost?: string, productRef?: string, unit: 'minor'|'major', version: int}
  * @phpstan-type ValueMappingPreviewValue array{cashMinor: int, creditAppliedMinor: int, discountMinor: int, costMinor?: int, productRef?: string, fields: array<string, float|int>, warnings?: list<string>, source?: 'mapping', mappingVersion?: int}
  * @phpstan-type ValueMappingPreviewWouldRecordItem array{kind: string, currency: string, confidence: string, source: string, extractionVersion: int, cashMinor?: int, creditAppliedMinor?: int, discountMinor?: int, costMinor?: int, productRef?: string}
@@ -56,11 +57,17 @@ namespace Referalli;
  * @phpstan-type ValueMappingPreviewEventsItem array{currency: string, value: ValueMappingPreviewEventsItemValue, wouldRecord: list<ValueMappingPreviewEventsItemWouldRecordItem>, index: int}
  * @phpstan-type ValueMappingPreview array{mappingVersion: int, currency?: string, value?: ValueMappingPreviewValue, wouldRecord?: list<ValueMappingPreviewWouldRecordItem>, events?: list<ValueMappingPreviewEventsItem>}
  * @phpstan-type BillingConnectionRotation array{inProgress: bool, previousSecretExpiresAt?: string}
- * @phpstan-type BillingConnection array{id: string, provider: string, name: string, status: 'active'|'paused', createdAt: string, webhookUrl: string, needsCredentials: bool, hasCredentials: bool, valueMapping: ValueMapping|null, rotation: BillingConnectionRotation}
- * @phpstan-type CreatedBillingConnection array{id: string, provider: string, webhookSecret: string, webhookUrl: string}
- * @phpstan-type BillingEvent array{id: string, provider: string, type: string, customerRef: string, invoiceRef: string|null, amountGross: int, tax: int, fees: int, currency: string, occurredAt: string}
+ * @phpstan-type BillingConnection array{id: string, provider: string, name: string, status: 'active'|'paused', createdAt: string, webhookUrl: string, needsCredentials: bool, hasCredentials: bool, valueMapping: ValueMapping|null, filter: BillingFilter|null, rotation: BillingConnectionRotation}
+ * @phpstan-type CreatedBillingConnection array{id: string, provider: string, webhookSecret: string, webhookUrl: string, filter: BillingFilter|null}
+ * @phpstan-type BillingEvent array{id: string, provider: string, type: string, customerRef: string, invoiceRef: string|null, amountGross: int, tax: int, fees: int, currency: string, occurredAt: string, connectionId: string|null, productRef: string, status: 'processed'|'ignored_by_filter', ignoredReason: 'filter'|'internal_customer'|null, catalog: array<string, list<string>>|null}
+ * @phpstan-type InternalCustomer array{customerRef: string, note: string, createdAt: string}
+ * @phpstan-type IdentityProviderSampleHookOption1 array{language: string, filename: string, code: string}
+ * @phpstan-type IdentityProviderMetadataPaths array{anonId: list<string>, clickId: list<string>, coupon: list<string>}
+ * @phpstan-type IdentityProvider array{id: string, label: string, mechanism: 'webhook'|'protocol', status: 'ga'|'beta', docsUrl: string, vendorDocsUrl: string, secretKind: 'hmac'|'svix'|'jwks'|'bearer', secretIssuedBy: 'referalli'|'vendor', vendorSteps: list<string>, sampleHook: IdentityProviderSampleHookOption1|null, metadataPaths: IdentityProviderMetadataPaths}
  * @phpstan-type WebhookEndpointRotation array{inProgress: bool, previousSecretExpiresAt?: string}
- * @phpstan-type WebhookEndpoint array{id: string, url: string, topics: list<string>, programIds: list<string>|null, status: 'active'|'paused'|'disabled', legacySignature: bool, rotation: WebhookEndpointRotation, failingSince: string|null, disabledAt: string|null, disabledReason: string|null, createdAt: string}
+ * @phpstan-type WebhookEndpointLastFailureOption1 array{statusCode: int|null, error: string|null, at: string}
+ * @phpstan-type WebhookEndpoint array{id: string, url: string, topics: list<string>, programIds: list<string>|null, status: 'active'|'paused'|'disabled', legacySignature: bool, rotation: WebhookEndpointRotation, failingSince: string|null, disabledAt: string|null, disabledReason: string|null, health: 'healthy'|'failing'|'disabled'|'paused', lastSuccessAt: string|null, lastFailure: WebhookEndpointLastFailureOption1|null, consecutiveFailures: int, alertContacts: list<string>, createdAt: string}
+ * @phpstan-type HealthCheck array{id: string, ok: bool, detail: string, fix?: string, docs?: string, hop?: string}
  * @phpstan-type WebhookDelivery array{id: string, endpointId: string, topic: string, status: string, attempts: int, lastStatusCode: int|null, lastAttemptAt: string|null, nextAt: string|null, createdAt: string}
  * @phpstan-type PayoutProfile array{partnerId: string, method: string, payoutCurrency: string, minThresholdMinor: int, taxFormType: string|null, taxFormSubmittedAt: string|null}
  * @phpstan-type TaxProfile array{legalName: string|null, address: string|null, country: string|null, vatId: string|null, ein: string|null, domesticVatBps: int|null, viesCheck: bool, filingProvider: string, filingConnected: bool}
@@ -86,7 +93,7 @@ namespace Referalli;
  * @phpstan-type ApiKey array{id: string, name: string, prefix: string, scopes: list<string>, apiVersion: string, publishable: bool, allowedOrigins: list<string>, livemode: bool, owner: string|null, pairId: string|null, createdBy: ApiKeyCreatedByOption1|null, expiresAt: string|null, expired: bool, lastUsedAt: string|null, createdAt: string, revokedAt: string|null}
  * @phpstan-type AuthConnectionRotation array{inProgress: bool, previousSecretExpiresAt?: string}
  * @phpstan-type AuthConnection array{id: string, provider: 'clerk'|'supabase'|'workos'|'generic'|'atlas'|'custom', programId: string, name: string, status: string, createdAt: string, rotation: AuthConnectionRotation, instanceId?: string|null, autoEnrollUsers?: bool, destinationUrl?: string|null, signatureVersion?: 'v1+v2'|'v2', requiresV2?: bool}
- * @phpstan-type CreatedAuthConnection array{id: string, provider: string, secret: string, webhookUrl?: string, metadataKeys?: array<string, string>, programId?: string, instanceId?: string, autoEnrollUsers?: bool, destinationUrl?: string|null, signupsUrl?: string, eraseUrl?: string, exportUrl?: string}
+ * @phpstan-type CreatedAuthConnection array{id: string, provider: string, secret: string, webhookUrl?: string, docsUrl?: string|null, metadataKeys?: array<string, string>, programId?: string, instanceId?: string, autoEnrollUsers?: bool, destinationUrl?: string|null, signupsUrl?: string, eraseUrl?: string, exportUrl?: string}
  * @phpstan-type FraudCase array{id: string, partnerId: string|null, referralId: string|null, kind: string, status: string, evidence: GetOpenapiJsonResponse|null, action: string|null, createdAt: string, resolvedAt: string|null}
  * @phpstan-type CustomerExport array{customerRef: string, referrals: list<GetOpenapiJsonResponse>, associations: list<GetOpenapiJsonResponse>, identityLinks: list<GetOpenapiJsonResponse>, billingEvents: list<GetOpenapiJsonResponse>, conversionEvents: list<GetOpenapiJsonResponse>}
  * @phpstan-type PartnerExport array{partner: GetOpenapiJsonResponse, enrollments: list<GetOpenapiJsonResponse>, links: list<GetOpenapiJsonResponse>, coupons: list<GetOpenapiJsonResponse>, payoutProfile: GetOpenapiJsonResponse|null, commissionEvents: list<GetOpenapiJsonResponse>, payouts: list<GetOpenapiJsonResponse>}
@@ -209,6 +216,10 @@ namespace Referalli;
  * @phpstan-type PrivacyRequestCompletedEvent array{id: string, topic: 'privacy.request_completed', orgId: string, livemode: bool, createdAt: string, data: PrivacyRequestCompletedEventData}
  * @phpstan-type WebhookEndpointDisabledEventData array{endpointId: string, url: string, reason: string, lastStatusCode: int|null, days: int}
  * @phpstan-type WebhookEndpointDisabledEvent array{id: string, topic: 'webhook_endpoint.disabled', orgId: string, livemode: bool, createdAt: string, data: WebhookEndpointDisabledEventData}
+ * @phpstan-type WebhookEndpointFailingEventData array{endpointId: string, url: string, stage: '1h'|'24h', failingSince: string, consecutiveFailures: int, lastStatusCode: int|null, sampleError: string|null, disablesAt: string}
+ * @phpstan-type WebhookEndpointFailingEvent array{id: string, topic: 'webhook_endpoint.failing', orgId: string, livemode: bool, createdAt: string, data: WebhookEndpointFailingEventData}
+ * @phpstan-type WebhookEndpointRecoveredEventData array{endpointId: string, url: string, failingSince: string, downForMs: int}
+ * @phpstan-type WebhookEndpointRecoveredEvent array{id: string, topic: 'webhook_endpoint.recovered', orgId: string, livemode: bool, createdAt: string, data: WebhookEndpointRecoveredEventData}
  * @phpstan-type PostTOrgTokenVisitResponse array{ok: bool, clickId: string|null}
  * @phpstan-type GetTOrgTokenCodesCodeResponseRefereeRewardOption1 array{kind: string, bps?: int, amountMinor?: int, capMinor?: int, currency: string, on: string}
  * @phpstan-type GetTOrgTokenCodesCodeResponse array{valid: bool, partnerDisplayName: string, refereeReward: GetTOrgTokenCodesCodeResponseRefereeRewardOption1|null}
@@ -228,6 +239,17 @@ namespace Referalli;
  * @phpstan-type GetWellKnownAssetlinksJsonResponseValueItemTarget array{namespace: 'android_app', package_name: string, sha256_cert_fingerprints: list<string>}
  * @phpstan-type GetWellKnownAssetlinksJsonResponseValueItem array{relation: list<string>, target: GetWellKnownAssetlinksJsonResponseValueItemTarget}
  * @phpstan-type GetWellKnownAssetlinksJsonResponse list<GetWellKnownAssetlinksJsonResponseValueItem>
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseCheckers array{userAgent: string, egress: list<string>}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetCookieDaysOption2 array{default: int, max: int, note: string}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItemPurpose array{en: string}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItem array{name: string, type: 'cookie'|'localStorage', category: string, lifetime: string, purpose: GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItemPurpose, legacy?: bool}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippet array{script: string, csp: array<string, list<string>>, consentCategory: string, consentFallbackCategory: string, consentAdapters: list<string>, consentDefault?: array<string, mixed>, cookieDays: int|GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetCookieDaysOption2, storage: list<GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItem>}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItemPurpose array{en: string}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItem array{name: string, type: 'cookie'|'localStorage', category: string, lifetime: string, purpose: GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItemPurpose, legacy?: bool}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbed array{script: string, csp: array<string, list<string>>, consentCategory: string, storage: list<GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItem>}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseSurfaces array{'tracking-snippet': GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippet, 'portal-embed': GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbed}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponseChangesItem array{effective: string, surface: string, add?: list<string>, remove?: list<string>, note: string}
+ * @phpstan-type GetWellKnownForgedeckEmbedJsonResponse array{schema: string, product: 'referalli', updated: string, openapi: string, llms: string, status: string, docs: string, checkers: GetWellKnownForgedeckEmbedJsonResponseCheckers, org?: string, surfaces: GetWellKnownForgedeckEmbedJsonResponseSurfaces, changes: list<GetWellKnownForgedeckEmbedJsonResponseChangesItem>}
  * @phpstan-type PostAgentsRegisterResponse array{agentId: string, wallet: string, instantPayout: bool}
  * @phpstan-type PostTOrgTokenAgentAttributeResponse array{attributed: bool, referralId: string, agentWallet: string}
  * @phpstan-type PostTOrgTokenAgentNegotiateResponse array{decision: 'accept'|'counter'|'reject', rateBps?: int, counterBps?: int|null, partnerId?: string, reason: string}
@@ -236,6 +258,7 @@ namespace Referalli;
  * @phpstan-type GetVersionsResponse array{latest: string, versions: list<GetVersionsResponseVersionsItem>, deprecationPolicy: string}
  * @phpstan-type GetAuthProvidersResponseDetailsItem array{id: 'instance'|'atlasid', name: string, atlas: bool}
  * @phpstan-type GetAuthProvidersResponse array{providers: list<'instance'|'atlasid'>, details: list<GetAuthProvidersResponseDetailsItem>}
+ * @phpstan-type PostAuthBackchannelLogoutResponse array{ok: bool}
  * @phpstan-type PostAuthLogoutResponse array{ok: bool, logoutUrl: string|null}
  * @phpstan-type PostOrgsResponse array{orgId: string}
  * @phpstan-type GetMeResponseUserOption1 array{id: string, email: string, name: string|null, emailVerified: bool}
@@ -243,12 +266,26 @@ namespace Referalli;
  * @phpstan-type GetMeResponseApiKey array{id: string, name: string, prefix: string, scopes: list<string>, apiVersion: string|null, livemode: bool, publishable: bool, owner: string|null, expiresAt: string|null}
  * @phpstan-type GetMeResponseOrg array{id: string, name: string}
  * @phpstan-type GetMeResponse array{user: GetMeResponseUserOption1|null, memberships: list<GetMeResponseMembershipsItem>, apiKey?: GetMeResponseApiKey, org?: GetMeResponseOrg}
+ * @phpstan-type GetPortalAuthCurrentResponse array{adapter: 'referalli'|'oidc'|'custom', name: string|null, startUrl: string|null}
+ * @phpstan-type GetOrgPortalAuthResponseAdaptersItem array{id: 'referalli'|'oidc'|'custom', label: string, status: 'ga'|'beta', docsUrl: string}
+ * @phpstan-type GetOrgPortalAuthResponse array{adapter: 'referalli'|'oidc'|'custom', config: array<string, mixed>, adapters: list<GetOrgPortalAuthResponseAdaptersItem>, jwtAudience: string, jwtSignInUrl: string, redirectUri: string, hasSecret: bool, status: string, lastOkAt: string|null, lastError: string|null}
+ * @phpstan-type PutOrgPortalAuthResponseAdaptersItem array{id: 'referalli'|'oidc'|'custom', label: string, status: 'ga'|'beta', docsUrl: string}
+ * @phpstan-type PutOrgPortalAuthResponse array{adapter: 'referalli'|'oidc'|'custom', config: array<string, mixed>, adapters: list<PutOrgPortalAuthResponseAdaptersItem>, jwtAudience: string, jwtSignInUrl: string, redirectUri: string}
+ * @phpstan-type PostOrgPortalAuthTestResponse array{ok: bool, detail: string, fix?: string}
  * @phpstan-type GetHostsCurrentResponseValueOption1Branding array{logoUrl: string, theme: array<string, string>}
  * @phpstan-type GetHostsCurrentResponseValueOption1ProgramsItem array{handle: string, name: string}
- * @phpstan-type GetHostsCurrentResponseValueOption1 array{kind: 'portal', orgId: string, orgName: string, branding: GetHostsCurrentResponseValueOption1Branding, programs: list<GetHostsCurrentResponseValueOption1ProgramsItem>}
- * @phpstan-type GetHostsCurrentResponseValueOption2 array{kind: 'link'}
+ * @phpstan-type GetHostsCurrentResponseValueOption1ConsentTagsItem array{tag: 'script', attrs: array<string, string|bool>, inline?: string}
+ * @phpstan-type GetHostsCurrentResponseValueOption1ConsentSettingsLinkOption1 array{call?: string, attrs?: array<string, string>}
+ * @phpstan-type GetHostsCurrentResponseValueOption1ConsentBuiltin array{policyUrl: string, text?: array<string, string>}
+ * @phpstan-type GetHostsCurrentResponseValueOption1Consent array{mode: 'cookiemunch'|'cmp'|'builtin'|'none', provider: string, tags: list<GetHostsCurrentResponseValueOption1ConsentTagsItem>, settingsLink: GetHostsCurrentResponseValueOption1ConsentSettingsLinkOption1|null, builtin?: GetHostsCurrentResponseValueOption1ConsentBuiltin}
+ * @phpstan-type GetHostsCurrentResponseValueOption1ChatOption1TagsItem array{tag: 'script', attrs: array<string, string|bool>, inline?: string}
+ * @phpstan-type GetHostsCurrentResponseValueOption1ChatOption1 array{provider: string, tags: list<GetHostsCurrentResponseValueOption1ChatOption1TagsItem>}
+ * @phpstan-type GetHostsCurrentResponseValueOption1 array{kind: 'portal', orgId: string, orgName: string, branding: GetHostsCurrentResponseValueOption1Branding, programs: list<GetHostsCurrentResponseValueOption1ProgramsItem>, consent: GetHostsCurrentResponseValueOption1Consent, chat: GetHostsCurrentResponseValueOption1ChatOption1|null, csp: string}
+ * @phpstan-type GetHostsCurrentResponseValueOption2 array{kind: 'link', csp: string}
  * @phpstan-type GetHostsCurrentResponseValueOption3 array{kind: 'app'}
  * @phpstan-type GetHostsCurrentResponse GetHostsCurrentResponseValueOption1|GetHostsCurrentResponseValueOption2|GetHostsCurrentResponseValueOption3
+ * @phpstan-type GetChatlyIdentityResponseIdentityOption1 array{externalId: string, email: string, name?: string, userHash: string}
+ * @phpstan-type GetChatlyIdentityResponse array{identity: GetChatlyIdentityResponseIdentityOption1|null}
  * @phpstan-type PostMobilePurchasesResponse array{conversions: int, linesCreated: int, reversals: int}
  * @phpstan-type PatchOrgResponse array{id: string, name: string, plan: string, settings: GetOpenapiJsonResponse, payout_kyc_required: bool}
  * @phpstan-type GetOrgMembersResponse array{object: 'list', data: list<Member>, has_more: bool, next_cursor: string|null}
@@ -328,6 +365,7 @@ namespace Referalli;
  * @phpstan-type PutBillingConnectionsIdValueMappingResponse array{id: string, valueMapping: ValueMapping}
  * @phpstan-type PostBillingConnectionsIdRotateSecretResponse array{id: string, provider: string, webhookSecret: string, previousSecretExpiresAt: string}
  * @phpstan-type GetBillingEventsResponse array{object: 'list', data: list<BillingEvent>, has_more: bool, next_cursor: string|null}
+ * @phpstan-type PostBillingInternalCustomersResponse array{customerRef: string, note: string}
  * @phpstan-type PutPartnersIdPayoutProfileResponse array{id: string}
  * @phpstan-type PatchPartnersIdPayoutProfileResponse array{partnerId: string, method: string, payoutCurrency: string, minThresholdMinor: int}
  * @phpstan-type PostPayoutRunsIdExecuteResponse array{sent: int, submitted: int, failed: int}
@@ -421,19 +459,24 @@ namespace Referalli;
  * @phpstan-type GetPartnerProgramsProgramIdLeaderboardResponseRowsItem array{rank: int, name: string, approvedMinor: int, you: bool}
  * @phpstan-type GetPartnerProgramsProgramIdLeaderboardResponse array{contest: GetPartnerProgramsProgramIdLeaderboardResponseContestOption1|null, rows: list<GetPartnerProgramsProgramIdLeaderboardResponseRowsItem>}
  * @phpstan-type PostPartnerProgramsProgramIdApplyResponse array{enrollmentId: string, status: 'applied'}
- * @phpstan-type PostWebhookEndpointsResponse array{id: string, url: string, topics: list<string>, programIds: list<string>|null, legacySignature: bool, secret: string}
+ * @phpstan-type PostWebhookEndpointsResponse array{id: string, url: string, topics: list<string>, programIds: list<string>|null, legacySignature: bool, alertContacts: list<string>, secret: string}
  * @phpstan-type GetWebhookEndpointsResponse array{object: 'list', data: list<WebhookEndpoint>, has_more: bool, next_cursor: string|null}
+ * @phpstan-type PatchWebhookEndpointsIdResponse mixed
  * @phpstan-type PostWebhookEndpointsIdRotateSecretResponse array{id: string, secret: string, previousSecretExpiresAt: string}
  * @phpstan-type GetWebhookDeliveriesResponse array{object: 'list', data: list<WebhookDelivery>, has_more: bool, next_cursor: string|null}
  * @phpstan-type GetWebhookEndpointsIdDeliveriesResponse array{object: 'list', data: list<WebhookDelivery>, has_more: bool, next_cursor: string|null}
  * @phpstan-type GetWebhookDeliveriesIdResponse mixed
+ * @phpstan-type PostWebhookEndpointsIdReplayResponse array{endpointId: string, since: string, replayed: int}
  * @phpstan-type PostSandboxSimulateResponse array{customerRef: string, events: int, conversions: int, linesCreated: int, reversals: int}
  * @phpstan-type PostImportProviderResponse array{partnersCreated: int, partnersSkipped: int, linksCreated: int, couponsCreated: int, codesSkipped: list<string>, referralParams: list<string>, unpaidImportedMinor: int, paidImportedMinor: int}
  * @phpstan-type GetOpenapiJsonResponse array<string, mixed>
- * @phpstan-type GetBrandingResponse array{logoUrl: string|null, theme: GetOpenapiJsonResponse|null, portalDomain: string|null, portalDomainVerified: bool, portalDomainStatus: 'none'|'pending'|'provisioning'|'active', linkDomain: string|null, linkDomainVerified: bool, linkDomainStatus: 'none'|'pending'|'provisioning'|'active', emailFrom: string|null}
+ * @phpstan-type GetBrandingResponseWarningsItem array{code: 'low_contrast', foreground: string, background: string, ratio: float|int, minimum: float|int, message: string}
+ * @phpstan-type GetBrandingResponse array{logoUrl: string|null, theme: GetOpenapiJsonResponse|null, portalDomain: string|null, portalDomainVerified: bool, portalDomainStatus: 'none'|'pending'|'provisioning'|'active', linkDomain: string|null, linkDomainVerified: bool, linkDomainStatus: 'none'|'pending'|'provisioning'|'active', emailFrom: string|null, warnings: list<GetBrandingResponseWarningsItem>}
  * @phpstan-type PostBrandingLinkDomainResponse array{domain: string, cnameTarget: string, txtRecord: string, txtName: string, verified: bool}
  * @phpstan-type PostBrandingLinkDomainVerifyResponse array{domain: string, verified: bool, status: 'provisioning'|'active', message?: string}
  * @phpstan-type PostBrandingDomainResponse array{domain: string, cnameTarget: string, txtRecord: string, txtName: string, verified: bool, instructions: string}
+ * @phpstan-type PutBrandingResponseWarningsItem array{code: 'low_contrast', foreground: string, background: string, ratio: float|int, minimum: float|int, message: string}
+ * @phpstan-type PutBrandingResponse array{ok: bool, warnings: list<PutBrandingResponseWarningsItem>}
  * @phpstan-type PostEmbedTokensResponse array{token: string, expiresAt: string}
  * @phpstan-type GetEmbedSummaryResponsePartner array{name: string, email: string}
  * @phpstan-type GetEmbedSummaryResponseBalancesItem array{currency: string, pending: int, approved: int, paid: int}
@@ -477,6 +520,11 @@ namespace Referalli;
  * @phpstan-type GetRewardsResponse array{object: 'list', data: list<GetRewardsResponseDataItem>, has_more: bool, next_cursor: string|null}
  * @phpstan-type GetRewardsLookupCodeResponse array{valid: bool, rewardId?: string, kind?: string, amountMinor?: int, currency?: string, status?: string}
  * @phpstan-type PostRewardsRedeemByCodeResponse array{ok: bool, rewardId: string, grantId: string, status: 'issued'|'redeemed', currency: string, requestedMinor: int, redeemedMinor: int, remainingMinor: int, capped: bool}
+ * @phpstan-type PostRewardsResponse array{id: string, partnerId: string, programId: string, ruleKey: string|null, reason: string, amountMinor: int, currency: string, commissionId: string|null, idempotencyKey: string, createdAt: string, replayed: bool}
+ * @phpstan-type GetRewardsGrantedResponseValueItem array{id: string, partnerId: string, programId: string, ruleKey: string|null, reason: string, amountMinor: int, currency: string, commissionId: string|null, idempotencyKey: string, createdAt: string}
+ * @phpstan-type GetRewardsGrantedResponse list<GetRewardsGrantedResponseValueItem>
+ * @phpstan-type PutRewardsRulesKeyResponse array{key: string, event: string|null, programId: string|null, amountMinor: int, currency: string, reason: string, enabled: bool, updatedAt: string}
+ * @phpstan-type DeleteRewardsRulesKeyResponse array{ok: bool}
  * @phpstan-type GetProgramsIdGroupsResponse array{object: 'list', data: list<PartnerGroup>, has_more: bool, next_cursor: string|null}
  * @phpstan-type PutProgramsIdPartnersPartnerIdGroupResponse array{partnerId: string, programId: string, groupId: string|null}
  * @phpstan-type GetProgramsIdPromotionsResponse array{object: 'list', data: list<Promotion>, has_more: bool, next_cursor: string|null}
@@ -591,7 +639,9 @@ namespace Referalli;
  * @phpstan-type PostPartnerSecurityTotpEnableResponse array{enabled: bool}
  * @phpstan-type PostPartnerSecurityTotpDisableResponse array{enabled: bool}
  * @phpstan-type GetPartnerSecurityResponse array{totpEnabled: bool}
+ * @phpstan-type GetAuthConnectionsProvidersResponse array{data: list<IdentityProvider>}
  * @phpstan-type GetAuthConnectionsResponse array{object: 'list', data: list<AuthConnection>, has_more: bool, next_cursor: string|null}
+ * @phpstan-type PutAuthConnectionsIdSecretResponse array{id: string, provider: string, ok: bool}
  * @phpstan-type PostAuthConnectionsIdRotateSecretResponse array{id: string, provider: string, secret: string, previousSecretExpiresAt: string}
  * @phpstan-type PatchAuthConnectionsIdResponse array{id: string, provider: string, name: string, status: 'active'|'paused', autoEnrollUsers?: bool, destinationUrl?: string|null, signatureVersion?: 'v1+v2'|'v2', requiresV2?: bool}
  * @phpstan-type PostAuthConnectionsIdRevokePreviousSecretResponse array{ok: bool, revoked: bool}
@@ -599,6 +649,8 @@ namespace Referalli;
  * @phpstan-type PostAuthConnectionsIdSignupsResponseReasoning array{notes: list<string>, codes: list<SignupReasonCode>}
  * @phpstan-type PostAuthConnectionsIdSignupsResponsePartner array{id: string, code: string, link: string|null, persisted?: bool}
  * @phpstan-type PostAuthConnectionsIdSignupsResponse array{test?: bool, referral: PostAuthConnectionsIdSignupsResponseReferralOption1|null, reasoning?: PostAuthConnectionsIdSignupsResponseReasoning, partner?: PostAuthConnectionsIdSignupsResponsePartner}
+ * @phpstan-type PostAuthConnectionsIdPartnersResponsePartner array{id: string, code: string, link: string|null}
+ * @phpstan-type PostAuthConnectionsIdPartnersResponse array{partner: PostAuthConnectionsIdPartnersResponsePartner}
  * @phpstan-type PostAuthConnectionsIdEraseResponseCustomerOption1 array{customerRef: string, pseudonym: string}
  * @phpstan-type PostAuthConnectionsIdEraseResponsePartnerOption1 array{partnerId: string, alreadyForgotten: bool}
  * @phpstan-type PostAuthConnectionsIdEraseResponse array{ok: bool, erased: bool, customer: PostAuthConnectionsIdEraseResponseCustomerOption1|null, partner: PostAuthConnectionsIdEraseResponsePartnerOption1|null}
@@ -613,6 +665,8 @@ namespace Referalli;
  * @phpstan-type PostAuthConnectionsIdSignalsResponseReversedItem array{lineId: string, amountMinor: int, currency: string}
  * @phpstan-type PostAuthConnectionsIdSignalsResponsePartnerOption1 array{id: string, status: string}
  * @phpstan-type PostAuthConnectionsIdSignalsResponse array{ok: bool, signal: 'email_verified'|'banned'|'unbanned'|'fraud_confirmed'|'self_referral', referrals: list<PostAuthConnectionsIdSignalsResponseReferralsItem>, reversed: list<PostAuthConnectionsIdSignalsResponseReversedItem>, partner: PostAuthConnectionsIdSignalsResponsePartnerOption1|null, notes?: list<string>}
+ * @phpstan-type PostAuthConnectionsInstallResponse array{redirectTo: string}
+ * @phpstan-type PostOauthTokenResponse array{token_type: 'connection_secret', connectionId: string, provider: string, instanceId: string, programId: string, secret: string, reinstalled: bool, signupsUrl: string, partnersUrl: string, eraseUrl: string, exportUrl: string}
  * @phpstan-type GetOrgSsoResponseProviderOption1 array{name: string, label: string}
  * @phpstan-type GetOrgSsoResponseConnectionsItem array{id: string, type: string, status: string, allowedDomains: list<string>}
  * @phpstan-type GetOrgSsoResponseTicketsItem array{id: string, status: string, expiresAt: string, createdAt: string}
@@ -622,6 +676,8 @@ namespace Referalli;
  * @phpstan-type PostOrgSsoTicketsIdRevokeResponse array{id: string, status: 'revoked'}
  * @phpstan-type GetOrgSsoConnectionsIdSamlMetadataResponse array{spEntityId: string, acsUrl: string, metadataXml: string}
  * @phpstan-type PatchOrgSsoResponse array{requireSso: bool, roleMapping: array<string, string>}
+ * @phpstan-type PutOrgSsoDirectResponse array{adapter: 'oidc'|'workos', config: array<string, mixed>, hasSecret: bool, signInUrl: string, redirectUri: string}
+ * @phpstan-type DeleteOrgSsoDirectResponse array{removed: bool}
  * @phpstan-type PostPartnerAuthWalletNonceResponse array{nonce: string, message: string}
  * @phpstan-type PostPartnerAuthWalletVerifyResponse array{accountId: string, wallet: string}
  * @phpstan-type PostOnchainConnectionsResponse array{id: string, secret: string, webhookUrl: string}
@@ -630,7 +686,57 @@ namespace Referalli;
  * @phpstan-type GetPublicProgramsHandleResponseBranding array{logoUrl: string|null, theme: GetOpenapiJsonResponse|null}
  * @phpstan-type GetPublicProgramsHandleResponse array{handle: string, programId: string, programName: string, merchant: string, trackingToken: string, cookieWindowDays: int, termsMd: string, pitch: string, autoApprove: bool, commission: GetOpenapiJsonResponse|null, branding: GetPublicProgramsHandleResponseBranding}
  * @phpstan-type PostPublicProgramsHandleJoinResponse array{accountId: string, status: 'approved'|'applied', link: string|null, linkUrl: string|null, code: string|null, portalUrl: string}
- * @phpstan-type PostWebhooksBillingConnectionIdResponseResultsItem array{duplicate: bool, billingEventId: string|null, conversions: int, linesCreated: int, reversals: int}
+ * @phpstan-type GetIntegrationHealthResponse array{ok: bool, checks: list<HealthCheck>, generatedAt: string}
+ * @phpstan-type GetPlansResponsePlansItem array{key: string, label: string, priceMinor: int, currency: 'usd', interval: 'month', maxPrograms: int|null, maxPartners: int|null, marketplace: bool, discovery: bool, linkDomain: bool, portalDomain: bool, apiPerSec: int, apiBurst: int}
+ * @phpstan-type GetPlansResponse array{plans: list<GetPlansResponsePlansItem>}
+ * @phpstan-type GetEventsResponseEventsItem array{id: string, topic: string, orgId: string, livemode: bool, createdAt: string, data: GetOpenapiJsonResponse}
+ * @phpstan-type GetEventsResponse array{events: list<GetEventsResponseEventsItem>, hasMore: bool, nextCursor: string|null}
+ * @phpstan-type GetSupportContextResponsePartnerOption1 array{id: string, name: string, status: string, tier: string|null, programs: list<string>, referralLink: string|null, pendingMinor: int, approvedMinor: int, paidMinor: int, currency: string, nextPayoutAt: string|null, flags: list<string>}
+ * @phpstan-type GetSupportContextResponseCustomerOption1ReferredByOption1 array{partnerId: string, name: string}
+ * @phpstan-type GetSupportContextResponseCustomerOption1RewardStateOption1 array{kind: string, status: string, amountMinor: int, currency: string, remainingMinor: int}
+ * @phpstan-type GetSupportContextResponseCustomerOption1 array{referredBy: GetSupportContextResponseCustomerOption1ReferredByOption1|null, attributedAt: string|null, rewardState: GetSupportContextResponseCustomerOption1RewardStateOption1|null, commissionsMinor: int, currency: string|null}
+ * @phpstan-type GetSupportContextResponseLinks array{dashboard: string, partner: string|null, referral: string|null}
+ * @phpstan-type GetSupportContextResponse array{partner: GetSupportContextResponsePartnerOption1|null, customer: GetSupportContextResponseCustomerOption1|null, links: GetSupportContextResponseLinks}
+ * @phpstan-type GetSupportAppsResponseValueItemInstall array{kind?: 'api'|'manifest'|'oauth', steps: list<string>, manifestPath?: string}
+ * @phpstan-type GetSupportAppsResponseValueItemConfigOption1 array{subdomain: mixed, cardKey: mixed, hasPublicKey: bool}
+ * @phpstan-type GetSupportAppsResponseValueItem array{id: string, name: string, status: 'ga'|'beta', docsUrl: string, vendorDocsUrl: string, secretSource: 'vendor'|'minted'|'public_key', install: GetSupportAppsResponseValueItemInstall, cardUrl: string, enabled: bool, configured: bool, config: GetSupportAppsResponseValueItemConfigOption1|null, lastOkAt: string|null, lastError: string|null}
+ * @phpstan-type GetSupportAppsResponse list<GetSupportAppsResponseValueItem>
+ * @phpstan-type PutSupportAppsAdapterResponse array{adapter: string, enabled: bool, cardUrl: string, secret?: string}
+ * @phpstan-type DeleteSupportAppsAdapterResponse array{ok: bool}
+ * @phpstan-type PostSupportAppsAdapterTestResponse array{found: bool, context: GetSupportContextResponse|null, rendered: mixed}
+ * @phpstan-type PostSupportCardsOrgIdAdapterResponse array<string, mixed>
+ * @phpstan-type GetPrivacyExecutorsResponseValueItemInstall array{kind?: 'api'|'manifest'|'oauth', steps: list<string>, manifestPath?: string}
+ * @phpstan-type GetPrivacyExecutorsResponseValueItemConfigOption1 array{hasPublicKey: bool, algorithm: string|null, sombraUrl: string|null}
+ * @phpstan-type GetPrivacyExecutorsResponseValueItemHealth array{ok: bool, detail: string, fix: string|null}
+ * @phpstan-type GetPrivacyExecutorsResponseValueItem array{id: string, name: string, status: 'ga'|'beta', docsUrl: string, vendorDocsUrl: string, keyKind: 'bearer'|'hmac'|'standard-webhooks'|'vendor-jwt', install: GetPrivacyExecutorsResponseValueItemInstall, url: string, enabled: bool, hasKey: bool, hasVendorSecret: bool, config: GetPrivacyExecutorsResponseValueItemConfigOption1|null, health: GetPrivacyExecutorsResponseValueItemHealth, lastOkAt: string|null, lastError: string|null}
+ * @phpstan-type GetPrivacyExecutorsResponse list<GetPrivacyExecutorsResponseValueItem>
+ * @phpstan-type PostPrivacyExecutorKeysResponse array{adapter: string, url: string, enabled: bool, key?: string}
+ * @phpstan-type DeletePrivacyExecutorsAdapterResponse array{ok: bool}
+ * @phpstan-type PostPrivacyExecutorsAdapterCheckResponse array{adapter: string, ok: bool, detail: string, fix: string|null}
+ * @phpstan-type GetPrivacyExecutorRequestsResponseValueItem array{id: string, adapter: string, vendorRequestId: string|null, op: string, status: string, createdAt: string, completedAt: string|null}
+ * @phpstan-type GetPrivacyExecutorRequestsResponse list<GetPrivacyExecutorRequestsResponseValueItem>
+ * @phpstan-type PostAccountCloseResponse array{closed: bool}
+ * @phpstan-type GetClicksConsentCoverageResponse array{days: int, since: string, attributed: int, withEvidence: int, share: float|int|null}
+ * @phpstan-type GetClicksIdResponseConsentOption1 array{provider: string, state: 'granted'|'denied'|'unknown', at?: string, stamp?: string, tcString?: string, gppString?: string, purposes?: list<string>}
+ * @phpstan-type GetClicksIdResponse array{id: string, programId: string, partnerId: string, linkId: string|null, ts: string, source: 'redirect'|'snippet'|'api', eligible: bool, fraudScore: int, anonId: string|null, consent: GetClicksIdResponseConsentOption1|null}
+ * @phpstan-type GetOrgTrackingConsentResponseAdaptersItem array{id: string, name: string, defaultCategory: string|null, status: 'ga'|'beta', docsUrl: string}
+ * @phpstan-type GetOrgTrackingConsentResponse array{mode: string, noCmp?: 'persist'|'memory', category?: string, tcfVendorId?: int, gcmSignal?: 'ad_storage'|'analytics_storage', configured: bool, adapters: list<GetOrgTrackingConsentResponseAdaptersItem>}
+ * @phpstan-type GetOrgHostedPagesResponseConsent array{adapter: string, config: array<string, mixed>}
+ * @phpstan-type GetOrgHostedPagesResponseChatOption1 array{adapter: string, config: array<string, mixed>}
+ * @phpstan-type GetOrgHostedPagesResponseServedConsentTagsItem array{tag: 'script', attrs: array<string, string|bool>, inline?: string}
+ * @phpstan-type GetOrgHostedPagesResponseServedConsentSettingsLinkOption1 array{call?: string, attrs?: array<string, string>}
+ * @phpstan-type GetOrgHostedPagesResponseServedConsentBuiltin array{policyUrl: string, text?: array<string, string>}
+ * @phpstan-type GetOrgHostedPagesResponseServedConsent array{mode: 'cookiemunch'|'cmp'|'builtin'|'none', provider: string, tags: list<GetOrgHostedPagesResponseServedConsentTagsItem>, settingsLink: GetOrgHostedPagesResponseServedConsentSettingsLinkOption1|null, builtin?: GetOrgHostedPagesResponseServedConsentBuiltin}
+ * @phpstan-type GetOrgHostedPagesResponseServedChatOption1TagsItem array{tag: 'script', attrs: array<string, string|bool>, inline?: string}
+ * @phpstan-type GetOrgHostedPagesResponseServedChatOption1 array{provider: string, tags: list<GetOrgHostedPagesResponseServedChatOption1TagsItem>}
+ * @phpstan-type GetOrgHostedPagesResponseServed array{consent: GetOrgHostedPagesResponseServedConsent, chat: GetOrgHostedPagesResponseServedChatOption1|null, csp: string}
+ * @phpstan-type GetOrgHostedPagesResponseAdaptersConsentItem array{id: string, name: string, status: 'ga'|'beta', docsUrl: string, vendorDocsUrl: string}
+ * @phpstan-type GetOrgHostedPagesResponseAdaptersChatItem array{id: string, name: string, status: 'ga'|'beta', docsUrl: string, vendorDocsUrl: string}
+ * @phpstan-type GetOrgHostedPagesResponseAdapters array{consent: list<GetOrgHostedPagesResponseAdaptersConsentItem>, chat: list<GetOrgHostedPagesResponseAdaptersChatItem>}
+ * @phpstan-type GetOrgHostedPagesResponse array{consent: GetOrgHostedPagesResponseConsent, chat: GetOrgHostedPagesResponseChatOption1|null, customOrigins: array<string, list<string>>, status: 'unchecked'|'ok'|'error', lastOkAt: string|null, lastError: string|null, served: GetOrgHostedPagesResponseServed, adapters: GetOrgHostedPagesResponseAdapters}
+ * @phpstan-type PostOrgHostedPagesCheckResponseChecksItem array{id: string, ok: bool, detail: string, fix?: string}
+ * @phpstan-type PostOrgHostedPagesCheckResponse array{ok: bool, checks: list<PostOrgHostedPagesCheckResponseChecksItem>}
+ * @phpstan-type PostWebhooksBillingConnectionIdResponseResultsItem array{duplicate: bool, billingEventId: string|null, conversions: int, linesCreated: int, reversals: int, ignored?: 'filter'|'internal_customer'}
  * @phpstan-type PostWebhooksBillingConnectionIdResponse array{received: int, results: list<PostWebhooksBillingConnectionIdResponseResultsItem>}
  * @phpstan-type PostWebhooksAuthConnectionIdResponseResultsItem array{customerRef: string, attributed: bool, reason?: string, partnerId?: string|null, matchedVia?: string|null}
  * @phpstan-type PostWebhooksAuthConnectionIdResponse array{received: int, results: list<PostWebhooksAuthConnectionIdResponseResultsItem>}
@@ -639,10 +745,20 @@ namespace Referalli;
  * @phpstan-type PostWebhooksOnchainConnectionIdResponse array{received: int, results: list<PostWebhooksOnchainConnectionIdResponseResultsItem>}
  * @phpstan-type PostWebhooksPayoutsProviderResponse array{ignored?: bool, reason?: string, finalized?: bool, status?: string}
  * @phpstan-type PostWebhooksStripeBillingResponse array{received: bool, duplicate?: bool, ignored?: bool, reason?: string, orgId?: string, plan?: string, planStatus?: string}
+ * @phpstan-type PostApiPrivacyLookupResponse array{subjectId: string|null, status: 'found'|'no_match'}
+ * @phpstan-type PostApiPrivacyRequestsResponse array{id: string, status: 'pending'|'completed'|'no_match'|'rejected', eta?: string, detail?: string}
+ * @phpstan-type GetApiPrivacyRequestsIdResponse array{id: string, type: 'access'|'deletion', status: 'pending'|'completed'|'no_match'|'rejected', eta?: string, detail?: string, result?: GetOpenapiJsonResponse}
+ * @phpstan-type PostApiPrivacyOrgsOrgIdLookupResponse array{subjectId: string|null, status: 'found'|'no_match'}
+ * @phpstan-type PostApiPrivacyOrgsOrgIdRequestsResponse array{id: string, status: 'pending'|'completed'|'no_match'|'rejected', detail?: string}
+ * @phpstan-type GetApiPrivacyOrgsOrgIdRequestsIdResponse array{id: string, type: 'access'|'deletion', status: 'pending'|'completed'|'no_match'|'rejected', detail?: string, result?: PostSupportCardsOrgIdAdapterResponse}
  * @phpstan-type GetGraphqlResponse array{data?: GetOpenapiJsonResponse|null, errors?: list<GetOpenapiJsonResponse>}
  * @phpstan-type PostGraphqlResponse array{data?: GetOpenapiJsonResponse|null, errors?: list<GetOpenapiJsonResponse>}
  * @phpstan-type PostAgentsRegisterBody array{walletAddress: string, nonce: string, signature: string, name?: string, model?: string, operator?: string, instantPayout?: bool}
+ * @phpstan-type PostAuthBackchannelLogoutBody array{logout_token: string}
  * @phpstan-type PostOrgsBody array{name: string}
+ * @phpstan-type PutOrgPortalAuthBodyOption1 array{adapter: 'referalli'}
+ * @phpstan-type PutOrgPortalAuthBodyOption2 array{issuer: string, clientId: string, clientSecret?: string, scopes?: string, name?: string, trustEmailVerified?: bool, adapter: 'oidc', autoEnrollProgramId?: string|null}
+ * @phpstan-type PutOrgPortalAuthBodyOption3 array{adapter: 'custom', issuer: string, jwksUrl: string, trustEmailVerified?: bool, autoEnrollProgramId?: string|null, name?: string, loginUrl?: string}
  * @phpstan-type PostMobilePurchasesBody array{eventId: string, customerRef: string, type?: 'purchase'|'refund', amountMinor: int, currency?: string, productRef?: string}
  * @phpstan-type PatchOrgBody array{name?: string, settings?: array<string, mixed>, payoutKycRequired?: bool}
  * @phpstan-type PostOrgMembersBody array{email: string, role: 'owner'|'admin'|'finance'|'analyst'|'support'}
@@ -698,7 +814,8 @@ namespace Referalli;
  * @phpstan-type PostLinksBody array{programId: string, partnerId: string, code?: string, destinationUrl: string}
  * @phpstan-type PostCouponsBody array{programId: string, partnerId: string, code: string}
  * @phpstan-type PostWidgetTokensBody array{programId: string, customerRef?: string, partnerExternalRef?: string, email?: string, displayName?: string, ttlSeconds?: int}
- * @phpstan-type PostReferralsAssociateBody array{programId: string, customerRef: string, anonId?: string, referralToken?: string, couponCode?: string, emailHash?: string, ip?: string, ua?: string, idempotencyKey?: string, occurredAt?: string, emailDomain?: string}
+ * @phpstan-type PostReferralsAssociateBodyConsent array{provider: string, state: 'granted'|'denied'|'unknown', at?: string, stamp?: string, tcString?: string, gppString?: string, purposes?: list<string>}
+ * @phpstan-type PostReferralsAssociateBody array{programId: string, customerRef: string, anonId?: string, referralToken?: string, couponCode?: string, emailHash?: string, ip?: string, ua?: string, idempotencyKey?: string, occurredAt?: string, emailDomain?: string, consent?: PostReferralsAssociateBodyConsent}
  * @phpstan-type PatchReferralsIdBody array{status: 'paused'|'active'}
  * @phpstan-type PostReferralsIdReassignBody array{partnerId: string}
  * @phpstan-type PostAttributionReplayBody array{programId: string}
@@ -725,13 +842,16 @@ namespace Referalli;
  * @phpstan-type PostCommissionRulesBody array{programId: string, config: PostCommissionRulesBodyConfig}
  * @phpstan-type PostCommissionsIdAdjustBody array{amountMinor: int, memo: string, allowNegative?: bool}
  * @phpstan-type PostCommissionsIdSettleBody array{method?: 'store_credit', reference: string, memo?: string}
- * @phpstan-type PostBillingConnectionsBody array{provider: 'stripe'|'paddle'|'lemonsqueezy'|'polar'|'chargebee'|'shopify'|'generic'|'recurly'|'braintree'|'woocommerce'|'bigcommerce', name?: string, webhookSecret?: string}
+ * @phpstan-type PostBillingConnectionsBodyFilter array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
+ * @phpstan-type PostBillingConnectionsBody array{provider: 'stripe'|'paddle'|'lemonsqueezy'|'polar'|'chargebee'|'shopify'|'generic'|'recurly'|'braintree'|'woocommerce'|'bigcommerce', name?: string, webhookSecret?: string, filter?: PostBillingConnectionsBodyFilter}
  * @phpstan-type PutBillingConnectionsIdSecretBody array{webhookSecret: string}
  * @phpstan-type PutBillingConnectionsIdCredentialsBody array{apiKey?: string, apiToken?: string, storeHash?: string, region?: 'us'|'eu'}
- * @phpstan-type PatchBillingConnectionsIdBody array{status?: 'active'|'paused', name?: string}
+ * @phpstan-type PatchBillingConnectionsIdBodyFilterOption1 array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
+ * @phpstan-type PatchBillingConnectionsIdBody array{status?: 'active'|'paused', name?: string, filter?: PatchBillingConnectionsIdBodyFilterOption1|null}
  * @phpstan-type PutBillingConnectionsIdValueMappingBody array{cash?: string, creditApplied?: string, discount?: string, cost?: string, productRef?: string, unit: 'minor'|'major'}
  * @phpstan-type PostBillingConnectionsIdValueMappingPreviewBodyMapping array{cash?: string, creditApplied?: string, discount?: string, cost?: string, productRef?: string, unit: 'minor'|'major'}
  * @phpstan-type PostBillingConnectionsIdValueMappingPreviewBody array{payload: mixed, currency?: string, mapping?: PostBillingConnectionsIdValueMappingPreviewBodyMapping}
+ * @phpstan-type PostBillingInternalCustomersBody array{customerRef: string, note?: string}
  * @phpstan-type PutPartnersIdPayoutProfileBody array{method: 'paypal'|'wise'|'stripe_connect'|'ach'|'crypto'|'payoneer'|'tremendous'|'csv', details?: array<string, mixed>, payoutCurrency?: string, minThresholdMinor?: int}
  * @phpstan-type PatchPartnersIdPayoutProfileBody array{minThresholdMinor: int}
  * @phpstan-type PostPartnersIdTaxFormBody array{type: 'w9'|'w8ben'|'w8bene', data: mixed}
@@ -749,15 +869,16 @@ namespace Referalli;
  * @phpstan-type PutProfitabilitySettingsBody array{reportingCurrency?: string, defaultMarginBps?: int|null, creditCostModel?: 'face'|'margin'|'fixed_ratio', creditCostRatioBps?: int, inference?: 'fifo_next_payments'|'report_only'|'on_grant', creditDraw?: 'grants_first'|'pro_rata', windowDays?: int, churnWindowDays?: int, countReferrerSpend?: bool, costToServeMinorPerMonth?: int, taxFeesReduceProfit?: bool, valuePatternWeight?: float|int, targetRoiBps?: int|null, programId?: string}
  * @phpstan-type PutProfitabilityProductsProductRefBody array{marginBps?: int, unitCostMinor?: int, currency?: string}
  * @phpstan-type PostRoiPatternsPatternReviewBody array{customerRef?: string, partnerId?: string, programId?: string}
- * @phpstan-type PostValueEventsBody array{events: list<mixed>}
+ * @phpstan-type PostValueEventsBodyEventsItem array{kind: 'payment'|'refund'|'credit_granted'|'credit_redeemed'|'credit_expired'|'credit_revoked'|'cost'|'adjustment', customerRef?: string, partnerId?: string, partnerExternalRef?: string, creditGrantId?: string, referralId?: string, programId?: string, productRef?: string, currency: string, cashMinor?: int, creditAppliedMinor?: int, discountMinor?: int, taxMinor?: int, feesMinor?: int, costMinor?: int, faceMinor?: int, externalId: string, invoiceRef?: string, provider?: string, occurredAt: string, role?: 'referee'|'referrer', metadata?: array<string, mixed>}
+ * @phpstan-type PostValueEventsBody array{events: list<PostValueEventsBodyEventsItem>}
  * @phpstan-type PostValueImportBody array{csv: string, mapping: array<string, 'kind'|'customerRef'|'partnerId'|'partnerExternalRef'|'creditGrantId'|'referralId'|'programId'|'productRef'|'currency'|'externalId'|'invoiceRef'|'provider'|'occurredAt'|'role'|'cashMinor'|'creditAppliedMinor'|'discountMinor'|'taxMinor'|'feesMinor'|'costMinor'|'faceMinor'|'cashMajor'|'creditAppliedMajor'|'discountMajor'|'taxMajor'|'feesMajor'|'costMajor'|'faceMajor'>, kind?: 'payment'|'refund'|'credit_granted'|'credit_redeemed'|'credit_expired'|'credit_revoked'|'cost'|'adjustment', dryRun?: bool, defaultCurrency?: string}
  * @phpstan-type PostPartnerKycSubmitBody array{legalName: string, country: string, dateOfBirth?: string, documentRef?: string}
  * @phpstan-type PostPartnerLinksBody array{orgId: string, programId: string, destinationUrl: string, assetId?: string, code?: string}
  * @phpstan-type PostPartnerDisputesBody array{orgId: string, referralId?: string, kind: 'missing_attribution'|'unpaid_commission', detail: string}
  * @phpstan-type PutPartnerOrgsOrgIdPayoutProfileBody array{method: 'paypal'|'wise'|'stripe_connect'|'ach'|'crypto'|'payoneer'|'tremendous'|'csv', details?: array<string, mixed>, payoutCurrency?: string}
  * @phpstan-type PostPartnerOrgsOrgIdTaxFormBody array{type: 'w9'|'w8ben'|'w8bene', data: mixed}
- * @phpstan-type PostWebhookEndpointsBody array{url: string, topics?: list<string>, legacySignature?: bool, programIds?: list<string>|null}
- * @phpstan-type PatchWebhookEndpointsIdBody array{status?: 'active'|'paused', url?: string, topics?: list<string>, legacySignature?: bool, programIds?: list<string>|null}
+ * @phpstan-type PostWebhookEndpointsBody array{url: string, topics?: list<string>, legacySignature?: bool, programIds?: list<string>|null, alertContacts?: list<string>}
+ * @phpstan-type PatchWebhookEndpointsIdBody array{status?: 'active'|'paused', url?: string, topics?: list<string>, legacySignature?: bool, programIds?: list<string>|null, alertContacts?: list<string>}
  * @phpstan-type PostSandboxSimulateBody array{programId: string, partnerId: string, scenario?: 'subscription'|'refund'|'churn', priceMinor?: int, months?: int}
  * @phpstan-type PostImportProviderBody array{csv: string}
  * @phpstan-type PutBrandingBody array{logoUrl?: string, theme?: array<string, string>, emailFrom?: string}
@@ -778,8 +899,10 @@ namespace Referalli;
  * @phpstan-type PostBillingCheckoutBody array{plan: 'growth'|'pro'|'scale'}
  * @phpstan-type PostBillingActivateBody array{plan: 'free'|'growth'|'pro'|'scale'|'starter'}
  * @phpstan-type PutProgramsIdRefereeRewardBody array{enabled?: bool, kind?: 'store_credit'|'coupon'|'gift_card', amountMinor?: int, bps?: int, capMinor?: int, on?: 'first_commission'|'first_payment', rounding?: 'half_even'|'floor', currency?: string}
+ * @phpstan-type PostRewardsBody array{partnerId?: string, partnerExternalRef?: string, reason: string, amountMinor?: int, currency?: string, ruleKey?: string, event?: string, programId?: string, idempotencyKey: string}
  * @phpstan-type PostRewardsRedeemByCodeBody array{amountMinor?: int, billingEventId?: string, invoiceRef?: string, externalId?: string, occurredAt?: mixed, code: string}
  * @phpstan-type PostRewardsIdRedeemBody array{amountMinor?: int, billingEventId?: string, invoiceRef?: string, externalId?: string, occurredAt?: mixed}
+ * @phpstan-type PutRewardsRulesKeyBody array{event?: string|null, programId?: string|null, amountMinor: int, currency?: string, reason: string, enabled?: bool}
  * @phpstan-type PostProgramsIdGroupsBodyBaseOption1Option1 array{kind: 'percent', bps: int}
  * @phpstan-type PostProgramsIdGroupsBodyBaseOption1Option2 array{kind: 'fixed', amountMinor: int, currency: string}
  * @phpstan-type PostProgramsIdGroupsBody array{name: string, base?: PostProgramsIdGroupsBodyBaseOption1Option1|PostProgramsIdGroupsBodyBaseOption1Option2|null, holdDays?: int|null, minThresholdMinor?: int|null, payoutCurrency?: string|null, onboardingMessage?: string|null, onboardingChecklist?: list<string>}
@@ -816,8 +939,8 @@ namespace Referalli;
  * @phpstan-type PutEmailSettingsBody array{provider?: 'resend'|'brevo'|'postmark'|null, apiKey?: string|null, fromAddress?: string|null, fromName?: string|null, replyTo?: string|null, defaultLocale?: 'en'|'es'|'de'|'fr'|'pt'|'it'|'nl'|'sv'|'ja'|'zh', logoUrl?: string|null, primaryColor?: string|null}
  * @phpstan-type PutEmailTemplatesEventLocaleBody array{subject: string, text: string, html?: string|null}
  * @phpstan-type PostEmailPreviewBodyDraft array{subject: string, text: string, html?: string|null}
- * @phpstan-type PostEmailPreviewBody array{event: 'payout_sent'|'payout_failed'|'invitation_received'|'partner_approved'|'contract_sent'|'webhook_endpoint_disabled'|'tax_document_ready', locale: 'en'|'es'|'de'|'fr'|'pt'|'it'|'nl'|'sv'|'ja'|'zh', draft?: PostEmailPreviewBodyDraft}
- * @phpstan-type PostEmailTestBody array{event: 'payout_sent'|'payout_failed'|'invitation_received'|'partner_approved'|'contract_sent'|'webhook_endpoint_disabled'|'tax_document_ready', locale: 'en'|'es'|'de'|'fr'|'pt'|'it'|'nl'|'sv'|'ja'|'zh', to: string}
+ * @phpstan-type PostEmailPreviewBody array{event: 'payout_sent'|'payout_failed'|'invitation_received'|'partner_approved'|'contract_sent'|'webhook_endpoint_disabled'|'webhook_endpoint_failing'|'tax_document_ready', locale: 'en'|'es'|'de'|'fr'|'pt'|'it'|'nl'|'sv'|'ja'|'zh', draft?: PostEmailPreviewBodyDraft}
+ * @phpstan-type PostEmailTestBody array{event: 'payout_sent'|'payout_failed'|'invitation_received'|'partner_approved'|'contract_sent'|'webhook_endpoint_disabled'|'webhook_endpoint_failing'|'tax_document_ready', locale: 'en'|'es'|'de'|'fr'|'pt'|'it'|'nl'|'sv'|'ja'|'zh', to: string}
  * @phpstan-type PutMeLocaleBody array{locale: 'en'|'es'|'de'|'fr'|'pt'|'it'|'nl'|'sv'|'ja'|'zh'}
  * @phpstan-type PutMeRoiDigestBody array{enabled: bool}
  * @phpstan-type PutPartnerLocaleBody array{locale: 'en'|'es'|'de'|'fr'|'pt'|'it'|'nl'|'sv'|'ja'|'zh'}
@@ -829,21 +952,37 @@ namespace Referalli;
  * @phpstan-type PostPartnerSecurityTotpEnableBody array{code: string}
  * @phpstan-type PostPartnerSecurityTotpDisableBody array{code: string}
  * @phpstan-type PostAuthConnectionsBodyKeys array{referralToken?: string, anonId?: string, couponCode?: string, programId?: string, autoEnroll?: string}
- * @phpstan-type PostAuthConnectionsBody array{provider: 'clerk'|'supabase'|'workos'|'generic'|'atlas'|'custom', programId: string, instanceId?: string, autoEnrollUsers?: bool, destinationUrl?: string, name?: string, secret?: string, keys?: PostAuthConnectionsBodyKeys}
+ * @phpstan-type PostAuthConnectionsBody array{provider: 'atlas'|'clerk'|'auth0'|'supabase'|'firebase'|'cognito'|'stytch'|'kinde'|'workos'|'generic'|'custom', programId: string, instanceId?: string, autoEnrollUsers?: bool, destinationUrl?: string, name?: string, secret?: string, keys?: PostAuthConnectionsBodyKeys}
+ * @phpstan-type PutAuthConnectionsIdSecretBody array{secret: string}
  * @phpstan-type PatchAuthConnectionsIdBody array{status?: 'active'|'paused', name?: string, autoEnrollUsers?: bool, destinationUrl?: string|null, signatureVersion?: 'v1+v2'|'v2'}
  * @phpstan-type PostAuthConnectionsIdSignupsBodyReferral array{code?: string, clickId?: string, anonId?: string, capturedAt?: string, consent?: 'granted'|'not_required'}
  * @phpstan-type PostAuthConnectionsIdSignupsBodyRisk array{botScore?: float|int, disposableEmail?: bool, emailVerified?: bool, selfReferral?: bool, velocity?: int, reasons?: list<string>, score?: float|int, level?: 'low'|'medium'|'high', dropped?: bool}
  * @phpstan-type PostAuthConnectionsIdSignupsBody array{customerRef: string, email?: string, emailHash?: string, name?: string, ip?: string, ua?: string, signedUpAt: string, referral?: PostAuthConnectionsIdSignupsBodyReferral, risk?: PostAuthConnectionsIdSignupsBodyRisk, emailDomain?: string, referralCode?: string, autoEnroll?: bool, test?: bool}
+ * @phpstan-type PostAuthConnectionsIdPartnersBody array{customerRef: string, email: string, name?: string, code?: string}
  * @phpstan-type PostAuthConnectionsIdEraseBody array{customerRef: string}
  * @phpstan-type PostAuthConnectionsIdAliasesBody array{fromCustomerRef: string, toCustomerRef: string}
  * @phpstan-type PostAuthConnectionsIdUsersBody array{customerRef: string, email?: string, name?: string, status?: 'active'|'suspended'|'deleted'}
  * @phpstan-type PostAuthConnectionsIdSignalsBody array{customerRef: string, signal: 'email_verified'|'banned'|'unbanned'|'fraud_confirmed'|'self_referral', at?: string, details?: array<string, mixed>}
+ * @phpstan-type PostAuthConnectionsInstallBody array{clientId: string, scope: string, redirectUri: string, state?: string, codeChallenge: string, instanceId: string, programId?: string, decision: 'allow'|'deny'}
+ * @phpstan-type PostOauthTokenBody array{grant_type: 'authorization_code', code: string, code_verifier: string, client_id: string, redirect_uri: string}
  * @phpstan-type PatchOrgSsoBody array{requireSso?: bool, roleMapping?: array<string, 'owner'|'admin'|'finance'|'analyst'|'support'>}
  * @phpstan-type PostOrgSsoTicketsBody array{expiresInDays?: int}
+ * @phpstan-type PutOrgSsoDirectBodyOption1 array{adapter: 'oidc', issuer: string, clientId: string, clientSecret?: string, scopes?: string, roleClaim?: string, name?: string, domains?: list<string>, roleMapping?: array<string, 'admin'|'finance'|'analyst'|'support'>, defaultRole?: 'admin'|'finance'|'analyst'|'support'|null, trustEmailVerified?: bool}
+ * @phpstan-type PutOrgSsoDirectBodyOption2 array{adapter: 'workos', clientId: string, apiKey?: string, organizationId: string, domains?: list<string>, roleMapping?: array<string, 'admin'|'finance'|'analyst'|'support'>, defaultRole?: 'admin'|'finance'|'analyst'|'support'|null, trustEmailVerified?: bool}
  * @phpstan-type PostPartnerAuthWalletNonceBody array{address: string}
  * @phpstan-type PostPartnerAuthWalletVerifyBody array{address: string, nonce: string, signature: string, name?: string}
  * @phpstan-type PostOnchainConnectionsBody array{programId: string, name?: string, secret?: string, decimals?: array<string, int>}
  * @phpstan-type PostPublicProgramsHandleJoinBody array{destinationUrl?: string}
+ * @phpstan-type PutSupportAppsAdapterBodyConfig array{publicKeyPem?: string, subdomain?: string, cardKey?: string}
+ * @phpstan-type PutSupportAppsAdapterBody array{enabled?: bool, secret?: string, rotate?: bool, config?: PutSupportAppsAdapterBodyConfig}
+ * @phpstan-type PostSupportAppsAdapterTestBody array{email?: string, customerRef?: string, partnerExternalRef?: string, ext?: string}
+ * @phpstan-type PostPrivacyExecutorKeysBodyConfig array{publicKeyPem?: string, algorithm?: 'ES384'|'ES256'|'RS256', sombraUrl?: string}
+ * @phpstan-type PostPrivacyExecutorKeysBody array{adapter: 'cm-standard-v1'|'onetrust'|'transcend'|'datagrail'|'ketch'|'osano'|'custom', vendorSecret?: string, config?: PostPrivacyExecutorKeysBodyConfig, rotate?: bool, enabled?: bool}
+ * @phpstan-type PostAccountCloseBody array{confirm: string}
+ * @phpstan-type PutOrgTrackingConsentBody array{mode: 'auto'|'none'|'pending'|'custom'|'cookiemunch'|'onetrust'|'cookiebot'|'usercentrics'|'didomi'|'osano'|'termly'|'tcf'|'gpp'|'gcm', category?: string, tcfVendorId?: int, gcmSignal?: 'ad_storage'|'analytics_storage', noCmp?: 'persist'|'memory'}
+ * @phpstan-type PutOrgHostedPagesBodyConsent array{adapter: 'none'|'builtin'|'cookiemunch'|'onetrust'|'cookiebot'|'usercentrics'|'didomi'|'osano'|'termly'|'iubenda'|'custom', config?: array<string, mixed>}
+ * @phpstan-type PutOrgHostedPagesBodyChatOption1 array{adapter: 'chatly'|'intercom'|'crisp'|'custom', config?: array<string, mixed>}
+ * @phpstan-type PutOrgHostedPagesBody array{consent: PutOrgHostedPagesBodyConsent, chat?: PutOrgHostedPagesBodyChatOption1|null, customOrigins?: array<string, list<string>>}
  * @phpstan-type PostGraphqlBody array{query: string, variables?: array<string, mixed>, operationName?: string}
  */
 final class Models

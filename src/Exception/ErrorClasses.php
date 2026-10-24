@@ -16,6 +16,7 @@ final class ErrorClasses
         'bad_request' => BadRequestError::class,
         'unauthorized' => AuthenticationError::class,
         'step_up_required' => StepUpRequiredError::class,
+        'reauth_required' => ReauthRequiredError::class,
         'payment_required' => PaymentRequiredError::class,
         'forbidden' => PermissionDeniedError::class,
         'webhooks_disabled' => WebhooksDisabledError::class,
