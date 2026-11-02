@@ -85,6 +85,8 @@ namespace Referalli;
  * @phpstan-import-type PayoutRun from Models
  * @phpstan-import-type Payout from Models
  * @phpstan-import-type FxRate from Models
+ * @phpstan-import-type OrgLimits from Models
+ * @phpstan-import-type OrgUsage from Models
  * @phpstan-import-type Org from Models
  * @phpstan-import-type Member from Models
  * @phpstan-import-type IssuedApiKey from Models
@@ -217,6 +219,10 @@ namespace Referalli;
  * @phpstan-import-type WebhookEndpointDisabledEvent from Models
  * @phpstan-import-type WebhookEndpointFailingEventData from Models
  * @phpstan-import-type WebhookEndpointFailingEvent from Models
+ * @phpstan-import-type StripeCreditAppliedEventData from Models
+ * @phpstan-import-type StripeCreditAppliedEvent from Models
+ * @phpstan-import-type StripeCreditFailedEventData from Models
+ * @phpstan-import-type StripeCreditFailedEvent from Models
  * @phpstan-import-type WebhookEndpointRecoveredEventData from Models
  * @phpstan-import-type WebhookEndpointRecoveredEvent from Models
  * @phpstan-import-type PostTOrgTokenVisitResponse from Models
@@ -231,6 +237,9 @@ namespace Referalli;
  * @phpstan-import-type GetTOrgTokenWidgetMeResponse from Models
  * @phpstan-import-type GetTOrgTokenMobileResolveResponse from Models
  * @phpstan-import-type PostTOrgTokenMobileInstallResponse from Models
+ * @phpstan-import-type GetWellKnownReferalliEmbedJsonResponseSurfacesValueStorageItem from Models
+ * @phpstan-import-type GetWellKnownReferalliEmbedJsonResponseSurfacesValue from Models
+ * @phpstan-import-type GetWellKnownReferalliEmbedJsonResponse from Models
  * @phpstan-import-type GetWellKnownAppleAppSiteAssociationResponseApplinksDetailsItemComponentsItem from Models
  * @phpstan-import-type GetWellKnownAppleAppSiteAssociationResponseApplinksDetailsItem from Models
  * @phpstan-import-type GetWellKnownAppleAppSiteAssociationResponseApplinks from Models
@@ -238,17 +247,6 @@ namespace Referalli;
  * @phpstan-import-type GetWellKnownAssetlinksJsonResponseValueItemTarget from Models
  * @phpstan-import-type GetWellKnownAssetlinksJsonResponseValueItem from Models
  * @phpstan-import-type GetWellKnownAssetlinksJsonResponse from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseCheckers from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetCookieDaysOption2 from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItemPurpose from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippetStorageItem from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesTrackingSnippet from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItemPurpose from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbedStorageItem from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfacesPortalEmbed from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseSurfaces from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponseChangesItem from Models
- * @phpstan-import-type GetWellKnownForgedeckEmbedJsonResponse from Models
  * @phpstan-import-type PostAgentsRegisterResponse from Models
  * @phpstan-import-type PostTOrgTokenAgentAttributeResponse from Models
  * @phpstan-import-type PostTOrgTokenAgentNegotiateResponse from Models
@@ -311,6 +309,7 @@ namespace Referalli;
  * @phpstan-import-type GetStatusIncidentsResponse from Models
  * @phpstan-import-type GetOrgReferralParamsResponse from Models
  * @phpstan-import-type GetProgramsResponse from Models
+ * @phpstan-import-type PostProgramsIdReferrersResponse from Models
  * @phpstan-import-type GetProgramsIdEnrollmentsResponseDataItem from Models
  * @phpstan-import-type GetProgramsIdEnrollmentsResponse from Models
  * @phpstan-import-type PostProgramsIdEnrollmentsEnrollmentIdApproveResponse from Models
@@ -356,6 +355,10 @@ namespace Referalli;
  * @phpstan-import-type GetCommissionRulesResponse from Models
  * @phpstan-import-type GetCommissionsResponse from Models
  * @phpstan-import-type GetPartnersIdBalancesResponse from Models
+ * @phpstan-import-type GetPartnersIdStatsResponseReferrals from Models
+ * @phpstan-import-type GetPartnersIdStatsResponse from Models
+ * @phpstan-import-type GetPartnersIdSummaryResponseReferrals from Models
+ * @phpstan-import-type GetPartnersIdSummaryResponse from Models
  * @phpstan-import-type PostCommissionsApproveDueResponse from Models
  * @phpstan-import-type PostCommissionsIdAdjustResponse from Models
  * @phpstan-import-type PutBillingConnectionsIdSecretResponse from Models
@@ -437,6 +440,7 @@ namespace Referalli;
  * @phpstan-import-type GetPartnerKycStatusResponse from Models
  * @phpstan-import-type PostPartnerKycSubmitResponse from Models
  * @phpstan-import-type GetPartnerMeResponseAccount from Models
+ * @phpstan-import-type GetPartnerMeResponseRestricted from Models
  * @phpstan-import-type GetPartnerMeResponseMembershipsItemProgramsItem from Models
  * @phpstan-import-type GetPartnerMeResponseMembershipsItem from Models
  * @phpstan-import-type GetPartnerMeResponse from Models
@@ -458,6 +462,11 @@ namespace Referalli;
  * @phpstan-import-type GetPartnerProgramsProgramIdLeaderboardResponseRowsItem from Models
  * @phpstan-import-type GetPartnerProgramsProgramIdLeaderboardResponse from Models
  * @phpstan-import-type PostPartnerProgramsProgramIdApplyResponse from Models
+ * @phpstan-import-type GetPartnerApiTokensResponseDataItem from Models
+ * @phpstan-import-type GetPartnerApiTokensResponse from Models
+ * @phpstan-import-type PostPartnerApiTokensResponse from Models
+ * @phpstan-import-type DeletePartnerApiTokensIdResponse from Models
+ * @phpstan-import-type PostPartnersIdPortalLinkResponse from Models
  * @phpstan-import-type PostWebhookEndpointsResponse from Models
  * @phpstan-import-type GetWebhookEndpointsResponse from Models
  * @phpstan-import-type PatchWebhookEndpointsIdResponse from Models
@@ -654,6 +663,7 @@ namespace Referalli;
  * @phpstan-import-type PostAuthConnectionsIdEraseResponsePartnerOption1 from Models
  * @phpstan-import-type PostAuthConnectionsIdEraseResponse from Models
  * @phpstan-import-type GetAuthConnectionsIdExportResponse from Models
+ * @phpstan-import-type PostAuthConnectionsIdPingResponseCapabilities from Models
  * @phpstan-import-type PostAuthConnectionsIdPingResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdAliasesResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponseCustomerOption1 from Models
@@ -665,7 +675,12 @@ namespace Referalli;
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponsePartnerOption1 from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponse from Models
  * @phpstan-import-type PostAuthConnectionsInstallResponse from Models
+ * @phpstan-import-type PostOauthTokenResponseValueOption1 from Models
+ * @phpstan-import-type PostOauthTokenResponseValueOption2 from Models
  * @phpstan-import-type PostOauthTokenResponse from Models
+ * @phpstan-import-type GetProductLinksResponse from Models
+ * @phpstan-import-type PostProductLinksResponse from Models
+ * @phpstan-import-type DeleteProductLinksIdResponse from Models
  * @phpstan-import-type GetOrgSsoResponseProviderOption1 from Models
  * @phpstan-import-type GetOrgSsoResponseConnectionsItem from Models
  * @phpstan-import-type GetOrgSsoResponseTicketsItem from Models
@@ -703,7 +718,7 @@ namespace Referalli;
  * @phpstan-import-type PutSupportAppsAdapterResponse from Models
  * @phpstan-import-type DeleteSupportAppsAdapterResponse from Models
  * @phpstan-import-type PostSupportAppsAdapterTestResponse from Models
- * @phpstan-import-type PostSupportCardsOrgIdAdapterResponse from Models
+ * @phpstan-import-type GetSupportPlatformChatlyAnswersResponse from Models
  * @phpstan-import-type GetPrivacyExecutorsResponseValueItemInstall from Models
  * @phpstan-import-type GetPrivacyExecutorsResponseValueItemConfigOption1 from Models
  * @phpstan-import-type GetPrivacyExecutorsResponseValueItemHealth from Models
@@ -720,6 +735,16 @@ namespace Referalli;
  * @phpstan-import-type GetClicksIdResponse from Models
  * @phpstan-import-type GetOrgTrackingConsentResponseAdaptersItem from Models
  * @phpstan-import-type GetOrgTrackingConsentResponse from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchResponseStampCheck from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchResponseGrantsItem from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchResponseGrantCheck from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchResponse from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchEventsResponseDataItem from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchEventsResponseStampCheck from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchEventsResponseChecksItem from Models
+ * @phpstan-import-type GetOrgConsentPartnersCookiemunchEventsResponse from Models
+ * @phpstan-import-type PostOrgConsentPartnersCookiemunchStampsCheckResponse from Models
+ * @phpstan-import-type PostOrgsOrgIdPrivacyExecutorKeyResponse from Models
  * @phpstan-import-type GetOrgHostedPagesResponseConsent from Models
  * @phpstan-import-type GetOrgHostedPagesResponseChatOption1 from Models
  * @phpstan-import-type GetOrgHostedPagesResponseServedConsentTagsItem from Models
@@ -735,6 +760,151 @@ namespace Referalli;
  * @phpstan-import-type GetOrgHostedPagesResponse from Models
  * @phpstan-import-type PostOrgHostedPagesCheckResponseChecksItem from Models
  * @phpstan-import-type PostOrgHostedPagesCheckResponse from Models
+ * @phpstan-import-type GetHostsCurrentChatIdentityResponseTagsItem from Models
+ * @phpstan-import-type GetHostsCurrentChatIdentityResponse from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPalette from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPaletteDark from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedFontsFacesItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedFonts from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedTypography from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedComponentsCards from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedComponentsButtons from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedComponentsInputs from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedComponentsFocusRing from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedComponentsLinks from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedComponents from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedAnnouncementLink from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedAnnouncement from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChromeHeaderLinksItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChromeHeaderCta from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChromeHeader from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChromeFooterColumnsItemLinksItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChromeFooterColumnsItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChromeFooterSocialItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChromeFooter from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedChrome from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPortalSectionsItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPortalWelcomeCta from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPortalWelcome from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPortalNavigation from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPortalSignIn from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPortalMoney from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedPortal from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedSettingsSchemaItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedCssSnippetsItem from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedMobile from Models
+ * @phpstan-import-type GetPortalThemeResponsePublishedEmbed from Models
+ * @phpstan-import-type GetPortalThemeResponsePublished from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Palette from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1PaletteDark from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1FontsFacesItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Fonts from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Typography from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ComponentsCards from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ComponentsButtons from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ComponentsInputs from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ComponentsFocusRing from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ComponentsLinks from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Components from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1AnnouncementLink from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Announcement from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ChromeHeaderLinksItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ChromeHeaderCta from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ChromeHeader from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ChromeFooterColumnsItemLinksItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ChromeFooterColumnsItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ChromeFooterSocialItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1ChromeFooter from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Chrome from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1PortalSectionsItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1PortalWelcomeCta from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1PortalWelcome from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1PortalNavigation from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1PortalSignIn from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1PortalMoney from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Portal from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1SettingsSchemaItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1CssSnippetsItem from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Mobile from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1Embed from Models
+ * @phpstan-import-type GetPortalThemeResponseDraftOption1 from Models
+ * @phpstan-import-type GetPortalThemeResponse from Models
+ * @phpstan-import-type GetPortalThemeSchemaResponse from Models
+ * @phpstan-import-type GetPortalThemeCompiledResponse from Models
+ * @phpstan-import-type GetPortalThemeVersionsResponseDataItem from Models
+ * @phpstan-import-type GetPortalThemeVersionsResponse from Models
+ * @phpstan-import-type PostPortalThemePreviewResponse from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPalette from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPaletteDark from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedFontsFacesItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedFonts from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedTypography from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedComponentsCards from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedComponentsButtons from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedComponentsInputs from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedComponentsFocusRing from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedComponentsLinks from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedComponents from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedAnnouncementLink from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedAnnouncement from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChromeHeaderLinksItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChromeHeaderCta from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChromeHeader from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChromeFooterColumnsItemLinksItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChromeFooterColumnsItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChromeFooterSocialItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChromeFooter from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedChrome from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPortalSectionsItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPortalWelcomeCta from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPortalWelcome from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPortalNavigation from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPortalSignIn from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPortalMoney from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedPortal from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedSettingsSchemaItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedCssSnippetsItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedMobile from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublishedEmbed from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponsePublished from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Palette from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1PaletteDark from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1FontsFacesItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Fonts from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Typography from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ComponentsCards from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ComponentsButtons from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ComponentsInputs from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ComponentsFocusRing from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ComponentsLinks from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Components from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1AnnouncementLink from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Announcement from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ChromeHeaderLinksItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ChromeHeaderCta from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ChromeHeader from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ChromeFooterColumnsItemLinksItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ChromeFooterColumnsItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ChromeFooterSocialItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1ChromeFooter from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Chrome from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1PortalSectionsItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1PortalWelcomeCta from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1PortalWelcome from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1PortalNavigation from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1PortalSignIn from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1PortalMoney from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Portal from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1SettingsSchemaItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1CssSnippetsItem from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Mobile from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1Embed from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1 from Models
+ * @phpstan-import-type PostPortalThemeImportBrandResponse from Models
+ * @phpstan-import-type GetStripeCreditsConnectionResponse from Models
+ * @phpstan-import-type GetProgramsIdStripeCreditsResponse from Models
+ * @phpstan-import-type GetProgramsIdStripeCreditsLogResponseDataItem from Models
+ * @phpstan-import-type GetProgramsIdStripeCreditsLogResponse from Models
  * @phpstan-import-type PostWebhooksBillingConnectionIdResponseResultsItem from Models
  * @phpstan-import-type PostWebhooksBillingConnectionIdResponse from Models
  * @phpstan-import-type PostWebhooksAuthConnectionIdResponseResultsItem from Models
@@ -744,9 +914,14 @@ namespace Referalli;
  * @phpstan-import-type PostWebhooksOnchainConnectionIdResponse from Models
  * @phpstan-import-type PostWebhooksPayoutsProviderResponse from Models
  * @phpstan-import-type PostWebhooksStripeBillingResponse from Models
+ * @phpstan-import-type PostWebhooksCookiemunchConsentResponse from Models
  * @phpstan-import-type PostApiPrivacyLookupResponse from Models
+ * @phpstan-import-type PostApiPrivacyRequestsResponseValueOption1 from Models
  * @phpstan-import-type PostApiPrivacyRequestsResponse from Models
+ * @phpstan-import-type GetApiPrivacyRequestsIdResponseValueOption1 from Models
  * @phpstan-import-type GetApiPrivacyRequestsIdResponse from Models
+ * @phpstan-import-type PostApiPrivacyRequestsIdCancelResponseRetentionItem from Models
+ * @phpstan-import-type PostApiPrivacyRequestsIdCancelResponse from Models
  * @phpstan-import-type PostApiPrivacyOrgsOrgIdLookupResponse from Models
  * @phpstan-import-type PostApiPrivacyOrgsOrgIdRequestsResponse from Models
  * @phpstan-import-type GetApiPrivacyOrgsOrgIdRequestsIdResponse from Models
@@ -757,7 +932,9 @@ namespace Referalli;
  * @phpstan-import-type PostOrgsBody from Models
  * @phpstan-import-type PutOrgPortalAuthBodyOption1 from Models
  * @phpstan-import-type PutOrgPortalAuthBodyOption2 from Models
+ * @phpstan-import-type PutOrgPortalAuthBodyOption3Claims from Models
  * @phpstan-import-type PutOrgPortalAuthBodyOption3 from Models
+ * @phpstan-import-type PutOrgPortalAuthBodyOption4 from Models
  * @phpstan-import-type PostMobilePurchasesBody from Models
  * @phpstan-import-type PatchOrgBody from Models
  * @phpstan-import-type PostOrgMembersBody from Models
@@ -798,7 +975,15 @@ namespace Referalli;
  * @phpstan-import-type PatchProgramsIdBodyMobileAppOption1IosOption1 from Models
  * @phpstan-import-type PatchProgramsIdBodyMobileAppOption1AndroidOption1 from Models
  * @phpstan-import-type PatchProgramsIdBodyMobileAppOption1 from Models
+ * @phpstan-import-type PatchProgramsIdBodySettingsPublicPage from Models
+ * @phpstan-import-type PatchProgramsIdBodySettingsRiskPolicy from Models
+ * @phpstan-import-type PatchProgramsIdBodySettingsWidget from Models
+ * @phpstan-import-type PatchProgramsIdBodySettingsMobileAppOption1IosOption1 from Models
+ * @phpstan-import-type PatchProgramsIdBodySettingsMobileAppOption1AndroidOption1 from Models
+ * @phpstan-import-type PatchProgramsIdBodySettingsMobileAppOption1 from Models
+ * @phpstan-import-type PatchProgramsIdBodySettings from Models
  * @phpstan-import-type PatchProgramsIdBody from Models
+ * @phpstan-import-type PostProgramsIdReferrersBody from Models
  * @phpstan-import-type PostProgramsIdEnrollmentsBody from Models
  * @phpstan-import-type PostPartnersBody from Models
  * @phpstan-import-type PatchPartnersIdBody from Models
@@ -876,6 +1061,8 @@ namespace Referalli;
  * @phpstan-import-type PostPartnerDisputesBody from Models
  * @phpstan-import-type PutPartnerOrgsOrgIdPayoutProfileBody from Models
  * @phpstan-import-type PostPartnerOrgsOrgIdTaxFormBody from Models
+ * @phpstan-import-type PostPartnerApiTokensBody from Models
+ * @phpstan-import-type PostPartnersIdPortalLinkBody from Models
  * @phpstan-import-type PostWebhookEndpointsBody from Models
  * @phpstan-import-type PatchWebhookEndpointsIdBody from Models
  * @phpstan-import-type PostSandboxSimulateBody from Models
@@ -963,7 +1150,10 @@ namespace Referalli;
  * @phpstan-import-type PostAuthConnectionsIdUsersBody from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsBody from Models
  * @phpstan-import-type PostAuthConnectionsInstallBody from Models
- * @phpstan-import-type PostOauthTokenBody from Models
+ * @phpstan-import-type PostOauthTokenBodyOption1 from Models
+ * @phpstan-import-type PostOauthTokenBodyOption2 from Models
+ * @phpstan-import-type PostOauthTokenBodyOption3 from Models
+ * @phpstan-import-type PostProductLinksBody from Models
  * @phpstan-import-type PatchOrgSsoBody from Models
  * @phpstan-import-type PostOrgSsoTicketsBody from Models
  * @phpstan-import-type PutOrgSsoDirectBodyOption1 from Models
@@ -979,9 +1169,16 @@ namespace Referalli;
  * @phpstan-import-type PostPrivacyExecutorKeysBody from Models
  * @phpstan-import-type PostAccountCloseBody from Models
  * @phpstan-import-type PutOrgTrackingConsentBody from Models
+ * @phpstan-import-type PutOrgConsentPartnersCookiemunchBody from Models
+ * @phpstan-import-type PostOrgConsentPartnersCookiemunchStampsCheckBody from Models
+ * @phpstan-import-type PostOrgsOrgIdPrivacyExecutorKeyBody from Models
  * @phpstan-import-type PutOrgHostedPagesBodyConsent from Models
  * @phpstan-import-type PutOrgHostedPagesBodyChatOption1 from Models
  * @phpstan-import-type PutOrgHostedPagesBody from Models
+ * @phpstan-import-type PostPortalThemePublishBody from Models
+ * @phpstan-import-type PostPortalThemeImportBrandBody from Models
+ * @phpstan-import-type PutStripeCreditsConnectionBody from Models
+ * @phpstan-import-type PutProgramsIdStripeCreditsBody from Models
  * @phpstan-import-type PostGraphqlBody from Models
  */
 trait Operations
@@ -1000,11 +1197,15 @@ trait Operations
         'deleteIntegrationsKind' => ['DELETE', '/v1/integrations/{kind}', ['kind'], [], false, 'json', 'deleteIntegrationsKind', ['kind'], 2],
         'deleteOrgMembersUserId' => ['DELETE', '/v1/org/members/{userId}', ['userId'], [], false, 'json', 'deleteOrgMembersUserId', ['userId'], 2],
         'deleteOrgSsoDirect' => ['DELETE', '/v1/org/sso/direct', [], [], false, 'json', 'deleteOrgSsoDirect', [], 1],
+        'deletePartnerApiTokensId' => ['DELETE', '/v1/partner/api-tokens/{id}', ['id'], [], false, 'json', 'deletePartnerApiTokensId', ['id'], 2],
         'deletePartnersId' => ['DELETE', '/v1/partners/{id}', ['id'], [], false, 'json', 'deletePartnersId', ['id'], 2],
         'deletePayoutConnectionsProvider' => ['DELETE', '/v1/payout-connections/{provider}', ['provider'], [], false, 'json', 'deletePayoutConnectionsProvider', ['provider'], 2],
+        'deletePortalThemeDraft' => ['DELETE', '/v1/portal/theme/draft', [], [], false, 'json', 'deletePortalThemeDraft', [], 1],
         'deletePrivacyExecutorsAdapter' => ['DELETE', '/v1/privacy/executors/{adapter}', ['adapter'], [], false, 'json', 'deletePrivacyExecutorsAdapter', ['adapter'], 2],
+        'deleteProductLinksId' => ['DELETE', '/v1/product-links/{id}', ['id'], [], false, 'json', 'deleteProductLinksId', ['id'], 2],
         'deleteProfitabilityProductsProductRef' => ['DELETE', '/v1/profitability/products/{productRef}', ['productRef'], [], false, 'json', 'deleteProfitabilityProductsProductRef', ['productRef'], 2],
         'deleteRewardsRulesKey' => ['DELETE', '/v1/rewards/rules/{key}', ['key'], [], false, 'json', 'deleteRewardsRulesKey', ['key'], 2],
+        'deleteStripeCreditsConnection' => ['DELETE', '/v1/stripe-credits/connection', [], [], false, 'json', 'deleteStripeCreditsConnection', [], 1],
         'deleteSupportAppsAdapter' => ['DELETE', '/v1/support/apps/{adapter}', ['adapter'], [], false, 'json', 'deleteSupportAppsAdapter', ['adapter'], 2],
         'deleteWebhookEndpointsId' => ['DELETE', '/v1/webhook-endpoints/{id}', ['id'], [], false, 'json', 'deleteWebhookEndpointsId', ['id'], 2],
         'deleteZapierHooksId' => ['DELETE', '/v1/zapier/hooks/{id}', ['id'], [], false, 'json', 'deleteZapierHooksId', ['id'], 2],
@@ -1054,7 +1255,6 @@ trait Operations
         'getDisputes' => ['GET', '/v1/disputes', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getDisputes', [], 6],
         'getEmailSettings' => ['GET', '/v1/email/settings', [], [], false, 'json', 'getEmailSettings', [], 1],
         'getEmailTemplates' => ['GET', '/v1/email/templates', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getEmailTemplates', [], 6],
-        'getEmbed' => ['GET', '/v1/embed', [], ['token' => 'token'], false, 'json', 'getEmbed', [], 2],
         'getEmbedSummary' => ['GET', '/v1/embed/summary', [], [], false, 'json', 'getEmbedSummary', [], 1],
         'getEvents' => ['GET', '/v1/events', [], ['since' => 'since', 'topics' => 'topics', 'after' => 'after', 'limit' => 'limit'], false, 'json', 'getEvents', [], 5],
         'getExportAccounting' => ['GET', '/v1/export/accounting', [], ['format' => 'format', 'year' => 'year'], false, 'text', 'getExportAccounting', [], 3],
@@ -1063,8 +1263,9 @@ trait Operations
         'getFxRates' => ['GET', '/v1/fx-rates', [], ['base' => 'base', 'quote' => 'quote', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getFxRates', [], 8],
         'getGraphql' => ['GET', '/v1/graphql', [], [], false, 'json', 'getGraphql', [], 1],
         'getHealth' => ['GET', '/v1/health', [], [], false, 'json', 'getHealth', [], 1],
-        'getHostsCurrent' => ['GET', '/v1/hosts/current', [], [], false, 'json', 'getHostsCurrent', [], 1],
-        'getHostsCurrentThemeCss' => ['GET', '/v1/hosts/current/theme.css', [], [], false, 'text', 'getHostsCurrentThemeCss', [], 1],
+        'getHostsCurrent' => ['GET', '/v1/hosts/current', [], ['themePreview' => 'themePreview'], false, 'json', 'getHostsCurrent', [], 2],
+        'getHostsCurrentChatIdentity' => ['GET', '/v1/hosts/current/chat-identity', [], [], false, 'json', 'getHostsCurrentChatIdentity', [], 1],
+        'getHostsCurrentThemeCss' => ['GET', '/v1/hosts/current/theme.css', [], ['themePreview' => 'themePreview'], false, 'text', 'getHostsCurrentThemeCss', [], 2],
         'getIncrementality' => ['GET', '/v1/incrementality', [], ['programId' => 'programId'], false, 'json', 'getIncrementality', [], 2],
         'getIntegrationHealth' => ['GET', '/v1/integration-health', [], [], false, 'json', 'getIntegrationHealth', [], 1],
         'getIntegrations' => ['GET', '/v1/integrations', [], [], false, 'json', 'getIntegrations', [], 1],
@@ -1082,6 +1283,8 @@ trait Operations
         'getOpenapiJson' => ['GET', '/v1/openapi.json', [], [], false, 'json', 'getOpenapiJson', [], 1],
         'getOpenapiYaml' => ['GET', '/v1/openapi.yaml', [], [], false, 'text', 'getOpenapiYaml', [], 1],
         'getOrg' => ['GET', '/v1/org', [], [], false, 'json', 'getOrg', [], 1],
+        'getOrgConsentPartnersCookiemunch' => ['GET', '/v1/org/consent-partners/cookiemunch', [], [], false, 'json', 'getOrgConsentPartnersCookiemunch', [], 1],
+        'getOrgConsentPartnersCookiemunchEvents' => ['GET', '/v1/org/consent-partners/cookiemunch/events', [], ['stamp' => 'stamp', 'limit' => 'limit'], false, 'json', 'getOrgConsentPartnersCookiemunchEvents', [], 3],
         'getOrgFxFeed' => ['GET', '/v1/org/fx-feed', [], [], false, 'json', 'getOrgFxFeed', [], 1],
         'getOrgHostedPages' => ['GET', '/v1/org/hosted-pages', [], [], false, 'json', 'getOrgHostedPages', [], 1],
         'getOrgMembers' => ['GET', '/v1/org/members', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getOrgMembers', [], 6],
@@ -1097,6 +1300,7 @@ trait Operations
         'getPartnerAchievements' => ['GET', '/v1/partner/achievements', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerAchievements', [], 6],
         'getPartnerAdvance' => ['GET', '/v1/partner/advance', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerAdvance', [], 6],
         'getPartnerAdvanceOffer' => ['GET', '/v1/partner/advance/offer', [], [], false, 'json', 'getPartnerAdvanceOffer', [], 1],
+        'getPartnerApiTokens' => ['GET', '/v1/partner/api-tokens', [], [], false, 'json', 'getPartnerApiTokens', [], 1],
         'getPartnerAssets' => ['GET', '/v1/partner/assets', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerAssets', [], 6],
         'getPartnerContracts' => ['GET', '/v1/partner/contracts', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerContracts', [], 6],
         'getPartnerDeals' => ['GET', '/v1/partner/deals', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerDeals', [], 6],
@@ -1122,11 +1326,13 @@ trait Operations
         'getPartnerReferralsIdTransparency' => ['GET', '/v1/partner/referrals/{id}/transparency', ['id'], [], false, 'json', 'getPartnerReferralsIdTransparency', ['id'], 2],
         'getPartners' => ['GET', '/v1/partners', [], ['email' => 'email', 'externalRef' => 'externalRef', 'status' => 'status', 'includeArchived' => 'includeArchived', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartners', [], 10],
         'getPartnerSecurity' => ['GET', '/v1/partner/security', [], [], false, 'json', 'getPartnerSecurity', [], 1],
-        'getPartnersId' => ['GET', '/v1/partners/{id}', ['id'], [], false, 'json', 'getPartnersId', ['id'], 2],
+        'getPartnersId' => ['GET', '/v1/partners/{id}', ['id'], ['programId' => 'programId'], false, 'json', 'getPartnersId', ['id'], 3],
         'getPartnersIdBalances' => ['GET', '/v1/partners/{id}/balances', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnersIdBalances', ['id'], 7],
         'getPartnersIdEnrollments' => ['GET', '/v1/partners/{id}/enrollments', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnersIdEnrollments', ['id'], 7],
         'getPartnersIdPayoutProfile' => ['GET', '/v1/partners/{id}/payout-profile', ['id'], [], false, 'json', 'getPartnersIdPayoutProfile', ['id'], 2],
         'getPartnersIdQuality' => ['GET', '/v1/partners/{id}/quality', ['id'], [], false, 'json', 'getPartnersIdQuality', ['id'], 2],
+        'getPartnersIdStats' => ['GET', '/v1/partners/{id}/stats', ['id'], ['programId' => 'programId'], false, 'json', 'getPartnersIdStats', ['id'], 3],
+        'getPartnersIdSummary' => ['GET', '/v1/partners/{id}/summary', ['id'], ['programId' => 'programId'], false, 'json', 'getPartnersIdSummary', ['id'], 3],
         'getPartnerStats' => ['GET', '/v1/partner/stats', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerStats', [], 6],
         'getPartnerTaxDocuments' => ['GET', '/v1/partner/tax-documents', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerTaxDocuments', [], 6],
         'getPartnerTaxDocumentsId' => ['GET', '/v1/partner/tax-documents/{id}', ['id'], [], false, 'text', 'getPartnerTaxDocumentsId', ['id'], 2],
@@ -1138,25 +1344,32 @@ trait Operations
         'getPayoutsIdInvoice' => ['GET', '/v1/payouts/{id}/invoice', ['id'], ['format' => 'format'], false, 'json', 'getPayoutsIdInvoice', ['id'], 3],
         'getPlans' => ['GET', '/v1/plans', [], [], false, 'json', 'getPlans', [], 1],
         'getPortalAuthCurrent' => ['GET', '/v1/portal-auth/current', [], ['org' => 'org'], false, 'json', 'getPortalAuthCurrent', [], 2],
+        'getPortalTheme' => ['GET', '/v1/portal/theme', [], [], false, 'json', 'getPortalTheme', [], 1],
+        'getPortalThemeCompiled' => ['GET', '/v1/portal/theme/compiled', [], ['which' => 'which'], false, 'json', 'getPortalThemeCompiled', [], 2],
+        'getPortalThemeSchema' => ['GET', '/v1/portal/theme/schema', [], [], false, 'json', 'getPortalThemeSchema', [], 1],
+        'getPortalThemeVersions' => ['GET', '/v1/portal/theme/versions', [], [], false, 'json', 'getPortalThemeVersions', [], 1],
         'getPrivacyExecutorRequests' => ['GET', '/v1/privacy/executor-requests', [], [], false, 'json', 'getPrivacyExecutorRequests', [], 1],
         'getPrivacyExecutors' => ['GET', '/v1/privacy/executors', [], [], false, 'json', 'getPrivacyExecutors', [], 1],
         'getPrivacyExport' => ['GET', '/v1/privacy/export', [], ['customerRef' => 'customerRef'], false, 'json', 'getPrivacyExport', [], 2],
         'getPrivacyRequests' => ['GET', '/v1/privacy/requests', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPrivacyRequests', [], 6],
         'getPrivacyRequestsId' => ['GET', '/v1/privacy/requests/{id}', ['id'], [], false, 'json', 'getPrivacyRequestsId', ['id'], 2],
         'getPrivacyRequestsIdResult' => ['GET', '/v1/privacy/requests/{id}/result', ['id'], [], false, 'json', 'getPrivacyRequestsIdResult', ['id'], 2],
+        'getProductLinks' => ['GET', '/v1/product-links', [], [], false, 'json', 'getProductLinks', [], 1],
         'getProfitabilityProducts' => ['GET', '/v1/profitability/products', [], [], false, 'json', 'getProfitabilityProducts', [], 1],
         'getProfitabilityProductsProductRef' => ['GET', '/v1/profitability/products/{productRef}', ['productRef'], [], false, 'json', 'getProfitabilityProductsProductRef', ['productRef'], 2],
         'getProfitabilityRebuildJobId' => ['GET', '/v1/profitability/rebuild/{jobId}', ['jobId'], [], false, 'json', 'getProfitabilityRebuildJobId', ['jobId'], 2],
         'getProfitabilitySettings' => ['GET', '/v1/profitability/settings', [], ['programId' => 'programId'], false, 'json', 'getProfitabilitySettings', [], 2],
-        'getPrograms' => ['GET', '/v1/programs', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPrograms', [], 6],
+        'getPrograms' => ['GET', '/v1/programs', [], ['slug' => 'slug', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPrograms', [], 7],
         'getProgramsId' => ['GET', '/v1/programs/{id}', ['id'], [], false, 'json', 'getProgramsId', ['id'], 2],
         'getProgramsIdAutopricing' => ['GET', '/v1/programs/{id}/autopricing', ['id'], [], false, 'json', 'getProgramsIdAutopricing', ['id'], 2],
-        'getProgramsIdEnrollments' => ['GET', '/v1/programs/{id}/enrollments', ['id'], ['status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdEnrollments', ['id'], 8],
+        'getProgramsIdEnrollments' => ['GET', '/v1/programs/{id}/enrollments', ['id'], ['status' => 'status', 'partnerId' => 'partnerId', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdEnrollments', ['id'], 9],
         'getProgramsIdGraph' => ['GET', '/v1/programs/{id}/graph', ['id'], ['root' => 'root', 'depth' => 'depth'], false, 'json', 'getProgramsIdGraph', ['id'], 4],
         'getProgramsIdGroups' => ['GET', '/v1/programs/{id}/groups', ['id'], ['includeArchived' => 'includeArchived', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdGroups', ['id'], 8],
         'getProgramsIdNegotiationPolicy' => ['GET', '/v1/programs/{id}/negotiation-policy', ['id'], [], false, 'json', 'getProgramsIdNegotiationPolicy', ['id'], 2],
         'getProgramsIdPromotions' => ['GET', '/v1/programs/{id}/promotions', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdPromotions', ['id'], 7],
         'getProgramsIdRefereeReward' => ['GET', '/v1/programs/{id}/referee-reward', ['id'], [], false, 'json', 'getProgramsIdRefereeReward', ['id'], 2],
+        'getProgramsIdStripeCredits' => ['GET', '/v1/programs/{id}/stripe-credits', ['id'], [], false, 'json', 'getProgramsIdStripeCredits', ['id'], 2],
+        'getProgramsIdStripeCreditsLog' => ['GET', '/v1/programs/{id}/stripe-credits/log', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdStripeCreditsLog', ['id'], 7],
         'getProgramsIdTermsAcceptances' => ['GET', '/v1/programs/{id}/terms-acceptances', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdTermsAcceptances', ['id'], 7],
         'getProspects' => ['GET', '/v1/prospects', [], ['status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProspects', [], 7],
         'getPublicProgramsHandle' => ['GET', '/v1/public/programs/{handle}', ['handle'], [], false, 'json', 'getPublicProgramsHandle', ['handle'], 2],
@@ -1182,9 +1395,11 @@ trait Operations
         'getStatusIncidents' => ['GET', '/v1/status/incidents', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getStatusIncidents', [], 6],
         'getStatusIncidentsAtom' => ['GET', '/v1/status/incidents.atom', [], [], false, 'text', 'getStatusIncidentsAtom', [], 1],
         'getStatusIncidentsId' => ['GET', '/v1/status/incidents/{id}', ['id'], [], false, 'json', 'getStatusIncidentsId', ['id'], 2],
+        'getStripeCreditsConnection' => ['GET', '/v1/stripe-credits/connection', [], [], false, 'json', 'getStripeCreditsConnection', [], 1],
         'getSupportApps' => ['GET', '/v1/support/apps', [], [], false, 'json', 'getSupportApps', [], 1],
         'getSupportCardsOrgIdAdapter' => ['GET', '/v1/support/cards/{orgId}/{adapter}', ['orgId','adapter'], ['email' => 'email', 'externalId' => 'externalId'], false, 'json', 'getSupportCardsOrgIdAdapter', ['orgId','adapter'], 5],
         'getSupportContext' => ['GET', '/v1/support/context', [], ['email' => 'email', 'customerRef' => 'customerRef', 'partnerExternalRef' => 'partnerExternalRef', 'ext' => 'ext'], false, 'json', 'getSupportContext', [], 5],
+        'getSupportPlatformChatlyAnswers' => ['GET', '/v1/support/platform/chatly-answers', [], ['subject' => 'subject', 'principal' => 'principal', 'question' => 'question'], false, 'json', 'getSupportPlatformChatlyAnswers', [], 4],
         'getTax1099' => ['GET', '/v1/tax/1099', [], ['year' => 'year', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getTax1099', [], 7],
         'getTax1099Filings' => ['GET', '/v1/tax/1099/filings', [], ['year' => 'year', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getTax1099Filings', [], 7],
         'getTax1099Preview' => ['GET', '/v1/tax/1099/preview', [], ['year' => 'year'], false, 'json', 'getTax1099Preview', [], 2],
@@ -1210,6 +1425,7 @@ trait Operations
         'patchPartnerGroupsId' => ['PATCH', '/v1/partner-groups/{id}', ['id'], [], true, 'json', 'patchPartnerGroupsId', ['id'], 3],
         'patchPartnersId' => ['PATCH', '/v1/partners/{id}', ['id'], [], true, 'json', 'patchPartnersId', ['id'], 3],
         'patchPartnersIdPayoutProfile' => ['PATCH', '/v1/partners/{id}/payout-profile', ['id'], [], true, 'json', 'patchPartnersIdPayoutProfile', ['id'], 3],
+        'patchPortalThemeDraft' => ['PATCH', '/v1/portal/theme/draft', [], [], true, 'json', 'patchPortalThemeDraft', [], 2],
         'patchProgramsId' => ['PATCH', '/v1/programs/{id}', ['id'], [], true, 'json', 'patchProgramsId', ['id'], 3],
         'patchReferralsId' => ['PATCH', '/v1/referrals/{id}', ['id'], [], true, 'json', 'patchReferralsId', ['id'], 3],
         'patchWebhookEndpointsId' => ['PATCH', '/v1/webhook-endpoints/{id}', ['id'], [], true, 'json', 'patchWebhookEndpointsId', ['id'], 3],
@@ -1291,10 +1507,12 @@ trait Operations
         'postNotificationsIdRead' => ['POST', '/v1/notifications/{id}/read', ['id'], [], false, 'json', 'postNotificationsIdRead', ['id'], 2],
         'postOauthToken' => ['POST', '/v1/oauth/token', [], [], true, 'json', 'postOauthToken', [], 2],
         'postOnchainConnections' => ['POST', '/v1/onchain/connections', [], [], true, 'json', 'postOnchainConnections', [], 2],
+        'postOrgConsentPartnersCookiemunchStampsCheck' => ['POST', '/v1/org/consent-partners/cookiemunch/stamps/check', [], [], true, 'json', 'postOrgConsentPartnersCookiemunchStampsCheck', [], 2],
         'postOrgHostedPagesCheck' => ['POST', '/v1/org/hosted-pages/check', [], [], false, 'json', 'postOrgHostedPagesCheck', [], 1],
         'postOrgMembers' => ['POST', '/v1/org/members', [], [], true, 'json', 'postOrgMembers', [], 2],
         'postOrgPortalAuthTest' => ['POST', '/v1/org/portal-auth/test', [], [], false, 'json', 'postOrgPortalAuthTest', [], 1],
         'postOrgs' => ['POST', '/v1/orgs', [], [], true, 'json', 'postOrgs', [], 2],
+        'postOrgsOrgIdPrivacyExecutorKey' => ['POST', '/v1/orgs/{orgId}/privacy/executor-key', ['orgId'], [], true, 'json', 'postOrgsOrgIdPrivacyExecutorKey', ['orgId'], 3],
         'postOrgSsoDirectTest' => ['POST', '/v1/org/sso/direct/test', [], [], false, 'json', 'postOrgSsoDirectTest', [], 1],
         'postOrgSsoLink' => ['POST', '/v1/org/sso/link', [], [], false, 'json', 'postOrgSsoLink', [], 1],
         'postOrgSsoTickets' => ['POST', '/v1/org/sso/tickets', [], [], true, 'json', 'postOrgSsoTickets', [], 2],
@@ -1303,6 +1521,7 @@ trait Operations
         'postOutreachIdApprove' => ['POST', '/v1/outreach/{id}/approve', ['id'], [], false, 'json', 'postOutreachIdApprove', ['id'], 2],
         'postOutreachSendDue' => ['POST', '/v1/outreach/send-due', [], [], false, 'json', 'postOutreachSendDue', [], 1],
         'postPartnerAdvanceAccept' => ['POST', '/v1/partner/advance/accept', [], [], true, 'json', 'postPartnerAdvanceAccept', [], 2],
+        'postPartnerApiTokens' => ['POST', '/v1/partner/api-tokens', [], [], true, 'json', 'postPartnerApiTokens', [], 2],
         'postPartnerAuthWalletNonce' => ['POST', '/v1/partner/auth/wallet/nonce', [], [], true, 'json', 'postPartnerAuthWalletNonce', [], 2],
         'postPartnerAuthWalletVerify' => ['POST', '/v1/partner/auth/wallet/verify', [], [], true, 'json', 'postPartnerAuthWalletVerify', [], 2],
         'postPartnerContractsIdAccept' => ['POST', '/v1/partner/contracts/{id}/accept', ['id'], [], false, 'json', 'postPartnerContractsIdAccept', ['id'], 2],
@@ -1321,6 +1540,7 @@ trait Operations
         'postPartnerSecurityTotpDisable' => ['POST', '/v1/partner/security/totp/disable', [], [], true, 'json', 'postPartnerSecurityTotpDisable', [], 2],
         'postPartnerSecurityTotpEnable' => ['POST', '/v1/partner/security/totp/enable', [], [], true, 'json', 'postPartnerSecurityTotpEnable', [], 2],
         'postPartnerSecurityTotpSetup' => ['POST', '/v1/partner/security/totp/setup', [], [], false, 'json', 'postPartnerSecurityTotpSetup', [], 1],
+        'postPartnersIdPortalLink' => ['POST', '/v1/partners/{id}/portal-link', ['id'], [], true, 'json', 'postPartnersIdPortalLink', ['id'], 3],
         'postPartnersIdTaxForm' => ['POST', '/v1/partners/{id}/tax-form', ['id'], [], true, 'json', 'postPartnersIdTaxForm', ['id'], 3],
         'postPartnerTermsVersionIdAccept' => ['POST', '/v1/partner/terms/{versionId}/accept', ['versionId'], [], false, 'json', 'postPartnerTermsVersionIdAccept', ['versionId'], 2],
         'postPassportVerify' => ['POST', '/v1/passport/verify', [], [], true, 'json', 'postPassportVerify', [], 2],
@@ -1328,11 +1548,16 @@ trait Operations
         'postPayoutRunsIdCancel' => ['POST', '/v1/payout-runs/{id}/cancel', ['id'], [], false, 'json', 'postPayoutRunsIdCancel', ['id'], 2],
         'postPayoutRunsIdExecute' => ['POST', '/v1/payout-runs/{id}/execute', ['id'], [], false, 'json', 'postPayoutRunsIdExecute', ['id'], 2],
         'postPayoutRunsRunScheduled' => ['POST', '/v1/payout-runs/run-scheduled', [], [], false, 'json', 'postPayoutRunsRunScheduled', [], 1],
+        'postPortalThemeImportBrand' => ['POST', '/v1/portal/theme/import-brand', [], [], true, 'json', 'postPortalThemeImportBrand', [], 2],
+        'postPortalThemePreview' => ['POST', '/v1/portal/theme/preview', [], [], false, 'json', 'postPortalThemePreview', [], 1],
+        'postPortalThemePublish' => ['POST', '/v1/portal/theme/publish', [], [], true, 'json', 'postPortalThemePublish', [], 2],
+        'postPortalThemeVersionsIdRestore' => ['POST', '/v1/portal/theme/versions/{id}/restore', ['id'], [], false, 'json', 'postPortalThemeVersionsIdRestore', ['id'], 2],
         'postPrivacyExecutorKeys' => ['POST', '/v1/privacy/executor-keys', [], [], true, 'json', 'postPrivacyExecutorKeys', [], 2],
         'postPrivacyExecutorsAdapterCheck' => ['POST', '/v1/privacy/executors/{adapter}/check', ['adapter'], [], false, 'json', 'postPrivacyExecutorsAdapterCheck', ['adapter'], 2],
         'postPrivacyForget' => ['POST', '/v1/privacy/forget', [], [], true, 'json', 'postPrivacyForget', [], 2],
         'postPrivacyLookup' => ['POST', '/v1/privacy/lookup', [], [], true, 'json', 'postPrivacyLookup', [], 2],
         'postPrivacyRequests' => ['POST', '/v1/privacy/requests', [], [], true, 'json', 'postPrivacyRequests', [], 2],
+        'postProductLinks' => ['POST', '/v1/product-links', [], [], true, 'json', 'postProductLinks', [], 2],
         'postProfitabilityRebuild' => ['POST', '/v1/profitability/rebuild', [], [], false, 'json', 'postProfitabilityRebuild', [], 1],
         'postPrograms' => ['POST', '/v1/programs', [], [], true, 'json', 'postPrograms', [], 2],
         'postProgramsIdApplyLeveling' => ['POST', '/v1/programs/{id}/apply-leveling', ['id'], [], false, 'json', 'postProgramsIdApplyLeveling', ['id'], 2],
@@ -1342,6 +1567,7 @@ trait Operations
         'postProgramsIdEnrollmentsEnrollmentIdReject' => ['POST', '/v1/programs/{id}/enrollments/{enrollmentId}/reject', ['id','enrollmentId'], [], false, 'json', 'postProgramsIdEnrollmentsEnrollmentIdReject', ['id','enrollmentId'], 3],
         'postProgramsIdGroups' => ['POST', '/v1/programs/{id}/groups', ['id'], [], true, 'json', 'postProgramsIdGroups', ['id'], 3],
         'postProgramsIdPromotions' => ['POST', '/v1/programs/{id}/promotions', ['id'], [], true, 'json', 'postProgramsIdPromotions', ['id'], 3],
+        'postProgramsIdReferrers' => ['POST', '/v1/programs/{id}/referrers', ['id'], [], true, 'json', 'postProgramsIdReferrers', ['id'], 3],
         'postPromotionsIdEnd' => ['POST', '/v1/promotions/{id}/end', ['id'], [], false, 'json', 'postPromotionsIdEnd', ['id'], 2],
         'postPublicProgramsHandleJoin' => ['POST', '/v1/public/programs/{handle}/join', ['handle'], [], true, 'json', 'postPublicProgramsHandleJoin', ['handle'], 3],
         'postQualityRecompute' => ['POST', '/v1/quality/recompute', [], [], false, 'json', 'postQualityRecompute', [], 1],
@@ -1356,6 +1582,7 @@ trait Operations
         'postSandboxSimulate' => ['POST', '/v1/sandbox/simulate', [], [], true, 'json', 'postSandboxSimulate', [], 2],
         'postSupportAppsAdapterTest' => ['POST', '/v1/support/apps/{adapter}/test', ['adapter'], [], true, 'json', 'postSupportAppsAdapterTest', ['adapter'], 3],
         'postSupportCardsOrgIdAdapter' => ['POST', '/v1/support/cards/{orgId}/{adapter}', ['orgId','adapter'], [], true, 'json', 'postSupportCardsOrgIdAdapter', ['orgId','adapter'], 4],
+        'postSupportPlatformChatlyCard' => ['POST', '/v1/support/platform/chatly-card', [], [], true, 'json', 'postSupportPlatformChatlyCard', [], 2],
         'postTax1099DocumentsIdCorrect' => ['POST', '/v1/tax/1099/documents/{id}/correct', ['id'], [], false, 'json', 'postTax1099DocumentsIdCorrect', ['id'], 2],
         'postTax1099Filings' => ['POST', '/v1/tax/1099/filings', [], [], true, 'json', 'postTax1099Filings', [], 2],
         'postTax1099FilingsIdRefresh' => ['POST', '/v1/tax/1099/filings/{id}/refresh', ['id'], [], false, 'json', 'postTax1099FilingsIdRefresh', ['id'], 2],
@@ -1384,6 +1611,7 @@ trait Operations
         'putMeLocale' => ['PUT', '/v1/me/locale', [], [], true, 'json', 'putMeLocale', [], 2],
         'putMeRoiDigest' => ['PUT', '/v1/me/roi-digest', [], [], true, 'json', 'putMeRoiDigest', [], 2],
         'putNetworkSettings' => ['PUT', '/v1/network/settings', [], [], true, 'json', 'putNetworkSettings', [], 2],
+        'putOrgConsentPartnersCookiemunch' => ['PUT', '/v1/org/consent-partners/cookiemunch', [], [], true, 'json', 'putOrgConsentPartnersCookiemunch', [], 2],
         'putOrgFxFeed' => ['PUT', '/v1/org/fx-feed', [], [], true, 'json', 'putOrgFxFeed', [], 2],
         'putOrgHostedPages' => ['PUT', '/v1/org/hosted-pages', [], [], true, 'json', 'putOrgHostedPages', [], 2],
         'putOrgPayoutSchedule' => ['PUT', '/v1/org/payout-schedule', [], [], true, 'json', 'putOrgPayoutSchedule', [], 2],
@@ -1402,6 +1630,7 @@ trait Operations
         'putPartnersIdPayoutProfile' => ['PUT', '/v1/partners/{id}/payout-profile', ['id'], [], true, 'json', 'putPartnersIdPayoutProfile', ['id'], 3],
         'putPartnersIdVat' => ['PUT', '/v1/partners/{id}/vat', ['id'], [], true, 'json', 'putPartnersIdVat', ['id'], 3],
         'putPayoutConnectionsProvider' => ['PUT', '/v1/payout-connections/{provider}', ['provider'], [], true, 'json', 'putPayoutConnectionsProvider', ['provider'], 3],
+        'putPortalThemeDraft' => ['PUT', '/v1/portal/theme/draft', [], [], true, 'json', 'putPortalThemeDraft', [], 2],
         'putProfitabilityProductsProductRef' => ['PUT', '/v1/profitability/products/{productRef}', ['productRef'], [], true, 'json', 'putProfitabilityProductsProductRef', ['productRef'], 3],
         'putProfitabilitySettings' => ['PUT', '/v1/profitability/settings', [], [], true, 'json', 'putProfitabilitySettings', [], 2],
         'putProgramsIdAutopricing' => ['PUT', '/v1/programs/{id}/autopricing', ['id'], [], true, 'json', 'putProgramsIdAutopricing', ['id'], 3],
@@ -1410,7 +1639,9 @@ trait Operations
         'putProgramsIdPartnersPartnerIdGroup' => ['PUT', '/v1/programs/{id}/partners/{partnerId}/group', ['id','partnerId'], [], true, 'json', 'putProgramsIdPartnersPartnerIdGroup', ['id','partnerId'], 4],
         'putProgramsIdPayoutSchedule' => ['PUT', '/v1/programs/{id}/payout-schedule', ['id'], [], true, 'json', 'putProgramsIdPayoutSchedule', ['id'], 3],
         'putProgramsIdRefereeReward' => ['PUT', '/v1/programs/{id}/referee-reward', ['id'], [], true, 'json', 'putProgramsIdRefereeReward', ['id'], 3],
+        'putProgramsIdStripeCredits' => ['PUT', '/v1/programs/{id}/stripe-credits', ['id'], [], true, 'json', 'putProgramsIdStripeCredits', ['id'], 3],
         'putRewardsRulesKey' => ['PUT', '/v1/rewards/rules/{key}', ['key'], [], true, 'json', 'putRewardsRulesKey', ['key'], 3],
+        'putStripeCreditsConnection' => ['PUT', '/v1/stripe-credits/connection', [], [], true, 'json', 'putStripeCreditsConnection', [], 2],
         'putSupportAppsAdapter' => ['PUT', '/v1/support/apps/{adapter}', ['adapter'], [], true, 'json', 'putSupportAppsAdapter', ['adapter'], 3],
     ];
 
@@ -1574,6 +1805,19 @@ trait Operations
     }
 
     /**
+     * Revoke a partner API token. DELETE /v1/partner/api-tokens/{id}
+     *
+     * Stops the token at once. Portal session only.
+     *
+     * **Auth:** a partner session.
+     * @return DeletePartnerApiTokensIdResponse
+     */
+    public function deletePartnerApiTokensId(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/partner/api-tokens/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Delete a partner. DELETE /v1/partners/{id}
      *
      * Deletes a partner that never did anything, with its enrollments, links, coupons and payout profile. A partner with any clicks, referrals, commissions, payouts or other history is `409`: archive it instead (`status: "archived"`). Audited.
@@ -1600,6 +1844,19 @@ trait Operations
     }
 
     /**
+     * Discard the portal design draft. DELETE /v1/portal/theme/draft
+     *
+     * Drops the draft and its preview link. What partners see is unchanged. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetPortalThemeResponse
+     */
+    public function deletePortalThemeDraft(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/portal/theme/draft', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Disconnect a DSAR tool. DELETE /v1/privacy/executors/{adapter}
      *
      * Removes the tool, its key and settings; its URL answers 404 from now on. The request log stays.
@@ -1610,6 +1867,19 @@ trait Operations
     public function deletePrivacyExecutorsAdapter(string $adapter, ?string $idempotencyKey = null): mixed
     {
         return $this->request('DELETE', '/v1/privacy/executors/' . self::seg($adapter) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Revoke a partner link. DELETE /v1/product-links/{id}
+     *
+     * The link and every token issued from it stop at once. A root action (see create).
+     *
+     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return DeleteProductLinksIdResponse
+     */
+    public function deleteProductLinksId(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/product-links/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -1636,6 +1906,19 @@ trait Operations
     public function deleteRewardsRulesKey(string $key, ?string $idempotencyKey = null): mixed
     {
         return $this->request('DELETE', '/v1/rewards/rules/' . self::seg($key) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Remove the Stripe balance credit key. DELETE /v1/stripe-credits/connection
+     *
+     * Deletes the rail's own key. A Stripe payout connection, if any, is then used instead; with neither, queued credits fail until a key is connected. Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetStripeCreditsConnectionResponse
+     */
+    public function deleteStripeCreditsConnection(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/stripe-credits/connection', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2259,7 +2542,7 @@ trait Operations
     /**
      * Get the support-chat identity. GET /v1/chatly/identity
      *
-     * The signed-in merchant user or partner as a Chatly widget identity: `externalId` (`merchant:<id>` or `partner:<id>`), email, name and `userHash`, the HMAC-SHA256 of `externalId` with Referalli's identity secret. `identity` is null when signed out or when identity verification isn't configured. Never cached.
+     * The signed-in merchant user or partner as a Chatly widget identity: `userToken`, an Atlas token minted for the Atlas session behind this one (audience `chatly:<channel>`, at most 120 s), which the page passes to the widget, and `externalId` (`merchant:<id>` or `partner:<id>`), which stays on the page to notice an account switch. `identity` is null when signed out, when the session has no Atlas session behind it, or when Atlas isn't configured. Never cached.
      *
      * **Auth:** none.
      * @return GetChatlyIdentityResponse
@@ -2641,21 +2924,6 @@ trait Operations
     }
 
     /**
-     * Get one org's embed manifest. GET /v1/embed
-     *
-     * The embed manifest for the org that owns `token` (its public tracking token): its link domain in the CSP origins, its longest program cookie window as the storage lifetime, and its consent default. Public, CORS `*`.
-     *
-     * **Auth:** none.
-     *
-     * token: The org's public tracking token.
-     * @return GetWellKnownForgedeckEmbedJsonResponse
-     */
-    public function getEmbed(string $token, ?string $idempotencyKey = null): mixed
-    {
-        return $this->request('GET', '/v1/embed', ['token' => $token], null, $idempotencyKey, 'json');
-    }
-
-    /**
      * Read embedded partner stats. GET /v1/embed/summary
      *
      * Called by the embed component with `Authorization: Bearer <embed token>`: the partner's name, eligible clicks, active referrals, balances and link codes. 401 for a missing, invalid or expired token.
@@ -2801,9 +3069,22 @@ trait Operations
      * **Auth:** none.
      * @return GetHostsCurrentResponse
      */
-    public function getHostsCurrent(?string $idempotencyKey = null): mixed
+    public function getHostsCurrent(?string $themePreview = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/hosts/current', [], null, $idempotencyKey, 'json');
+        return $this->request('GET', '/v1/hosts/current', ['themePreview' => $themePreview], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Identify the signed-in partner to the chat. GET /v1/hosts/current/chat-identity
+     *
+     * On a merchant's portal domain, for the signed-in partner of that merchant: the head tags that tell the merchant's chat who they are (partner id, email, name) and, when the merchant saved its chat vendor's identity-verification secret, the vendor's proof (Intercom `user_hash`, a Zendesk messaging JWT, a HubSpot visitor token…). The secret itself never leaves the API. Elsewhere, or for someone who isn't this merchant's partner, `tags` is empty. Partner session; `private, no-store`.
+     *
+     * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
+     * @return GetHostsCurrentChatIdentityResponse
+     */
+    public function getHostsCurrentChatIdentity(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/hosts/current/chat-identity', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2814,9 +3095,9 @@ trait Operations
      * **Auth:** none.
      * @return string
      */
-    public function getHostsCurrentThemeCss(?string $idempotencyKey = null): string
+    public function getHostsCurrentThemeCss(?string $themePreview = null, ?string $idempotencyKey = null): string
     {
-        return $this->request('GET', '/v1/hosts/current/theme.css', [], null, $idempotencyKey, 'text');
+        return $this->request('GET', '/v1/hosts/current/theme.css', ['themePreview' => $themePreview], null, $idempotencyKey, 'text');
     }
 
     /**
@@ -3147,6 +3428,34 @@ trait Operations
     }
 
     /**
+     * Get the Cookie Munch consent-event link. GET /v1/org/consent-partners/cookiemunch
+     *
+     * What to enter in Cookie Munch to send your site's consent events to Referalli: link partner `referalli` with `externalId` (your org id); deliveries go to `receiverUrl`. `sites` are the Cookie Munch sites (cbids) whose events this org accepts, and `grants` says, per site, whether its owner granted Referalli that site in Cookie Munch (`granted`, `waiting_on_partner`, `revoked`, `expired`, `none`, or `unknown` when Cookie Munch couldn't be asked; `grantCheck` says why). `stampCheck.status` is `live` when Referalli checks visitors' consent stamps with Cookie Munch, else `not_configured`.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * @return GetOrgConsentPartnersCookiemunchResponse
+     */
+    public function getOrgConsentPartnersCookiemunch(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/org/consent-partners/cookiemunch', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List received Cookie Munch consent events. GET /v1/org/consent-partners/cookiemunch/events
+     *
+     * Consent evidence from Cookie Munch, newest first: each `consent.recorded` and `consent.withdrawn` event for your registered sites, with the visitor's consent `stamp`, the `choices` (and for a withdrawal, the `withdrawn` categories), and the id of the key that signed it. Filter by `stamp` to see one visitor's history; with `stamp`, `checks` lists what Cookie Munch said about it (newest first, `credited` only for `consented`). Append-only.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     *
+     * stamp: Only this visitor's consent stamp.
+     * @return GetOrgConsentPartnersCookiemunchEventsResponse
+     */
+    public function getOrgConsentPartnersCookiemunchEvents(?string $stamp = null, ?int $limit = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/org/consent-partners/cookiemunch/events', ['stamp' => $stamp, 'limit' => $limit], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Get the FX feed setting. GET /v1/org/fx-feed
      *
      * Whether the daily ECB reference-rate feed is on for this org, and the date of its latest rate.
@@ -3162,7 +3471,7 @@ trait Operations
     /**
      * Get the hosted-page consent and chat. GET /v1/org/hosted-pages
      *
-     * What runs on the pages Referalli hosts for you on your own portal domain (the partner portal and `/join`): your consent banner (Cookie Munch, OneTrust, Cookiebot, Usercentrics, Didomi, Osano, Termly, iubenda, a custom CMP, a built-in necessary-only notice, or none) and your support chat (Chatly, Intercom, Crisp or custom). `served` is exactly what visitors get: the head tags, the "Cookie settings" link and the Content-Security-Policy built from these adapters. Referalli's own banner and chat never run on your domain.
+     * What runs on the pages Referalli hosts for you on your own portal domain (the partner portal and `/join`): your consent banner (Cookie Munch, OneTrust, Cookiebot, Usercentrics, Didomi, Osano, Termly, iubenda, CookieYes, TrustArc, Ketch, Transcend, CookieFirst, consentmanager, Cookie Information, CookieScript, CookieHub, Google Privacy & messaging, Axeptio, Sourcepoint, InMobi Choice, Securiti, Enzuzo, CookiePro, TrustCommander, Klaro, Civic Cookie Control, a custom CMP, a built-in necessary-only notice, or none) and your support chat (Chatly, Intercom, Crisp, Zendesk Messaging, HubSpot, Drift, LiveChat, Tawk.to, Freshchat, Tidio, Help Scout Beacon, Front, Chatwoot, Olark, Smartsupp, JivoChat, Gorgias, Pylon, Plain, Userlike, Zoho SalesIQ, Re:amaze, Chatra, Kustomer, Gladly, Brevo, Trengo, Dixa, Gist, Freshdesk, LiveAgent, Chatbase, Voiceflow, Botpress, Salesforce, Dynamics 365 or custom). `adapters.consent[].fields` are the `config.params` a CMP's inline snippet needs. `adapters.chat[].fields` lists each chat's config keys; `chat.hasIdentitySecret` says whether an identity-verification secret is saved (never the secret). `served` is exactly what visitors get: the head tags, the "Cookie settings" link and the Content-Security-Policy built from these adapters. Referalli's own banner and chat never run on your domain.
      *
      * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
      * @return GetOrgHostedPagesResponse
@@ -3399,6 +3708,19 @@ trait Operations
     public function getPartnerAdvanceOffer(?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/partner/advance/offer', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List your partner API tokens. GET /v1/partner/api-tokens
+     *
+     * Your active `rpt_` tokens (never the token itself). Portal session only: a token cannot list tokens.
+     *
+     * **Auth:** a partner session.
+     * @return GetPartnerApiTokensResponse
+     */
+    public function getPartnerApiTokens(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/partner/api-tokens', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -3924,14 +4246,14 @@ trait Operations
     /**
      * Get a partner. GET /v1/partners/{id}
      *
-     * One partner, with a cross-network warning when the same account is flagged or banned by other merchants (it never says which).
+     * One partner, with a cross-network warning when the same account is flagged or banned by other merchants (it never says which). With `programId`, `externalRef` is the one that program knows them by: its own externalRef for them when it has one, else the partner's.
      *
      * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
      * @return GetPartnersIdResponse
      */
-    public function getPartnersId(string $id, ?string $idempotencyKey = null): mixed
+    public function getPartnersId(string $id, ?string $programId = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/partners/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
+        return $this->request('GET', '/v1/partners/' . self::seg($id) . '', ['programId' => $programId], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -3965,7 +4287,7 @@ trait Operations
     /**
      * List a partner's enrollments. GET /v1/partners/{id}/enrollments
      *
-     * The programs a partner is enrolled in or applied to, with status and group.
+     * The programs a partner is enrolled in or applied to, with status, group and `externalRef` (that program's own id for the partner, or null when the partner's own applies).
      *
      * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
      *
@@ -4014,6 +4336,32 @@ trait Operations
     public function getPartnersIdQuality(string $id, ?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/partners/' . self::seg($id) . '/quality', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get a partner's stats. GET /v1/partners/{id}/stats
+     *
+     * What the partner brought in, in one call: eligible clicks, referrals by status, converted customers (referred, not void, with at least one payment) and balances per currency. Pass `programId` to count one program only (an org shared by several products).
+     *
+     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * @return GetPartnersIdStatsResponse
+     */
+    public function getPartnersIdStats(string $id, ?string $programId = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/partners/' . self::seg($id) . '/stats', ['programId' => $programId], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get a partner's referrer summary. GET /v1/partners/{id}/summary
+     *
+     * Everything a referrer panel shows, in one call: the stats for one program (`programId` is required) plus the partner's current `code` there (the newest coupon, else the newest link's code) and `linkUrl` (null when they have only a coupon).
+     *
+     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * @return GetPartnersIdSummaryResponse
+     */
+    public function getPartnersIdSummary(string $id, string $programId, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/partners/' . self::seg($id) . '/summary', ['programId' => $programId], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -4250,6 +4598,58 @@ trait Operations
     }
 
     /**
+     * Get the portal design. GET /v1/portal/theme
+     *
+     * The partner portal's look and layout on your portal domain: `published` (what partners see) and `draft` (what you are editing, or null). Colours with a separate dark palette, the colour scheme, widths and density, fonts (a stylesheet URL, `@font-face` files, a family per role, the type scale), the logo set and favicon, component shape (radius, shadow, buttons, inputs, focus ring, links), an announcement, the header and footer, the home sections and navigation, the sign-in page, interface string overrides, typed theme settings, CSS snippets, custom CSS, phone tuning and embedding. Every key is optional; an unset key keeps the built-in look.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * @return GetPortalThemeResponse
+     */
+    public function getPortalTheme(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/portal/theme', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Preview the compiled portal design. GET /v1/portal/theme/compiled
+     *
+     * The draft (or `?which=published`) compiled: `css`, the stylesheet partners load, and `view`, the layout, brand and text the portal draws. For a live preview in your own editor.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * @return GetPortalThemeCompiledResponse
+     */
+    public function getPortalThemeCompiled(?string $which = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/portal/theme/compiled', ['which' => $which], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get the portal design schema. GET /v1/portal/theme/schema
+     *
+     * Every key the portal design takes, as JSON Schema (draft 2020-12): build an editor or validate a theme file before you send it.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * @return GetPortalThemeSchemaResponse
+     */
+    public function getPortalThemeSchema(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/portal/theme/schema', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List published portal designs. GET /v1/portal/theme/versions
+     *
+     * The last 50 published versions, newest first.
+     *
+     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * @return GetPortalThemeVersionsResponse
+     */
+    public function getPortalThemeVersions(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/portal/theme/versions', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * List DSAR tool requests. GET /v1/privacy/executor-requests
      *
      * The last 200 requests connected DSAR tools sent: operation, outcome and the vendor request id. Subjects are kept only as hashes.
@@ -4343,6 +4743,19 @@ trait Operations
     }
 
     /**
+     * List partner links. GET /v1/product-links
+     *
+     * Other products allowed to call this organization's API (REF-S28), newest first, with status, scopes and last use. Secrets are never shown again. Owners and admins, or a key with team:read.
+     *
+     * **Auth:** an API key with `team:read` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetProductLinksResponse
+     */
+    public function getProductLinks(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/product-links', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * List product margins. GET /v1/profitability/products
      *
      * The margin catalog: per product, a margin (bps) or a unit cost, used to turn revenue into profit.
@@ -4397,7 +4810,7 @@ trait Operations
     /**
      * List programs. GET /v1/programs
      *
-     * The org's programs, oldest first, with their settings.
+     * The org's programs, oldest first, with their settings. `slug` returns just that program.
      *
      * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
      *
@@ -4408,18 +4821,18 @@ trait Operations
      * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * @return array{object: string, data: list<Program>, has_more: bool, next_cursor: string|null}
      */
-    public function getPrograms(?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    public function getPrograms(?string $slug = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/programs', ['limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+        return $this->request('GET', '/v1/programs', ['slug' => $slug, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
     }
 
     /**
      * Every item of {@see getPrograms()}, following the pages.
      * @return \Generator<int, Program>
      */
-    public function getProgramsEach(?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    public function getProgramsEach(?string $slug = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
-        return $this->paginate(fn (?string $cursor) => $this->getPrograms(limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+        return $this->paginate(fn (?string $cursor) => $this->getPrograms(slug: $slug, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
     }
 
     /**
@@ -4451,7 +4864,7 @@ trait Operations
     /**
      * List program enrollments. GET /v1/programs/{id}/enrollments
      *
-     * The program's enrollments and applications, newest first, each with the partner and a cross-network warning when other merchants banned the same account. Filter with `status`.
+     * The program's enrollments and applications, newest first, each with the partner and a cross-network warning when other merchants banned the same account and `externalRef` (this program's own id for the partner, or null). Filter with `status` or `partnerId`.
      *
      * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
      *
@@ -4462,18 +4875,18 @@ trait Operations
      * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * @return array{object: string, data: list<GetProgramsIdEnrollmentsResponseDataItem>, has_more: bool, next_cursor: string|null}
      */
-    public function getProgramsIdEnrollments(string $id, ?string $status = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    public function getProgramsIdEnrollments(string $id, ?string $status = null, ?string $partnerId = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/programs/' . self::seg($id) . '/enrollments', ['status' => $status, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+        return $this->request('GET', '/v1/programs/' . self::seg($id) . '/enrollments', ['status' => $status, 'partnerId' => $partnerId, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
     }
 
     /**
      * Every item of {@see getProgramsIdEnrollments()}, following the pages.
      * @return \Generator<int, GetProgramsIdEnrollmentsResponseDataItem>
      */
-    public function getProgramsIdEnrollmentsEach(string $id, ?string $status = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    public function getProgramsIdEnrollmentsEach(string $id, ?string $status = null, ?string $partnerId = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
-        return $this->paginate(fn (?string $cursor) => $this->getProgramsIdEnrollments(id: $id, status: $status, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+        return $this->paginate(fn (?string $cursor) => $this->getProgramsIdEnrollments(id: $id, status: $status, partnerId: $partnerId, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
     }
 
     /**
@@ -4570,6 +4983,47 @@ trait Operations
     public function getProgramsIdRefereeReward(string $id, ?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/programs/' . self::seg($id) . '/referee-reward', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get a program's Stripe balance credit settings. GET /v1/programs/{id}/stripe-credits
+     *
+     * Whether settled lines of this program are credited to the partner's Stripe customer balance, how that customer is found (`referrerMatch`), and whether store-credit referee rewards are credited too. `keyConnected` says whether a Stripe key is available.
+     *
+     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * @return GetProgramsIdStripeCreditsResponse
+     */
+    public function getProgramsIdStripeCredits(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/programs/' . self::seg($id) . '/stripe-credits', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * List a program's Stripe balance credits. GET /v1/programs/{id}/stripe-credits/log
+     *
+     * Every credit and debit the rail queued for this program, newest first: amount, Stripe customer, `status` (`pending`, `applied`, `no_customer`, `failed`, `canceled`), attempts, the Stripe balance transaction id once applied, and the last error. Unapplied rows are retried hourly, up to 24 tries.
+     *
+     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     *
+     * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
+     * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
+     * ending_before: A cursor: returns the items before this item id (the previous page). Not with `starting_after`. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
+     * created[gte]: Only items created at or after this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
+     * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
+     * @return array{object: string, data: list<GetProgramsIdStripeCreditsLogResponseDataItem>, has_more: bool, next_cursor: string|null}
+     */
+    public function getProgramsIdStripeCreditsLog(string $id, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/programs/' . self::seg($id) . '/stripe-credits/log', ['limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+    }
+
+    /**
+     * Every item of {@see getProgramsIdStripeCreditsLog()}, following the pages.
+     * @return \Generator<int, GetProgramsIdStripeCreditsLogResponseDataItem>
+     */
+    public function getProgramsIdStripeCreditsLogEach(string $id, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    {
+        return $this->paginate(fn (?string $cursor) => $this->getProgramsIdStripeCreditsLog(id: $id, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
     }
 
     /**
@@ -5060,6 +5514,19 @@ trait Operations
     }
 
     /**
+     * Get the Stripe balance credit key status. GET /v1/stripe-credits/connection
+     *
+     * Whether the Stripe balance credit rail has a key: its own (`source: "stripe_credits"`) or your Stripe payout connection (`source: "payout_connection"`). The key is never returned.
+     *
+     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * @return GetStripeCreditsConnectionResponse
+     */
+    public function getStripeCreditsConnection(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/stripe-credits/connection', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * List support tool connections. GET /v1/support/apps
      *
      * Every support tool Referalli can show referral context in (Chatly cards and AI tools, Intercom, Zendesk, HubSpot, Front, Help Scout, custom), with its card URL, install steps and whether it is set up. Secrets are never returned.
@@ -5078,7 +5545,7 @@ trait Operations
      * The same card for tools that fetch with GET (HubSpot legacy CRM cards pass the contact as query parameters). Signed as for the POST form; 404 otherwise.
      *
      * **Auth:** none.
-     * @return PostSupportCardsOrgIdAdapterResponse
+     * @return GetSupportPlatformChatlyAnswersResponse
      */
     public function getSupportCardsOrgIdAdapter(string $orgId, string $adapter, ?string $email = null, ?string $externalId = null, ?string $idempotencyKey = null): mixed
     {
@@ -5099,6 +5566,19 @@ trait Operations
     public function getSupportContext(?string $email = null, ?string $customerRef = null, ?string $partnerExternalRef = null, ?string $ext = null, ?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/support/context', ['email' => $email, 'customerRef' => $customerRef, 'partnerExternalRef' => $partnerExternalRef, 'ext' => $ext], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Answer a partner's question for Referalli's own support desk. GET /v1/support/platform/chatly-answers
+     *
+     * Called by Chatly's `referral_answers` preset, never by you: a signed GET (`x-chatly-signature: t=…,v1=…`, HMAC-SHA256 with `CHATLY_TOOL_SECRET` over `<t>.GET.<path and query>.`, 300 s window) with `question` (`referral_link`, `commission_status`, `next_payout`; others get the full answer), `subject` (the verified Atlas `sub`) and `principal` (`partner`, or absent when the tool was created over the API). Read-only: the partner's link, pending, approved and paid commission and next payout in every programme they're in. `{found: false}` when no partner account is linked; 403 without a verified partner identity; 404 for a bad or stale signature.
+     *
+     * **Auth:** none.
+     * @return GetSupportPlatformChatlyAnswersResponse
+     */
+    public function getSupportPlatformChatlyAnswers(?string $subject = null, ?string $principal = null, ?string $question = null, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/support/platform/chatly-answers', ['subject' => $subject, 'principal' => $principal, 'question' => $question], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -5418,7 +5898,7 @@ trait Operations
     /**
      * Update an API key. PATCH /v1/api-keys/{id}
      *
-     * Changes a key's pinned `apiVersion`, `owner` or expiry (`expiresInDays` from now; `null` removes it). Revoked keys are 404. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Changes a key's pinned `apiVersion`, `owner`, expiry (`expiresInDays` from now; `null` removes it) or `programIds` (`null` makes it org-wide). Revoked keys are 404. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
      * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
      * @param PatchApiKeysIdBody $body
@@ -5542,9 +6022,23 @@ trait Operations
     }
 
     /**
+     * Change part of the portal design draft. PATCH /v1/portal/theme/draft
+     *
+     * Deep-merges into the draft (or, with no draft, into a copy of what is published): objects merge key by key, arrays and values replace, `null` deletes a key. The result is validated as a whole. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param array<string, mixed> $body
+     * @return GetPortalThemeResponse
+     */
+    public function patchPortalThemeDraft(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PATCH', '/v1/portal/theme/draft', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Update a program. PATCH /v1/programs/{id}
      *
-     * Changes any program field or setting; omitted fields keep their value, and `publicPage` is merged. Changing `termsMd` records a new terms version. Setting `status` to `paused` or `archived` stops new attribution. `mobileApp` (iOS Team ID and bundle id, Android package and signing-certificate fingerprints) publishes the program's apps in the universal-links and App Links files on the org's link hosts. Audited.
+     * Changes any program field or setting; omitted fields keep their value, and `publicPage` is merged. Changing `termsMd` records a new terms version. Setting `status` to `paused` or `archived` stops new attribution. `mobileApp` (iOS Team ID and bundle id, Android package and signing-certificate fingerprints) publishes the program's apps in the universal-links and App Links files on the org's link hosts. `destinationUrl` moves the program's default link destination: every link still on the old default (the widget's or a sign-in connection's) is repointed in the same call, custom destinations stay, and links already shared follow at click time; `{code}` in it becomes the link's code. Audited.
      *
      * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PatchProgramsIdBody $body
@@ -5722,7 +6216,7 @@ trait Operations
     /**
      * Create an API key. POST /v1/api-keys
      *
-     * Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response. `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key (default: latest). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response. `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key (default: latest). `programIds` limits the key to those programs (their partners, links, referrals, commissions, enrollments, and webhook endpoints whose `programIds` are all within the key's, with their deliveries); a program-scoped key gets 403 `program_scoped_key` on org-wide endpoints (keys, team, org settings, billing, payouts, the event feed, analytics, creating programs). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
      * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
      * @param PostApiKeysBody $body
@@ -5834,7 +6328,7 @@ trait Operations
     /**
      * Test an auth connection (signed protocol). POST /v1/auth/connections/{id}/ping
      *
-     * Proves the secret works: returns the connection, its program and org and the server time, to check clock skew. Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
+     * Proves the secret works: returns the connection, its program and org, the server time (to check clock skew) and `capabilities` (`{ partners: true }`: user-chosen referral codes through `/partners`). Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
      *
      * **Auth:** a signature (see above); no API key.
      * @param array<string, mixed> $body
@@ -6626,12 +7120,12 @@ trait Operations
     }
 
     /**
-     * Exchange an install code. POST /v1/oauth/token
+     * Token endpoint: install codes, partner links, Atlas operator token exchange. POST /v1/oauth/token
      *
-     * Server to server: the platform trades the single-use code and its PKCE `code_verifier` for a new signed-protocol connection and its signing secret (returned only here). Installing again for the same instance keeps the connection and issues a new secret, the old one verifying for 24 hours. 401 for an unknown, used, expired or mismatched code. No authentication.
+     * Form-encoded or JSON, three grants. `authorization_code`: the platform trades the single-use one-click-install code and its PKCE `code_verifier` for a new signed-protocol connection and its signing secret (returned only here), plus a one-hour `access_token` scoped `connections:write webhooks:write` so the platform can require v2 signatures and register its sync webhook; installing again keeps the connection and issues a new secret, the old one verifying for 24 hours; 401 for an unknown, used, expired or mismatched code. `client_credentials`: a partner link's `client_id` and `client_secret` (HTTP Basic or the body), optional `scope` within the link's, for a one-hour `rat_…` bearer token. `urn:ietf:params:oauth:grant-type:token-exchange` (RFC 8693): `subject_token` = an Atlas operator access token from `atlas login` (issuer https://atlasauth.net, verified with its discovery document and JWKS, scope `atlas:operator`), `subject_token_type` access_token, `resource` = the org id; the Atlas account must sign in to a Referalli member of that org, and the token gets that role (owner: admin, admin: full, others: read), narrowed by `scope`. Errors follow RFC 6749 §5.2 (`{error, error_description}`). No authentication.
      *
      * **Auth:** none.
-     * @param PostOauthTokenBody $body
+     * @param PostOauthTokenBodyOption1|PostOauthTokenBodyOption2|PostOauthTokenBodyOption3 $body
      * @return PostOauthTokenResponse
      */
     public function postOauthToken(array $body, ?string $idempotencyKey = null): mixed
@@ -6651,6 +7145,20 @@ trait Operations
     public function postOnchainConnections(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/onchain/connections', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Check a visitor's consent stamp with Cookie Munch. POST /v1/org/consent-partners/cookiemunch/stamps/check
+     *
+     * Asks Cookie Munch (`GET /v1/partner/sites/{cbid}/stamps/{stamp}`) what the visitor's consent stamp says on your registered site (`cbid`, or each registered site in turn) and keeps the answer. `verdict`: `consented` (found, with the `referrals` category on: the only verdict that credits a referral's consent), `not_consented`, `withdrawn` (a later decision turned `referrals` off: `withdrawnAt`), `not_found` (the site never recorded the stamp), `no_grant` (Cookie Munch's 403: the site has no live link to Referalli) or `error`. Clicks and consent events that carry a Cookie Munch stamp are checked the same way in the background. 409 when the partner token isn't configured or no site is registered. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostOrgConsentPartnersCookiemunchStampsCheckBody $body
+     * @return PostOrgConsentPartnersCookiemunchStampsCheckResponse
+     */
+    public function postOrgConsentPartnersCookiemunchStampsCheck(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/org/consent-partners/cookiemunch/stamps/check', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -6705,6 +7213,20 @@ trait Operations
     public function postOrgs(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/orgs', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Mint an executor key under a Cookie Munch partner link. POST /v1/orgs/{orgId}/privacy/executor-key
+     *
+     * Called by Cookie Munch, not by you (CMU-X25): mints (or rotates) this org's cm-standard-v2 executor key so Cookie Munch's `referalli` executor preset can connect without a pasted key. The request must be signed by Cookie Munch's partner key exactly like its consent deliveries: `CookieMunch-Partner-Signature: t=<unix seconds>,kid=<key id>,ed25519=<base64url>` over `<t>.<raw body>`, with the key named in `https://api.cookiemunch.net/v1/partner/jwks.json` (300 s window; each signed request and each body `nonce` works once, a replay is 409; `partner` must be `referalli` and `externalId` the org in the path). Referalli then confirms the partner link with Cookie Munch over its own partner token (`GET /v1/partner/links`): it must be `active` or `waiting_on_partner`, name this org as `externalId`, sit on a site this org registered (`PUT /v1/org/consent-partners/cookiemunch`), and match `cbid`/`linkId` when sent; otherwise 403 `no_grant`. 201 `{secret, executorUrl, contract, orgId, linkId, cbid, rotated}`: `secret` is shown once and is the bearer key for `executorUrl` (`https://referalli.com/api`, the cm-standard-v2 baseUrl: calls go to `<executorUrl>/privacy/*`), where it reaches only this org's referred customers and partners. The old key stops working at once. Audited (`privacy.executor_key_minted`).
+     *
+     * **Auth:** none.
+     * @param PostOrgsOrgIdPrivacyExecutorKeyBody $body
+     * @return PostOrgsOrgIdPrivacyExecutorKeyResponse
+     */
+    public function postOrgsOrgIdPrivacyExecutorKey(string $orgId, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/orgs/' . self::seg($orgId) . '/privacy/executor-key', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -6812,6 +7334,20 @@ trait Operations
     public function postPartnerAdvanceAccept(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/partner/advance/accept', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Create a partner API token. POST /v1/partner/api-tokens
+     *
+     * A token for calling the partner API from your own code, across every programme you're in: `Authorization: Bearer rpt_…`. `read` reaches your profile, stats, links, referrals, payouts, achievements, assets, groups, contracts, deals, disputes, notifications, invitations, recruiting, terms and KYC status; `write` also creates links, deals and disputes and marks notifications read. Security, profile and payout details, KYC, contracts, advances and tax documents stay portal-only. Shown once. Portal session only, with `x-totp-code` when two-factor is on; at most 10 active.
+     *
+     * **Auth:** a partner session.
+     * @param PostPartnerApiTokensBody $body
+     * @return PostPartnerApiTokensResponse
+     */
+    public function postPartnerApiTokens(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/partner/api-tokens', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -7060,6 +7596,20 @@ trait Operations
     }
 
     /**
+     * Create a portal sign-in link. POST /v1/partners/{id}/portal-link
+     *
+     * A single-use `url` (valid 5 minutes) for a "View earnings" button in your app: opening it signs the partner in to the partner portal for `programId`, with no second account. The session is read-only and limited to this partner in your organization (never the partner's other merchants or account settings) and lasts 12 hours. `returnUrl` must be a path inside the portal, such as `/portal/earnings`. 404 for a partner outside your organization or not enrolled in the program. Owner or admin.
+     *
+     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostPartnersIdPortalLinkBody $body
+     * @return PostPartnersIdPortalLinkResponse
+     */
+    public function postPartnersIdPortalLink(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/partners/' . self::seg($id) . '/portal-link', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Record a partner's tax form. POST /v1/partners/{id}/tax-form
      *
      * Records a W-9, W-8BEN or W-8BEN-E for the partner (`data` is the form's fields). A tax form on file is required before a partner is included in a payout run.
@@ -7153,6 +7703,60 @@ trait Operations
     }
 
     /**
+     * Import a brand file into the portal design. POST /v1/portal/theme/import-brand
+     *
+     * A W3C design-tokens (DTCG) brand file, sent as `document` or fetched from an https `url`, merged into the draft: colours (`color.primary`, `color.background`, `color.surface`, `color.text`, `color.muted`, `color.border`, status colours), fonts (`font.body`, `font.heading`, `font.mono`, `font.url`), `radius.base`, `logo.url` and `brand.name`. `applied` lists the tokens used. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostPortalThemeImportBrandBody $body
+     * @return PostPortalThemeImportBrandResponse
+     */
+    public function postPortalThemeImportBrand(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/portal/theme/import-brand', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Get a preview link for the portal design draft. POST /v1/portal/theme/preview
+     *
+     * A link that shows the draft on your verified portal domain (`?themePreview=rpv_…`) for 7 days, to anyone who has it; minting another retires the last. Partners without the link keep seeing the published design. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return PostPortalThemePreviewResponse
+     */
+    public function postPortalThemePreview(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/portal/theme/preview', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Publish the portal design. POST /v1/portal/theme/publish
+     *
+     * Makes the draft what partners see (within a minute), keeps it as a version you can restore, and retires the preview link. Optional `note`. Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostPortalThemePublishBody $body
+     * @return GetPortalThemeResponse
+     */
+    public function postPortalThemePublish(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/portal/theme/publish', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Restore a portal design version. POST /v1/portal/theme/versions/{id}/restore
+     *
+     * Copies a published version into the draft; publish it to make it live again. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @return GetPortalThemeResponse
+     */
+    public function postPortalThemeVersionsIdRestore(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/portal/theme/versions/' . self::seg($id) . '/restore', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Mint a DSAR executor key. POST /v1/privacy/executor-keys
      *
      * Enables a DSAR tool for your org and mints its executor key (a bearer key, or a `whsec_` secret for Standard Webhooks), returned once. Rotating stops the old key at once. Also stores vendor settings: a Transcend public key and API key for completion callbacks, an Osano webhook secret.
@@ -7222,6 +7826,20 @@ trait Operations
     }
 
     /**
+     * Create a partner link. POST /v1/product-links
+     *
+     * `{partner, name?, scopes[], expires_at?}` (Unix ms or ISO 8601, at most a year; default a year; never "never"). Scopes are resource scopes (`integrations:write`, `partners:read`, …) or `connections:read|write` (the auth-platform connection routes only, what Atlas asks for); never admin, full or team. Returns `client_id` and `client_secret` once; the partner swaps them at POST /v1/oauth/token (client_credentials) or sends the secret as a bearer. A root action: an API key cannot hand out more than it holds, and an Atlas operator token needs an MFA sign-in at most 5 minutes old (403 `step_up_required` otherwise).
+     *
+     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostProductLinksBody $body
+     * @return PostProductLinksResponse
+     */
+    public function postProductLinks(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/product-links', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Rebuild ROI figures. POST /v1/profitability/rebuild
      *
      * Recomputes every stored ROI figure from the value events with the current settings and mappings, in the background. Returns a `jobId` to poll; while one rebuild is running, the same job is returned. Audited.
@@ -7278,7 +7896,7 @@ trait Operations
     /**
      * Enroll a partner. POST /v1/programs/{id}/enrollments
      *
-     * Enrolls an existing partner in the program, approved at once. Publishes `partner.enrolled`. 409 when already enrolled.
+     * Enrolls an existing partner in the program, approved at once. Publishes `partner.enrolled`. 409 when already enrolled. `externalRef` is this program's own id for the partner, when their partner `externalRef` belongs to another product sharing the org; this program's webhooks and `GET /v1/partners?externalRef=` then use it.
      *
      * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PostProgramsIdEnrollmentsBody $body
@@ -7341,6 +7959,20 @@ trait Operations
     public function postProgramsIdPromotions(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/programs/' . self::seg($id) . '/promotions', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Make a user a referrer. POST /v1/programs/{id}/referrers
+     *
+     * One idempotent call for one of your users: finds the partner by `externalRef` (or by `email`, enrolling them under this program's own `externalRef` when they refer for another product in the org), else creates it, then enrolls them and creates a coupon code and a link to the program's default destination when missing. `email` is needed only to create the partner (400 without it). 409 `email_taken` when that email is already enrolled in this program under another id.
+     *
+     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostProgramsIdReferrersBody $body
+     * @return PostProgramsIdReferrersResponse
+     */
+    public function postProgramsIdReferrers(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/programs/' . self::seg($id) . '/referrers', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -7528,11 +8160,25 @@ trait Operations
      *
      * **Auth:** none.
      * @param array<string, mixed> $body
-     * @return PostSupportCardsOrgIdAdapterResponse
+     * @return GetSupportPlatformChatlyAnswersResponse
      */
     public function postSupportCardsOrgIdAdapter(string $orgId, string $adapter, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/support/cards/' . self::seg($orgId) . '/' . self::seg($adapter) . '', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Render the card for Referalli's own support desk. POST /v1/support/platform/chatly-card
+     *
+     * Called by Chatly for Referalli's own support workspace, signed `x-chatly-signature` with `CHATLY_PLATFORM_CARD_SECRET`. Names the person by the verified Atlas identity (`iss`, `sub`, `principal`), or by `contact.externalId` (`merchant:<user id>` / `partner:<account id>`), and answers one card across every programme they're in: a partner's status, balances and next payout per programme, or a merchant's organizations and roles. Unknown people get `blocks: null`; a bad or stale signature answers 404.
+     *
+     * **Auth:** none.
+     * @param array<string, mixed> $body
+     * @return GetSupportPlatformChatlyAnswersResponse
+     */
+    public function postSupportPlatformChatlyCard(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/support/platform/chatly-card', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -7924,6 +8570,20 @@ trait Operations
     }
 
     /**
+     * Set the Cookie Munch sites to accept consent events for. PUT /v1/org/consent-partners/cookiemunch
+     *
+     * Replaces the list of Cookie Munch sites (cbids) whose signed consent events this org keeps. An event for any other site is acknowledged and dropped, since the org a delivery names is chosen by whoever made the link. Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutOrgConsentPartnersCookiemunchBody $body
+     * @return GetOrgConsentPartnersCookiemunchResponse
+     */
+    public function putOrgConsentPartnersCookiemunch(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/org/consent-partners/cookiemunch', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Turn the FX feed on or off. PUT /v1/org/fx-feed
      *
      * Turns the daily ECB reference-rate feed on or off. Turning it on syncs once at once and returns how many rates were inserted. Audited.
@@ -7940,7 +8600,7 @@ trait Operations
     /**
      * Set the hosted-page consent and chat. PUT /v1/org/hosted-pages
      *
-     * Validates and saves the adapters. A CMP's `scriptUrl` must be https on that vendor's own hosts; `custom` needs every origin listed. `customOrigins` adds origins per CSP directive (https or wss, no wildcards, no keywords). Owner or admin. Audited.
+     * Validates and saves the adapters. A CMP's `scriptUrl` must be https on that vendor's own hosts; `custom` needs every origin listed; every chat vendor also takes `origins` for hosts its account needs beyond the documented list. `chat.identitySecret` (write-only, sealed) is your chat vendor's identity-verification secret, used to sign partners in to your chat: a string sets it, `null` removes it, absent keeps it, and switching vendors drops it. `customOrigins` adds origins per CSP directive (https or wss, no wildcards, no keywords). Owner or admin. Audited.
      *
      * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PutOrgHostedPagesBody $body
@@ -7968,10 +8628,10 @@ trait Operations
     /**
      * Set partner sign-in. PUT /v1/org/portal-auth
      *
-     * Chooses the portal sign-in adapter and its settings. `custom`: `issuer`, `jwksUrl` (https), optional `loginUrl` (your page that mints the token) and `autoEnrollProgramId`. `oidc`: `issuer`, `clientId`, `clientSecret`. `referalli` removes any configuration. Owner only.
+     * Chooses the portal sign-in adapter and its settings. `custom`: `issuer` and `jwksUrl` (https), or `preset` + `tenant` for a known platform (`jwtPresets` in the GET lists them: Clerk, Supabase, Firebase, Auth0, Cognito, Stytch, Kinde, Okta, Entra ID, Google, Keycloak, Descope, FusionAuth), or `keyType: hs256` with a write-only `sharedSecret` (≥ 32 characters, sealed); optional `audience` (default `referalli:<org>`), `maxAgeS` (30 to 3600, default 300), `claims` (where `sub`, `email`, `name`, `emailVerified` live, by name or dot path), `loginUrl` (your page that mints the token) and `autoEnrollProgramId`. `oidc`: `issuer`, `clientId`, `clientSecret`. `referalli` removes any configuration. Owner only.
      *
      * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
-     * @param PutOrgPortalAuthBodyOption1|PutOrgPortalAuthBodyOption2|PutOrgPortalAuthBodyOption3 $body
+     * @param PutOrgPortalAuthBodyOption1|PutOrgPortalAuthBodyOption2|PutOrgPortalAuthBodyOption3|PutOrgPortalAuthBodyOption4 $body
      * @return PutOrgPortalAuthResponse
      */
     public function putOrgPortalAuth(array $body, ?string $idempotencyKey = null): mixed
@@ -8176,6 +8836,20 @@ trait Operations
     }
 
     /**
+     * Replace the portal design draft. PUT /v1/portal/theme/draft
+     *
+     * Replaces the whole draft: keys you leave out are gone. Unknown keys are refused with 422 naming each one by its full path. Owner or admin.
+     *
+     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param array<string, mixed> $body
+     * @return GetPortalThemeResponse
+     */
+    public function putPortalThemeDraft(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/portal/theme/draft', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Set a product margin. PUT /v1/profitability/products/{productRef}
      *
      * Sets a product's margin (`marginBps`) or unit cost (`unitCostMinor`, in `currency`, default the reporting currency); exactly one of the two. Audited.
@@ -8288,6 +8962,20 @@ trait Operations
     }
 
     /**
+     * Set a program's Stripe balance credit settings. PUT /v1/programs/{id}/stripe-credits
+     *
+     * Turns the rail on or off for a program. Each `commission.settled` line with method `merchant_credit` is credited to the referrer's Stripe customer balance; a later `commission.reversed` debits it back. `referrerMatch`: `billing_link` (the partner's externalRef is a `cus_…` id or is billing-linked to one), `metadata` (Stripe customer search on `metadata[metadataKey]` = the partner's externalRef) or `email` (the one Stripe customer with the partner's email). `refereeRewards: true` also credits `store_credit` referee rewards to the referred customer. Custom units (`x_…`) are never credited. Enabling needs a key (`409 stripe_key_required`). Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutProgramsIdStripeCreditsBody $body
+     * @return GetProgramsIdStripeCreditsResponse
+     */
+    public function putProgramsIdStripeCredits(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/programs/' . self::seg($id) . '/stripe-credits', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Save a reward rule. PUT /v1/rewards/rules/{key}
      *
      * Creates or replaces a rule: the amount, the reason, an optional program and an optional `event` it rewards (one rule per event).
@@ -8299,6 +8987,20 @@ trait Operations
     public function putRewardsRulesKey(string $key, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('PUT', '/v1/rewards/rules/' . self::seg($key) . '', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Connect a Stripe key for balance credits. PUT /v1/stripe-credits/connection
+     *
+     * Stores your own Stripe restricted key (`rk_…`, with Customers write) for the balance credit rail, encrypted and never echoed. Without one the rail uses the secret key of your Stripe payout connection, if any. Owner or admin, recent sign-in. Audited.
+     *
+     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PutStripeCreditsConnectionBody $body
+     * @return GetStripeCreditsConnectionResponse
+     */
+    public function putStripeCreditsConnection(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/stripe-credits/connection', [], $body, $idempotencyKey, 'json');
     }
 
     /**
