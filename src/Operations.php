@@ -215,6 +215,11 @@ namespace Referalli;
  * @phpstan-import-type DisputeResolvedEvent from Models
  * @phpstan-import-type PrivacyRequestCompletedEventData from Models
  * @phpstan-import-type PrivacyRequestCompletedEvent from Models
+ * @phpstan-import-type ApiKeyExpiringEventData from Models
+ * @phpstan-import-type ApiKeyExpiringEvent from Models
+ * @phpstan-import-type FxRatesUpdatedEventDataPairsItem from Models
+ * @phpstan-import-type FxRatesUpdatedEventData from Models
+ * @phpstan-import-type FxRatesUpdatedEvent from Models
  * @phpstan-import-type WebhookEndpointDisabledEventData from Models
  * @phpstan-import-type WebhookEndpointDisabledEvent from Models
  * @phpstan-import-type WebhookEndpointFailingEventData from Models
@@ -310,10 +315,12 @@ namespace Referalli;
  * @phpstan-import-type GetOrgReferralParamsResponse from Models
  * @phpstan-import-type GetProgramsResponse from Models
  * @phpstan-import-type PostProgramsIdReferrersResponse from Models
+ * @phpstan-import-type PostProgramsIdEnrollmentsResponse from Models
  * @phpstan-import-type GetProgramsIdEnrollmentsResponseDataItem from Models
  * @phpstan-import-type GetProgramsIdEnrollmentsResponse from Models
  * @phpstan-import-type PostProgramsIdEnrollmentsEnrollmentIdApproveResponse from Models
  * @phpstan-import-type PostProgramsIdEnrollmentsEnrollmentIdRejectResponse from Models
+ * @phpstan-import-type PostPartnersResponse from Models
  * @phpstan-import-type GetPartnersResponse from Models
  * @phpstan-import-type GetPartnersIdResponse from Models
  * @phpstan-import-type GetPartnersIdEnrollmentsResponseDataItem from Models
@@ -323,6 +330,7 @@ namespace Referalli;
  * @phpstan-import-type PostApiKeysResponse from Models
  * @phpstan-import-type GetApiKeysResponse from Models
  * @phpstan-import-type PatchApiKeysIdResponse from Models
+ * @phpstan-import-type PostApiKeysIdRotateResponse from Models
  * @phpstan-import-type DeleteApiKeysIdResponse from Models
  * @phpstan-import-type GetAuditLogsResponse from Models
  * @phpstan-import-type GetTestClockResponse from Models
@@ -476,6 +484,11 @@ namespace Referalli;
  * @phpstan-import-type GetWebhookDeliveriesIdResponse from Models
  * @phpstan-import-type PostWebhookEndpointsIdReplayResponse from Models
  * @phpstan-import-type PostSandboxSimulateResponse from Models
+ * @phpstan-import-type GetSandboxStripeFixturesResponseDataItem from Models
+ * @phpstan-import-type GetSandboxStripeFixturesResponse from Models
+ * @phpstan-import-type PostSandboxStripeFixturesResponseResultsItem from Models
+ * @phpstan-import-type PostSandboxStripeFixturesResponseCommissionsItem from Models
+ * @phpstan-import-type PostSandboxStripeFixturesResponse from Models
  * @phpstan-import-type PostImportProviderResponse from Models
  * @phpstan-import-type GetOpenapiJsonResponse from Models
  * @phpstan-import-type GetBrandingResponseWarningsItem from Models
@@ -902,7 +915,9 @@ namespace Referalli;
  * @phpstan-import-type PostPortalThemeImportBrandResponseDraftOption1 from Models
  * @phpstan-import-type PostPortalThemeImportBrandResponse from Models
  * @phpstan-import-type GetStripeCreditsConnectionResponse from Models
+ * @phpstan-import-type GetProgramsIdStripeCreditsResponseCreateCustomerIfMissingOption1 from Models
  * @phpstan-import-type GetProgramsIdStripeCreditsResponse from Models
+ * @phpstan-import-type PostProgramsIdStripeCreditsRequeueResponse from Models
  * @phpstan-import-type GetProgramsIdStripeCreditsLogResponseDataItem from Models
  * @phpstan-import-type GetProgramsIdStripeCreditsLogResponse from Models
  * @phpstan-import-type PostWebhooksBillingConnectionIdResponseResultsItem from Models
@@ -984,11 +999,14 @@ namespace Referalli;
  * @phpstan-import-type PatchProgramsIdBodySettings from Models
  * @phpstan-import-type PatchProgramsIdBody from Models
  * @phpstan-import-type PostProgramsIdReferrersBody from Models
+ * @phpstan-import-type PostProgramsIdEnrollmentsBodyMintLink from Models
+ * @phpstan-import-type PostProgramsIdEnrollmentsBodyMint from Models
  * @phpstan-import-type PostProgramsIdEnrollmentsBody from Models
  * @phpstan-import-type PostPartnersBody from Models
  * @phpstan-import-type PatchPartnersIdBody from Models
  * @phpstan-import-type PostApiKeysBody from Models
  * @phpstan-import-type PatchApiKeysIdBody from Models
+ * @phpstan-import-type PostApiKeysIdRotateBody from Models
  * @phpstan-import-type PostTestClockAdvanceBody from Models
  * @phpstan-import-type PostCliDeviceCodesBody from Models
  * @phpstan-import-type PostCliDeviceCodesTokenBody from Models
@@ -1066,6 +1084,8 @@ namespace Referalli;
  * @phpstan-import-type PostWebhookEndpointsBody from Models
  * @phpstan-import-type PatchWebhookEndpointsIdBody from Models
  * @phpstan-import-type PostSandboxSimulateBody from Models
+ * @phpstan-import-type PostSandboxStripeFixturesBodyOverrides from Models
+ * @phpstan-import-type PostSandboxStripeFixturesBody from Models
  * @phpstan-import-type PostImportProviderBody from Models
  * @phpstan-import-type PutBrandingBody from Models
  * @phpstan-import-type PostBrandingLinkDomainBody from Models
@@ -1178,7 +1198,9 @@ namespace Referalli;
  * @phpstan-import-type PostPortalThemePublishBody from Models
  * @phpstan-import-type PostPortalThemeImportBrandBody from Models
  * @phpstan-import-type PutStripeCreditsConnectionBody from Models
+ * @phpstan-import-type PutProgramsIdStripeCreditsBodyCreateCustomerIfMissingOption1 from Models
  * @phpstan-import-type PutProgramsIdStripeCreditsBody from Models
+ * @phpstan-import-type PostProgramsIdStripeCreditsRequeueBody from Models
  * @phpstan-import-type PostGraphqlBody from Models
  */
 trait Operations
@@ -1260,7 +1282,7 @@ trait Operations
         'getExportAccounting' => ['GET', '/v1/export/accounting', [], ['format' => 'format', 'year' => 'year'], false, 'text', 'getExportAccounting', [], 3],
         'getExportFull' => ['GET', '/v1/export/full', [], [], false, 'text', 'getExportFull', [], 1],
         'getFraudCases' => ['GET', '/v1/fraud/cases', [], ['status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getFraudCases', [], 7],
-        'getFxRates' => ['GET', '/v1/fx-rates', [], ['base' => 'base', 'quote' => 'quote', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getFxRates', [], 8],
+        'getFxRates' => ['GET', '/v1/fx-rates', [], ['base' => 'base', 'quote' => 'quote', 'effectiveAt[gte]' => 'effectiveAtGte', 'effectiveAt[lte]' => 'effectiveAtLte', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getFxRates', [], 10],
         'getGraphql' => ['GET', '/v1/graphql', [], [], false, 'json', 'getGraphql', [], 1],
         'getHealth' => ['GET', '/v1/health', [], [], false, 'json', 'getHealth', [], 1],
         'getHostsCurrent' => ['GET', '/v1/hosts/current', [], ['themePreview' => 'themePreview'], false, 'json', 'getHostsCurrent', [], 2],
@@ -1324,7 +1346,7 @@ trait Operations
         'getPartnerRecruit' => ['GET', '/v1/partner/recruit', [], [], false, 'json', 'getPartnerRecruit', [], 1],
         'getPartnerReferrals' => ['GET', '/v1/partner/referrals', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerReferrals', [], 6],
         'getPartnerReferralsIdTransparency' => ['GET', '/v1/partner/referrals/{id}/transparency', ['id'], [], false, 'json', 'getPartnerReferralsIdTransparency', ['id'], 2],
-        'getPartners' => ['GET', '/v1/partners', [], ['email' => 'email', 'externalRef' => 'externalRef', 'status' => 'status', 'includeArchived' => 'includeArchived', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartners', [], 10],
+        'getPartners' => ['GET', '/v1/partners', [], ['email' => 'email', 'externalRef' => 'externalRef', 'programId' => 'programId', 'status' => 'status', 'includeArchived' => 'includeArchived', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartners', [], 11],
         'getPartnerSecurity' => ['GET', '/v1/partner/security', [], [], false, 'json', 'getPartnerSecurity', [], 1],
         'getPartnersId' => ['GET', '/v1/partners/{id}', ['id'], ['programId' => 'programId'], false, 'json', 'getPartnersId', ['id'], 3],
         'getPartnersIdBalances' => ['GET', '/v1/partners/{id}/balances', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnersIdBalances', ['id'], 7],
@@ -1390,6 +1412,7 @@ trait Operations
         'getRoiPatternsPattern' => ['GET', '/v1/roi/patterns/{pattern}', ['pattern'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getRoiPatternsPattern', ['pattern'], 7],
         'getRoiSummary' => ['GET', '/v1/roi/summary', [], ['from' => 'from', 'to' => 'to', 'programId' => 'programId', 'partnerId' => 'partnerId', 'windowDays' => 'windowDays', 'currency' => 'currency', 'format' => 'format', 'model' => 'model', 'includeProjection' => 'includeProjection'], false, 'json', 'getRoiSummary', [], 10],
         'getRoiTraceCustomerRef' => ['GET', '/v1/roi/trace/{customerRef}', ['customerRef'], ['windowDays' => 'windowDays', 'format' => 'format'], false, 'json', 'getRoiTraceCustomerRef', ['customerRef'], 4],
+        'getSandboxStripeFixtures' => ['GET', '/v1/sandbox/stripe-fixtures', [], [], false, 'json', 'getSandboxStripeFixtures', [], 1],
         'getSetupStatus' => ['GET', '/v1/setup/status', [], [], false, 'json', 'getSetupStatus', [], 1],
         'getStatus' => ['GET', '/v1/status', [], [], false, 'json', 'getStatus', [], 1],
         'getStatusIncidents' => ['GET', '/v1/status/incidents', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getStatusIncidents', [], 6],
@@ -1409,7 +1432,7 @@ trait Operations
         'getVersions' => ['GET', '/v1/versions', [], [], false, 'json', 'getVersions', [], 1],
         'getWebhookDeliveries' => ['GET', '/v1/webhook-deliveries', [], ['endpointId' => 'endpointId', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getWebhookDeliveries', [], 7],
         'getWebhookDeliveriesId' => ['GET', '/v1/webhook-deliveries/{id}', ['id'], [], false, 'json', 'getWebhookDeliveriesId', ['id'], 2],
-        'getWebhookEndpoints' => ['GET', '/v1/webhook-endpoints', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getWebhookEndpoints', [], 6],
+        'getWebhookEndpoints' => ['GET', '/v1/webhook-endpoints', [], ['programId' => 'programId', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getWebhookEndpoints', [], 7],
         'getWebhookEndpointsId' => ['GET', '/v1/webhook-endpoints/{id}', ['id'], [], false, 'json', 'getWebhookEndpointsId', ['id'], 2],
         'getWebhookEndpointsIdDeliveries' => ['GET', '/v1/webhook-endpoints/{id}/deliveries', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getWebhookEndpointsIdDeliveries', ['id'], 7],
         'getZapierEvents' => ['GET', '/v1/zapier/events', [], [], false, 'json', 'getZapierEvents', [], 1],
@@ -1440,6 +1463,7 @@ trait Operations
         'postAgentsRegister' => ['POST', '/v1/agents/register', [], [], true, 'json', 'postAgentsRegister', [], 2],
         'postAnomaliesScan' => ['POST', '/v1/anomalies/scan', [], [], false, 'json', 'postAnomaliesScan', [], 1],
         'postApiKeys' => ['POST', '/v1/api-keys', [], [], true, 'json', 'postApiKeys', [], 2],
+        'postApiKeysIdRotate' => ['POST', '/v1/api-keys/{id}/rotate', ['id'], [], true, 'json', 'postApiKeysIdRotate', ['id'], 3],
         'postAssets' => ['POST', '/v1/assets', [], [], true, 'json', 'postAssets', [], 2],
         'postAttributionReplay' => ['POST', '/v1/attribution/replay', [], [], true, 'json', 'postAttributionReplay', [], 2],
         'postAuthBackchannelLogout' => ['POST', '/v1/auth/backchannel-logout', [], [], true, 'json', 'postAuthBackchannelLogout', [], 2],
@@ -1568,6 +1592,7 @@ trait Operations
         'postProgramsIdGroups' => ['POST', '/v1/programs/{id}/groups', ['id'], [], true, 'json', 'postProgramsIdGroups', ['id'], 3],
         'postProgramsIdPromotions' => ['POST', '/v1/programs/{id}/promotions', ['id'], [], true, 'json', 'postProgramsIdPromotions', ['id'], 3],
         'postProgramsIdReferrers' => ['POST', '/v1/programs/{id}/referrers', ['id'], [], true, 'json', 'postProgramsIdReferrers', ['id'], 3],
+        'postProgramsIdStripeCreditsRequeue' => ['POST', '/v1/programs/{id}/stripe-credits/requeue', ['id'], [], true, 'json', 'postProgramsIdStripeCreditsRequeue', ['id'], 3],
         'postPromotionsIdEnd' => ['POST', '/v1/promotions/{id}/end', ['id'], [], false, 'json', 'postPromotionsIdEnd', ['id'], 2],
         'postPublicProgramsHandleJoin' => ['POST', '/v1/public/programs/{handle}/join', ['handle'], [], true, 'json', 'postPublicProgramsHandleJoin', ['handle'], 3],
         'postQualityRecompute' => ['POST', '/v1/quality/recompute', [], [], false, 'json', 'postQualityRecompute', [], 1],
@@ -1580,6 +1605,7 @@ trait Operations
         'postRewardsRedeemByCode' => ['POST', '/v1/rewards/redeem-by-code', [], [], true, 'json', 'postRewardsRedeemByCode', [], 2],
         'postRoiPatternsPatternReview' => ['POST', '/v1/roi/patterns/{pattern}/review', ['pattern'], [], true, 'json', 'postRoiPatternsPatternReview', ['pattern'], 3],
         'postSandboxSimulate' => ['POST', '/v1/sandbox/simulate', [], [], true, 'json', 'postSandboxSimulate', [], 2],
+        'postSandboxStripeFixtures' => ['POST', '/v1/sandbox/stripe-fixtures', [], [], true, 'json', 'postSandboxStripeFixtures', [], 2],
         'postSupportAppsAdapterTest' => ['POST', '/v1/support/apps/{adapter}/test', ['adapter'], [], true, 'json', 'postSupportAppsAdapterTest', ['adapter'], 3],
         'postSupportCardsOrgIdAdapter' => ['POST', '/v1/support/cards/{orgId}/{adapter}', ['orgId','adapter'], [], true, 'json', 'postSupportCardsOrgIdAdapter', ['orgId','adapter'], 4],
         'postSupportPlatformChatlyCard' => ['POST', '/v1/support/platform/chatly-card', [], [], true, 'json', 'postSupportPlatformChatlyCard', [], 2],
@@ -2241,11 +2267,11 @@ trait Operations
     /**
      * List API keys. GET /v1/api-keys
      *
-     * Every key of the org, live and test (a test-mode caller sees test keys only), oldest first, with scopes, pinned version, owner, expiry and last use. Never returns the secret. Filter by `mode` or `owner`.
+     * Every key of the org, live and test (a test-mode caller sees test keys only), oldest first, with scopes, pinned version, owner, expiry and last use. Never returns the secret. Filter by `mode` (`live`, `test`, or `both`, the default) or `owner`.
      *
      * **Auth:** an API key with `team:read` (or `full`), or a session of any role.
      *
-     * mode: Only live or only test keys; default both.
+     * mode: Only live or only test keys; `both` (the default) lists both.
      * owner: Only keys with this owner.
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3010,10 +3036,12 @@ trait Operations
     /**
      * List FX rates. GET /v1/fx-rates
      *
-     * The org's rates first, then the platform fallback, newest per pair first. A payout uses the org's latest rate at or before the run, else the platform's. Filter by `base` and `quote`.
+     * The org's rates first, then the platform fallback, newest per pair first. A payout uses the org's latest rate at or before the run, else the platform's. Filter by `base`, `quote`, `effectiveAt[gte]` and `effectiveAt[lte]`. Live mode leaves out the `fixture` sample rows; test mode lists them.
      *
      * **Auth:** an API key with `payouts:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
      *
+     * effectiveAt[gte]: Only rates effective at or after this time.
+     * effectiveAt[lte]: Only rates effective at or before this time.
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * ending_before: A cursor: returns the items before this item id (the previous page). Not with `starting_after`. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3021,18 +3049,18 @@ trait Operations
      * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * @return array{object: string, data: list<FxRate>, has_more: bool, next_cursor: string|null}
      */
-    public function getFxRates(?string $base = null, ?string $quote = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    public function getFxRates(?string $base = null, ?string $quote = null, ?string $effectiveAtGte = null, ?string $effectiveAtLte = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/fx-rates', ['base' => $base, 'quote' => $quote, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+        return $this->request('GET', '/v1/fx-rates', ['base' => $base, 'quote' => $quote, 'effectiveAt[gte]' => $effectiveAtGte, 'effectiveAt[lte]' => $effectiveAtLte, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
     }
 
     /**
      * Every item of {@see getFxRates()}, following the pages.
      * @return \Generator<int, FxRate>
      */
-    public function getFxRatesEach(?string $base = null, ?string $quote = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    public function getFxRatesEach(?string $base = null, ?string $quote = null, ?string $effectiveAtGte = null, ?string $effectiveAtLte = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
-        return $this->paginate(fn (?string $cursor) => $this->getFxRates(base: $base, quote: $quote, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+        return $this->paginate(fn (?string $cursor) => $this->getFxRates(base: $base, quote: $quote, effectiveAtGte: $effectiveAtGte, effectiveAtLte: $effectiveAtLte, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
     }
 
     /**
@@ -3267,7 +3295,7 @@ trait Operations
     /**
      * Get the current caller. GET /v1/me
      *
-     * Who is calling. With a user session: the user and their org memberships (no `x-org-id` needed). With an API key: the key (name, prefix, scopes, pinned version, mode, owner, expiry) and its org.
+     * Who is calling. With a user session: the user and their org memberships (no `x-org-id` needed). With an API key: `{ user: null, memberships: [], apiKey, org: { id, name } }`, where `apiKey` holds the key (name, prefix, scopes, pinned `apiVersion`, `livemode`, owner, expiry, `programIds`). The mode is `apiKey.livemode`; there is no top-level `livemode`.
      *
      * **Auth:** an API key with `team:read` (or `full`), or a session of any role.
      * @return GetMeResponse
@@ -3417,7 +3445,7 @@ trait Operations
     /**
      * Get the organization. GET /v1/org
      *
-     * The current org: name, plan, settings, public `trackingToken`, payout KYC requirement and mode (`livemode`; test orgs also carry `liveOrgId`).
+     * The current org: `id`, name, plan, settings, public `trackingToken`, payout KYC requirement and mode (`livemode`; test orgs also carry `liveOrgId`).
      *
      * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
      * @return Org
@@ -4205,7 +4233,7 @@ trait Operations
     /**
      * List partners. GET /v1/partners
      *
-     * Partners, newest first. Filter by `email`, `externalRef` or `status`. Archived partners are hidden unless you ask for them with `status=archived` or `includeArchived=true`.
+     * Partners, newest first. Filter by `email`, `externalRef` (the partner's own or a program-scoped one on an enrollment) or `status`. `programId` returns only partners enrolled in that program, each with the program's own `externalRef` for them when it has one, and then `externalRef` matches that. Archived partners are hidden unless you ask for them with `status=archived` or `includeArchived=true`. Always a list, even for a filter that matches one partner: read `data[0]`. Partner reads carry no `code` or `link`; use `GET /v1/partners/{id}/summary?programId=` or `GET /v1/links?partnerId=` for those.
      *
      * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
      *
@@ -4216,18 +4244,18 @@ trait Operations
      * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * @return array{object: string, data: list<Partner>, has_more: bool, next_cursor: string|null}
      */
-    public function getPartners(?string $email = null, ?string $externalRef = null, ?string $status = null, ?string $includeArchived = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    public function getPartners(?string $email = null, ?string $externalRef = null, ?string $programId = null, ?string $status = null, ?string $includeArchived = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/partners', ['email' => $email, 'externalRef' => $externalRef, 'status' => $status, 'includeArchived' => $includeArchived, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+        return $this->request('GET', '/v1/partners', ['email' => $email, 'externalRef' => $externalRef, 'programId' => $programId, 'status' => $status, 'includeArchived' => $includeArchived, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
     }
 
     /**
      * Every item of {@see getPartners()}, following the pages.
      * @return \Generator<int, Partner>
      */
-    public function getPartnersEach(?string $email = null, ?string $externalRef = null, ?string $status = null, ?string $includeArchived = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    public function getPartnersEach(?string $email = null, ?string $externalRef = null, ?string $programId = null, ?string $status = null, ?string $includeArchived = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
-        return $this->paginate(fn (?string $cursor) => $this->getPartners(email: $email, externalRef: $externalRef, status: $status, includeArchived: $includeArchived, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+        return $this->paginate(fn (?string $cursor) => $this->getPartners(email: $email, externalRef: $externalRef, programId: $programId, status: $status, includeArchived: $includeArchived, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
     }
 
     /**
@@ -4810,7 +4838,7 @@ trait Operations
     /**
      * List programs. GET /v1/programs
      *
-     * The org's programs, oldest first, with their settings. `slug` returns just that program.
+     * The org's programs, oldest first, with their settings. `slug` returns just that program, still as a list (`data` holds one program, or none).
      *
      * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
      *
@@ -4988,7 +5016,7 @@ trait Operations
     /**
      * Get a program's Stripe balance credit settings. GET /v1/programs/{id}/stripe-credits
      *
-     * Whether settled lines of this program are credited to the partner's Stripe customer balance, how that customer is found (`referrerMatch`), and whether store-credit referee rewards are credited too. `keyConnected` says whether a Stripe key is available.
+     * Whether settled lines of this program are credited to the partner's Stripe customer balance, how that customer is found (`referrerMatch`), and whether store-credit referee rewards are credited too. `keyConnected` says whether a Stripe key is available to this program; `hasOwnKey` whether that is the program's own key rather than the org's. The key is never returned.
      *
      * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
      * @return GetProgramsIdStripeCreditsResponse
@@ -5001,7 +5029,7 @@ trait Operations
     /**
      * List a program's Stripe balance credits. GET /v1/programs/{id}/stripe-credits/log
      *
-     * Every credit and debit the rail queued for this program, newest first: amount, Stripe customer, `status` (`pending`, `applied`, `no_customer`, `failed`, `canceled`), attempts, the Stripe balance transaction id once applied, and the last error. Unapplied rows are retried hourly, up to 24 tries.
+     * Every credit and debit the rail queued for this program, newest first: amount and currency (the commission's), `appliedAmountMinor`/`appliedCurrency` (what is sent to Stripe after any conversion; a debit uses its credit's currency and rate), Stripe customer, `status` (`pending`, `applied`, `no_customer`, `ambiguous_customer`, `fx_rate_missing`, `failed`, `canceled`), attempts, the Stripe balance transaction id once applied, and the last error. Unapplied rows are retried hourly, up to 24 tries.
      *
      * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
      *
@@ -5435,6 +5463,19 @@ trait Operations
     }
 
     /**
+     * List Stripe event fixtures. GET /v1/sandbox/stripe-fixtures
+     *
+     * Test mode only. The Stripe event types `POST /v1/sandbox/stripe-fixtures` can send, each with the `overrides` fields it uses.
+     *
+     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * @return GetSandboxStripeFixturesResponse
+     */
+    public function getSandboxStripeFixtures(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/sandbox/stripe-fixtures', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Get setup progress. GET /v1/setup/status
      *
      * The install checker: which integration steps are done (auth or associate, program and rule, partner, snippet or click, billing, a payable partner, webhooks) and the next steps as hints.
@@ -5761,10 +5802,11 @@ trait Operations
     /**
      * List webhook endpoints. GET /v1/webhook-endpoints
      *
-     * Endpoints with their topics, programs, status (`active`, `paused`, `disabled`), secret-rotation state and failure state. Secrets are never returned.
+     * Endpoints with their topics, programs, status (`active`, `paused`, `disabled`), secret-rotation state and failure state. Secrets are never returned. `programId` lists only the endpoints limited to that program (org-wide endpoints, which get every program's events, are left out).
      *
      * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
      *
+     * programId: Only endpoints limited to this program (not the org-wide ones, which get every program's events).
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * ending_before: A cursor: returns the items before this item id (the previous page). Not with `starting_after`. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5772,18 +5814,18 @@ trait Operations
      * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * @return array{object: string, data: list<WebhookEndpoint>, has_more: bool, next_cursor: string|null}
      */
-    public function getWebhookEndpoints(?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    public function getWebhookEndpoints(?string $programId = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/webhook-endpoints', ['limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+        return $this->request('GET', '/v1/webhook-endpoints', ['programId' => $programId, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
     }
 
     /**
      * Every item of {@see getWebhookEndpoints()}, following the pages.
      * @return \Generator<int, WebhookEndpoint>
      */
-    public function getWebhookEndpointsEach(?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    public function getWebhookEndpointsEach(?string $programId = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
-        return $this->paginate(fn (?string $cursor) => $this->getWebhookEndpoints(limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+        return $this->paginate(fn (?string $cursor) => $this->getWebhookEndpoints(programId: $programId, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
     }
 
     /**
@@ -5898,7 +5940,7 @@ trait Operations
     /**
      * Update an API key. PATCH /v1/api-keys/{id}
      *
-     * Changes a key's pinned `apiVersion`, `owner`, expiry (`expiresInDays` from now; `null` removes it) or `programIds` (`null` makes it org-wide). Revoked keys are 404. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Changes a key's pinned `apiVersion`, `owner`, expiry (`expiresInDays` from now; `null` removes it) or `programIds` (`null` makes it org-wide); `apiVersion: "latest"` pins it to today's newest version. A new expiry re-arms the `api_key.expiring` notices. Revoked keys are 404. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
      * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
      * @param PatchApiKeysIdBody $body
@@ -6216,7 +6258,7 @@ trait Operations
     /**
      * Create an API key. POST /v1/api-keys
      *
-     * Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response. `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key (default: latest). `programIds` limits the key to those programs (their partners, links, referrals, commissions, enrollments, and webhook endpoints whose `programIds` are all within the key's, with their deliveries); a program-scoped key gets 403 `program_scoped_key` on org-wide endpoints (keys, team, org settings, billing, payouts, the event feed, analytics, creating programs). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response (and in its `Idempotency-Key` replay: a retry with the same key and body within 24 hours returns this response again, secret included, without minting another). `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key to a version, or `latest` (the default) to the newest version at the time of the call; the pin never moves on its own (a key keeps answering in that version after newer ones ship) until you `PATCH` it or send a `referalli-version` header. A key pinned to `2026-10-21` gets every list as a capped plain array instead of the paginated envelope. `programIds` limits the key to those programs (their partners, links, referrals, commissions, enrollments, and webhook endpoints whose `programIds` are all within the key's, with their deliveries); a program-scoped key gets 403 `program_scoped_key` on org-wide endpoints (keys, team, org settings, billing, payouts, the event feed, analytics, creating programs). An `api_keys:mint` key may also call this (and no other key endpoint): it can't mint `admin` or `api_keys:mint` keys or scopes it doesn't hold, and a program-scoped one must send `programIds` within its own (`403` otherwise). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
      * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
      * @param PostApiKeysBody $body
@@ -6225,6 +6267,20 @@ trait Operations
     public function postApiKeys(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/api-keys', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Rotate an API key. POST /v1/api-keys/{id}/rotate
+     *
+     * Mints a replacement key with the same name, scopes, origins, version pin, owner, programs and lifetime (an expiring key's new expiry is the same length from now), returned once with `rotatedFrom: { id, expiresAt }`. The old key keeps working for `graceHours` (default 24, at most 168, 0 = stop now), then expires; it gets no `api_key.expiring` notice. An expired or revoked key can't be rotated (409 `api_key_expired` / 404). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     *
+     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * @param PostApiKeysIdRotateBody $body
+     * @return PostApiKeysIdRotateResponse
+     */
+    public function postApiKeysIdRotate(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/api-keys/' . self::seg($id) . '/rotate', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -7543,11 +7599,11 @@ trait Operations
     /**
      * Create a partner. POST /v1/partners
      *
-     * Creates a partner. `email` is unique per org, and so is `externalRef` (your own id for them, such as a user id). With `upsert: true` an existing partner matching the email or externalRef is returned instead of a 409 (and gets the externalRef if it had none). Over the plan's partner limit this is `402 payment_required`. Audited.
+     * Creates a partner. `email` is unique per org, and so is `externalRef` (your own id for them, such as a user id). With `upsert: true` an existing partner matching the email or externalRef is returned instead of a 409 (and gets the externalRef if it had none), with `matchedBy` (`email` or `externalRef`) and `externalRefKept`: true when the partner keeps its own externalRef (another product's) and yours was not applied to it, because yours is the program-scoped one on its enrollment. An email match whose partner has a different externalRef and no enrollment carrying yours is a 409. Over the plan's partner limit this is `402 payment_required`. Audited.
      *
      * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PostPartnersBody $body
-     * @return Partner
+     * @return PostPartnersResponse
      */
     public function postPartners(array $body, ?string $idempotencyKey = null): mixed
     {
@@ -7855,7 +7911,7 @@ trait Operations
     /**
      * Create a program. POST /v1/programs
      *
-     * Creates an affiliate program: its attribution model, cookie window, how long after sign-up a conversion still counts, terms, public page and settings. `slug` is unique per org. Terms are versioned so partners can be asked to accept new ones. Over the plan's program limit this is `402 payment_required`.
+     * Creates an affiliate program: its attribution model, cookie window, how long after sign-up a conversion still counts (`signupToConversionDays`, 1 to 1095, default 365; `cookieWindowDays` is 1 to 400, default 60), terms, public page and settings. `slug` is unique per org. Terms are versioned so partners can be asked to accept new ones. Over the plan's program limit this is `402 payment_required`.
      *
      * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PostProgramsBody $body
@@ -7896,11 +7952,11 @@ trait Operations
     /**
      * Enroll a partner. POST /v1/programs/{id}/enrollments
      *
-     * Enrolls an existing partner in the program, approved at once. Publishes `partner.enrolled`. 409 when already enrolled. `externalRef` is this program's own id for the partner, when their partner `externalRef` belongs to another product sharing the org; this program's webhooks and `GET /v1/partners?externalRef=` then use it.
+     * Enrolls an existing partner in the program, approved at once. Publishes `partner.enrolled`. 409 when already enrolled. `externalRef` is this program's own id for the partner, when their partner `externalRef` belongs to another product sharing the org; this program's webhooks and `GET /v1/partners?externalRef=` then use it. `mint` also gives them a referral code in the program, as `POST /v1/programs/{id}/referrers` does: `coupon: true` a coupon, `link: {}` a tracked link to `link.destinationUrl` or else the program's default destination (`{code}` in it becomes the code; 400 when the program has none and you send none). Their existing code in the program is reused. The response then adds `code` and `linkUrl` (null without a link).
      *
      * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PostProgramsIdEnrollmentsBody $body
-     * @return Enrollment
+     * @return PostProgramsIdEnrollmentsResponse
      */
     public function postProgramsIdEnrollments(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
@@ -7973,6 +8029,20 @@ trait Operations
     public function postProgramsIdReferrers(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/programs/' . self::seg($id) . '/referrers', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Requeue stuck Stripe balance credits. POST /v1/programs/{id}/stripe-credits/requeue
+     *
+     * Resets the attempt count of this program's `no_customer`, `ambiguous_customer` and `fx_rate_missing` rows (all of them, or only `creditIds`) so the hourly sweep gives them another 24 tries: call it after adding the billing link, making the customer match unique or recording the FX rate. Rows in other statuses are left alone. Returns the requeued ids. Owner or admin. Audited.
+     *
+     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostProgramsIdStripeCreditsRequeueBody $body
+     * @return PostProgramsIdStripeCreditsRequeueResponse
+     */
+    public function postProgramsIdStripeCreditsRequeue(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/programs/' . self::seg($id) . '/stripe-credits/requeue', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -8137,6 +8207,20 @@ trait Operations
     public function postSandboxSimulate(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/sandbox/simulate', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Send a Stripe event fixture. POST /v1/sandbox/stripe-fixtures
+     *
+     * Test mode only (`409 test_mode_only` otherwise). Builds a realistic Stripe event (`invoice.paid`, `charge.refunded`, `charge.dispute.created`, `customer.created`, `customer.updated`, `customer.subscription.created`, `customer.subscription.updated` or `customer.subscription.deleted`) and runs it through the same pipeline as a signed webhook to the stripe billing connection `connectionId`, so you can watch commissions happen without a Stripe account. `overrides` sets `customerRef` (the Stripe customer id), `amountMinor`, `currency`, `metadata`, `invoiceId` and `chargeId`; refunds and disputes find their payment by `chargeId`, so reuse the `invoice.paid` one. Each call is a new event unless you pass `eventId`, which replays (the second answers `duplicate: true`). Returns the event id, the processing results, the commission events created and the payload sent. Audited.
+     *
+     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * @param PostSandboxStripeFixturesBody $body
+     * @return PostSandboxStripeFixturesResponse
+     */
+    public function postSandboxStripeFixtures(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/sandbox/stripe-fixtures', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -8306,7 +8390,7 @@ trait Operations
     /**
      * Create a webhook endpoint. POST /v1/webhook-endpoints
      *
-     * Subscribes an HTTPS URL to event topics (default `["*"]`, every event; see the `webhooks` section of this document for each topic's payload). `programIds` limits it to events about those programs (org-wide events such as payouts are then not sent). Deliveries are signed the Standard Webhooks way with the returned `secret` (`whsec_…`), shown only here. `legacySignature: true` also sends the deprecated body-only signature. `alertContacts` (up to 10 emails) are emailed, with the org owner, when the endpoint has failed for 1 hour and again at 24 hours; it is disabled after 72 hours of failures or 1,000 failed attempts in a row.
+     * Subscribes an HTTPS URL to event topics (default `["*"]`, every event; see the `webhooks` section of this document for each topic's payload). `programIds` limits it to events about those programs (org-wide events such as payouts are then not sent). Deliveries are signed the Standard Webhooks way with the returned `secret` (`whsec_…`), shown only here. `legacySignature: true` also sends the deprecated body-only signature. `alertContacts` (up to 10 emails) are emailed, with the org owner, when the endpoint has failed for 1 hour and again at 24 hours; it is disabled after 72 hours of failures or 1,000 failed attempts in a row. `status: "paused"` creates it without delivering anything until you `PATCH` it to `active` (default `active`).
      *
      * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PostWebhookEndpointsBody $body
@@ -8964,7 +9048,7 @@ trait Operations
     /**
      * Set a program's Stripe balance credit settings. PUT /v1/programs/{id}/stripe-credits
      *
-     * Turns the rail on or off for a program. Each `commission.settled` line with method `merchant_credit` is credited to the referrer's Stripe customer balance; a later `commission.reversed` debits it back. `referrerMatch`: `billing_link` (the partner's externalRef is a `cus_…` id or is billing-linked to one), `metadata` (Stripe customer search on `metadata[metadataKey]` = the partner's externalRef) or `email` (the one Stripe customer with the partner's email). `refereeRewards: true` also credits `store_credit` referee rewards to the referred customer. Custom units (`x_…`) are never credited. Enabling needs a key (`409 stripe_key_required`). Owner or admin. Audited.
+     * Turns the rail on or off for a program. Each `commission.settled` line with method `merchant_credit` is credited to the referrer's Stripe customer balance; a later `commission.reversed` debits it back. `referrerMatch`: `billing_link` (the partner's externalRef is a `cus_…` id or is billing-linked to one), `metadata` (Stripe customer search on `metadata[metadataKey]` = the partner's externalRef) or `email` (the one Stripe customer with the partner's email). `refereeRewards: true` also credits `store_credit` referee rewards to the referred customer. Custom units (`x_…`) are never credited. `balanceCurrency` (ISO code, stored lowercase) forces the currency every credit is sent in; without it a credit goes in the Stripe customer's balance currency, or the commission's when the customer has none yet. When that differs from the commission's currency the amount is converted at your FX rate (`POST /v1/fx-rates`, half-even rounding); with no rate the credit waits as `fx_rate_missing`. `createCustomerIfMissing: { metadata }` creates a Stripe customer for a referrer none matches (the partner's email, `metadata[metadataKey]` = the partner's externalRef, plus your metadata) and credits it; referee credits never create customers. Metadata and email matching need exactly one Stripe customer: several is `ambiguous_customer`, never a guess. `balanceCurrency` and `createCustomerIfMissing` are replaced on every PUT (omitted = off). Enabling needs a key (`409 stripe_key_required`). `secretKey` gives the program its own Stripe key, used instead of the org's for all of its credits and debits (a separate Stripe account per product, say); `null` removes it, omitting it keeps it. The key is checked with Stripe before it is saved: `422 stripe_key_invalid` (Stripe rejects it), `422 stripe_key_wrong_mode` (a test key in live mode or a live key in test mode) or `422 stripe_key_permission` (no Customers write), `502 stripe_unavailable` if Stripe cannot be reached. Owner or admin; setting or removing a key needs a recent sign-in. Audited (never the key).
      *
      * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PutProgramsIdStripeCreditsBody $body
@@ -8992,7 +9076,7 @@ trait Operations
     /**
      * Connect a Stripe key for balance credits. PUT /v1/stripe-credits/connection
      *
-     * Stores your own Stripe restricted key (`rk_…`, with Customers write) for the balance credit rail, encrypted and never echoed. Without one the rail uses the secret key of your Stripe payout connection, if any. Owner or admin, recent sign-in. Audited.
+     * Stores your own Stripe restricted key (`rk_…`, with Customers write) for the balance credit rail, encrypted and never echoed. Without one the rail uses the secret key of your Stripe payout connection, if any. A program can override it with its own key (`PUT /v1/programs/{id}/stripe-credits`). The key is checked with Stripe before it is saved: `422 stripe_key_invalid` (Stripe rejects it), `422 stripe_key_wrong_mode` (a test key in live mode or a live key in test mode) or `422 stripe_key_permission` (no Customers write), `502 stripe_unavailable` if Stripe cannot be reached. Owner or admin, recent sign-in. Audited.
      *
      * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
      * @param PutStripeCreditsConnectionBody $body

@@ -12,6 +12,7 @@ final class Topics
 {
     /** @var array<string, class-string<WebhookEvent>> */
     public const CLASSES = [
+        'api_key.expiring' => ApiKeyExpiringEvent::class,
         'billing_event.recorded' => BillingEventRecordedEvent::class,
         'click.recorded' => ClickRecordedEvent::class,
         'commission.earned' => CommissionEarnedEvent::class,
@@ -22,6 +23,7 @@ final class Topics
         'deal.submitted' => DealSubmittedEvent::class,
         'dispute.resolved' => DisputeResolvedEvent::class,
         'fraud.case_opened' => FraudCaseOpenedEvent::class,
+        'fx.rates_updated' => FxRatesUpdatedEvent::class,
         'partner.applied' => PartnerAppliedEvent::class,
         'partner.approved' => PartnerApprovedEvent::class,
         'partner.enrolled' => PartnerEnrolledEvent::class,
@@ -52,6 +54,7 @@ final class Topics
     ];
 
     public const ALL = [
+        'api_key.expiring',
         'billing_event.recorded',
         'click.recorded',
         'commission.earned',
@@ -62,6 +65,7 @@ final class Topics
         'deal.submitted',
         'dispute.resolved',
         'fraud.case_opened',
+        'fx.rates_updated',
         'partner.applied',
         'partner.approved',
         'partner.enrolled',
