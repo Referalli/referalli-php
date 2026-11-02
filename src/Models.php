@@ -64,9 +64,9 @@ namespace Referalli;
  * @phpstan-type ValueMappingPreviewEventsItem array{currency: string, value: ValueMappingPreviewEventsItemValue, wouldRecord: list<ValueMappingPreviewEventsItemWouldRecordItem>, index: int}
  * @phpstan-type ValueMappingPreview array{mappingVersion: int, currency?: string, value?: ValueMappingPreviewValue, wouldRecord?: list<ValueMappingPreviewWouldRecordItem>, events?: list<ValueMappingPreviewEventsItem>}
  * @phpstan-type BillingConnectionRotation array{inProgress: bool, previousSecretExpiresAt?: string}
- * @phpstan-type BillingConnection array{id: string, provider: string, name: string, status: 'active'|'paused'|'awaiting_secret', programIds: list<string>|null, createdAt: string, webhookUrl: string, needsCredentials: bool, hasCredentials: bool, valueMapping: ValueMapping|null, filter: BillingFilter|null, customerRefMetadataKey?: string|null, stripeWebhookEndpointId?: string|null, rotation: BillingConnectionRotation}
- * @phpstan-type CreatedBillingConnection array{id: string, provider: string, status: 'active'|'awaiting_secret', webhookSecret: string, webhookUrl: string, filter: BillingFilter|null, customerRefMetadataKey?: string|null, programIds: list<string>|null, stripeWebhookEndpointId?: string, reused?: bool}
- * @phpstan-type BillingEvent array{id: string, provider: string, type: string, customerRef: string, invoiceRef: string|null, amountGross: int, tax: int, fees: int, currency: string, occurredAt: string, connectionId: string|null, productRef: string, status: 'processed'|'ignored_by_filter', ignoredReason: 'filter'|'internal_customer'|'no_referral_in_scope'|null, catalog: array<string, list<string>>|null}
+ * @phpstan-type BillingConnection array{id: string, provider: string, name: string, status: 'active'|'paused'|'awaiting_secret', programIds: list<string>|null, createdAt: string, webhookUrl: string, needsCredentials: bool, hasCredentials: bool, valueMapping: ValueMapping|null, filter: BillingFilter|null, customerRefMetadataKey?: string|null, stripeWebhookEndpointId?: string|null, providerWebhookIds?: list<string>|null, rotation: BillingConnectionRotation}
+ * @phpstan-type CreatedBillingConnection array{id: string, provider: string, status: 'active'|'awaiting_secret', webhookSecret: string, webhookUrl: string, filter: BillingFilter|null, customerRefMetadataKey?: string|null, programIds: list<string>|null, stripeWebhookEndpointId?: string, providerWebhookIds?: list<string>, skippedEvents?: list<string>, reused?: bool}
+ * @phpstan-type BillingEvent array{id: string, provider: string, type: string, customerRef: string, invoiceRef: string|null, amountGross: int, tax: int, fees: int, currency: string, occurredAt: string, connectionId: string|null, productRef: string, status: 'processed'|'ignored_by_filter', ignoredReason: 'filter'|'internal_customer'|'no_referral_in_scope'|'identity_unresolved'|'identity_ambiguous'|null, catalog: array<string, list<string>>|null}
  * @phpstan-type InternalCustomer array{customerRef: string, note: string, createdAt: string}
  * @phpstan-type IdentityProviderSampleHookOption1 array{language: string, filename: string, code: string}
  * @phpstan-type IdentityProviderMetadataPaths array{anonId: list<string>, clickId: list<string>, coupon: list<string>}
@@ -100,9 +100,14 @@ namespace Referalli;
  * @phpstan-type IssuedApiKey array{id: string, key: string, scopes: list<string>, publishable: bool, allowedOrigins: list<string>, apiVersion: string, livemode: bool, owner: string|null, expiresAt: string|null, pairId: string|null, programIds: list<string>|null}
  * @phpstan-type ApiKeyCreatedByOption1 array{type: 'api_key'|'user', id: string}
  * @phpstan-type ApiKey array{id: string, name: string, prefix: string, scopes: list<string>, apiVersion: string, publishable: bool, allowedOrigins: list<string>, livemode: bool, owner: string|null, pairId: string|null, programIds: list<string>|null, createdBy: ApiKeyCreatedByOption1|null, expiresAt: string|null, expired: bool, lastUsedAt: string|null, createdAt: string, revokedAt: string|null}
+ * @phpstan-type TokenVerificationValueOption1Claims array{customerRef?: string, email?: string, emailVerified?: string, name?: string}
+ * @phpstan-type TokenVerificationValueOption1 array{preset?: string, tenant?: string, issuer: string, keyType: 'jwks'|'hs256', jwksUrl?: string, audience?: string, maxAgeS?: int, claims?: TokenVerificationValueOption1Claims}
+ * @phpstan-type TokenVerification TokenVerificationValueOption1|null
+ * @phpstan-type WidgetSessionPartner array{id: string, code: string|null, linkUrl: string|null}
+ * @phpstan-type WidgetSession array{token: string, expiresAt: string, partner: WidgetSessionPartner}
  * @phpstan-type AuthConnectionRotation array{inProgress: bool, previousSecretExpiresAt?: string}
- * @phpstan-type AuthConnection array{id: string, provider: 'clerk'|'supabase'|'workos'|'generic'|'atlas'|'custom', programId: string, name: string, status: string, createdAt: string, rotation: AuthConnectionRotation, instanceId?: string|null, appId?: string|null, autoEnrollUsers?: bool, destinationUrl?: string|null, signatureVersion?: 'v1+v2'|'v2', requiresV2?: bool}
- * @phpstan-type CreatedAuthConnection array{id: string, provider: string, secret: string, webhookUrl?: string, docsUrl?: string|null, metadataKeys?: array<string, string>, programId?: string, instanceId?: string, appId?: string, autoEnrollUsers?: bool, destinationUrl?: string|null, signupsUrl?: string, eraseUrl?: string, exportUrl?: string}
+ * @phpstan-type AuthConnection array{id: string, provider: 'clerk'|'supabase'|'workos'|'generic'|'atlas'|'custom', programId: string, name: string, status: string, createdAt: string, rotation: AuthConnectionRotation, instanceId?: string|null, appId?: string|null, autoEnrollUsers?: bool, destinationUrl?: string|null, resolveBillingCustomers?: bool, signatureVersion?: 'v1+v2'|'v2', requiresV2?: bool, tokenVerification?: TokenVerification, allowedOrigins?: list<string>}
+ * @phpstan-type CreatedAuthConnection array{id: string, provider: string, secret: string, webhookUrl?: string, docsUrl?: string|null, metadataKeys?: array<string, string>, programId?: string, instanceId?: string, appId?: string, autoEnrollUsers?: bool, destinationUrl?: string|null, signupsUrl?: string, eraseUrl?: string, exportUrl?: string, tokenVerification?: TokenVerification, allowedOrigins?: list<string>}
  * @phpstan-type FraudCase array{id: string, partnerId: string|null, referralId: string|null, kind: string, status: string, evidence: GetOpenapiJsonResponse|null, action: string|null, createdAt: string, resolvedAt: string|null}
  * @phpstan-type CustomerExport array{customerRef: string, referrals: list<GetOpenapiJsonResponse>, associations: list<GetOpenapiJsonResponse>, identityLinks: list<GetOpenapiJsonResponse>, billingEvents: list<GetOpenapiJsonResponse>, conversionEvents: list<GetOpenapiJsonResponse>}
  * @phpstan-type PartnerExport array{partner: GetOpenapiJsonResponse, enrollments: list<GetOpenapiJsonResponse>, links: list<GetOpenapiJsonResponse>, coupons: list<GetOpenapiJsonResponse>, payoutProfile: GetOpenapiJsonResponse|null, commissionEvents: list<GetOpenapiJsonResponse>, payouts: list<GetOpenapiJsonResponse>}
@@ -236,6 +241,12 @@ namespace Referalli;
  * @phpstan-type StripeCreditAppliedEvent array{id: string, topic: 'stripe_credit.applied', orgId: string, livemode: bool, createdAt: string, data: StripeCreditAppliedEventData}
  * @phpstan-type StripeCreditFailedEventData array{id: string, programId: string, sourceEventId: string, kind: 'referrer_credit'|'referrer_debit'|'referee_credit', commissionId: string|null, partnerId: string|null, customerRef: string|null, amountMinor: int, currency: string, appliedAmountMinor: int|null, appliedCurrency: string|null, stripeCustomerId: string|null, status: 'pending'|'applied'|'failed'|'no_customer'|'ambiguous_customer'|'fx_rate_missing'|'canceled', attempts: int, stripeBalanceTransactionId: string|null, lastError: string|null, createdAt: string, updatedAt: string}
  * @phpstan-type StripeCreditFailedEvent array{id: string, topic: 'stripe_credit.failed', orgId: string, livemode: bool, createdAt: string, data: StripeCreditFailedEventData}
+ * @phpstan-type AccountCreditAppliedEventData array{id: string, programId: string, sourceEventId: string, kind: 'referrer_credit'|'referrer_debit'|'referee_credit', commissionId: string|null, partnerId: string|null, customerRef: string|null, amountMinor: int, currency: string, appliedAmountMinor: int|null, appliedCurrency: string|null, status: 'pending'|'applied'|'failed'|'no_customer'|'ambiguous_customer'|'fx_rate_missing'|'canceled', attempts: int, lastError: string|null, createdAt: string, updatedAt: string, provider: string, connectionId: string|null, customerId: string|null, transactionId: string|null}
+ * @phpstan-type AccountCreditAppliedEvent array{id: string, topic: 'account_credit.applied', orgId: string, livemode: bool, createdAt: string, data: AccountCreditAppliedEventData}
+ * @phpstan-type AccountCreditReversedEventData array{id: string, programId: string, sourceEventId: string, kind: 'referrer_credit'|'referrer_debit'|'referee_credit', commissionId: string|null, partnerId: string|null, customerRef: string|null, amountMinor: int, currency: string, appliedAmountMinor: int|null, appliedCurrency: string|null, status: 'pending'|'applied'|'failed'|'no_customer'|'ambiguous_customer'|'fx_rate_missing'|'canceled', attempts: int, lastError: string|null, createdAt: string, updatedAt: string, provider: string, connectionId: string|null, customerId: string|null, transactionId: string|null}
+ * @phpstan-type AccountCreditReversedEvent array{id: string, topic: 'account_credit.reversed', orgId: string, livemode: bool, createdAt: string, data: AccountCreditReversedEventData}
+ * @phpstan-type AccountCreditFailedEventData array{id: string, programId: string, sourceEventId: string, kind: 'referrer_credit'|'referrer_debit'|'referee_credit', commissionId: string|null, partnerId: string|null, customerRef: string|null, amountMinor: int, currency: string, appliedAmountMinor: int|null, appliedCurrency: string|null, status: 'pending'|'applied'|'failed'|'no_customer'|'ambiguous_customer'|'fx_rate_missing'|'canceled', attempts: int, lastError: string|null, createdAt: string, updatedAt: string, provider: string, connectionId: string|null, customerId: string|null, transactionId: string|null}
+ * @phpstan-type AccountCreditFailedEvent array{id: string, topic: 'account_credit.failed', orgId: string, livemode: bool, createdAt: string, data: AccountCreditFailedEventData}
  * @phpstan-type WebhookEndpointRecoveredEventData array{endpointId: string, url: string, failingSince: string, downForMs: int}
  * @phpstan-type WebhookEndpointRecoveredEvent array{id: string, topic: 'webhook_endpoint.recovered', orgId: string, livemode: bool, createdAt: string, data: WebhookEndpointRecoveredEventData}
  * @phpstan-type PostTOrgTokenVisitResponse array{ok: bool, clickId: string|null}
@@ -382,6 +393,7 @@ namespace Referalli;
  * @phpstan-type GetBillingConnectionsResponse array{object: 'list', data: list<BillingConnection>, has_more: bool, next_cursor: string|null}
  * @phpstan-type PutBillingConnectionsIdValueMappingResponse array{id: string, valueMapping: ValueMapping}
  * @phpstan-type PostBillingConnectionsIdRotateSecretResponse array{id: string, provider: string, webhookSecret: string, previousSecretExpiresAt: string}
+ * @phpstan-type DeleteBillingConnectionsIdResponse array{ok: bool, providerWebhookRemoved: bool}
  * @phpstan-type GetBillingEventsResponse array{object: 'list', data: list<BillingEvent>, has_more: bool, next_cursor: string|null}
  * @phpstan-type PostBillingInternalCustomersResponse array{customerRef: string, note: string}
  * @phpstan-type PutPartnersIdPayoutProfileResponse array{id: string}
@@ -492,11 +504,13 @@ namespace Referalli;
  * @phpstan-type GetWebhookDeliveriesIdResponse mixed
  * @phpstan-type PostWebhookEndpointsIdReplayResponse array{endpointId: string, since: string, replayed: int}
  * @phpstan-type PostSandboxSimulateResponse array{customerRef: string, events: int, conversions: int, linesCreated: int, reversals: int}
+ * @phpstan-type GetSandboxBillingFixturesResponseDataItem array{provider: string, event: string, native: string, overrides: list<string>}
+ * @phpstan-type GetSandboxBillingFixturesResponse array{data: list<GetSandboxBillingFixturesResponseDataItem>}
+ * @phpstan-type PostSandboxBillingFixturesResponseResultsItem array{duplicate: bool, billingEventId: string|null, conversions: int, linesCreated: int, reversals: int, ignored?: string}
+ * @phpstan-type PostSandboxBillingFixturesResponseCommissionsItem array{id: string, type: string, partnerId: string, amountMinor: int, currency: string, relatedCommissionId: string|null}
+ * @phpstan-type PostSandboxBillingFixturesResponse array{eventId: string, event: string, provider: string, nativeEvent: string, received: int, results: list<PostSandboxBillingFixturesResponseResultsItem>, commissions: list<PostSandboxBillingFixturesResponseCommissionsItem>, payload: GetOpenapiJsonResponse}
  * @phpstan-type GetSandboxStripeFixturesResponseDataItem array{event: string, overrides: list<string>}
  * @phpstan-type GetSandboxStripeFixturesResponse array{data: list<GetSandboxStripeFixturesResponseDataItem>}
- * @phpstan-type PostSandboxStripeFixturesResponseResultsItem array{duplicate: bool, billingEventId: string|null, conversions: int, linesCreated: int, reversals: int, ignored?: string}
- * @phpstan-type PostSandboxStripeFixturesResponseCommissionsItem array{id: string, type: string, partnerId: string, amountMinor: int, currency: string, relatedCommissionId: string|null}
- * @phpstan-type PostSandboxStripeFixturesResponse array{eventId: string, event: string, received: int, results: list<PostSandboxStripeFixturesResponseResultsItem>, commissions: list<PostSandboxStripeFixturesResponseCommissionsItem>, payload: GetOpenapiJsonResponse}
  * @phpstan-type PostImportProviderResponse array{partnersCreated: int, partnersSkipped: int, linksCreated: int, couponsCreated: int, codesSkipped: list<string>, referralParams: list<string>, unpaidImportedMinor: int, paidImportedMinor: int}
  * @phpstan-type GetOpenapiJsonResponse array<string, mixed>
  * @phpstan-type GetBrandingResponseWarningsItem array{code: 'low_contrast', foreground: string, background: string, ratio: float|int, minimum: float|int, message: string}
@@ -672,7 +686,7 @@ namespace Referalli;
  * @phpstan-type GetAuthConnectionsResponse array{object: 'list', data: list<AuthConnection>, has_more: bool, next_cursor: string|null}
  * @phpstan-type PutAuthConnectionsIdSecretResponse array{id: string, provider: string, ok: bool}
  * @phpstan-type PostAuthConnectionsIdRotateSecretResponse array{id: string, provider: string, secret: string, previousSecretExpiresAt: string}
- * @phpstan-type PatchAuthConnectionsIdResponse array{id: string, provider: string, name: string, status: 'active'|'paused', autoEnrollUsers?: bool, destinationUrl?: string|null, signatureVersion?: 'v1+v2'|'v2', requiresV2?: bool}
+ * @phpstan-type PatchAuthConnectionsIdResponse array{id: string, provider: string, name: string, status: 'active'|'paused', autoEnrollUsers?: bool, destinationUrl?: string|null, resolveBillingCustomers?: bool, signatureVersion?: 'v1+v2'|'v2', requiresV2?: bool, tokenVerification?: TokenVerification, allowedOrigins?: list<string>}
  * @phpstan-type PostAuthConnectionsIdRevokePreviousSecretResponse array{ok: bool, revoked: bool}
  * @phpstan-type PostAuthConnectionsIdSignupsResponseReferralOption1 array{id: string, partnerId: string, partnerExternalRef: string|null, matchedVia: string, status: string, persisted?: bool}
  * @phpstan-type PostAuthConnectionsIdSignupsResponseReasoning array{notes: list<string>, codes: list<SignupReasonCode>}
@@ -691,6 +705,7 @@ namespace Referalli;
  * @phpstan-type PostAuthConnectionsIdUsersResponsePartnerOption1Option1 array{partnerId: string, alreadyForgotten: bool}
  * @phpstan-type PostAuthConnectionsIdUsersResponsePartnerOption1Option2 array{id: string, status: string}
  * @phpstan-type PostAuthConnectionsIdUsersResponse array{ok: bool, deleted?: bool, erased?: bool, customer?: PostAuthConnectionsIdUsersResponseCustomerOption1|null, partner: PostAuthConnectionsIdUsersResponsePartnerOption1Option1|PostAuthConnectionsIdUsersResponsePartnerOption1Option2|null, updated?: list<string>, notes?: list<string>}
+ * @phpstan-type GetAuthConnectionsIdUsersCustomerRefReferralResponse array{partnerId: string, code: string|null, linkUrl: string|null, enrolledAt: string}
  * @phpstan-type PostAuthConnectionsIdSignalsResponseReferralsItem array{id: string, status: string}
  * @phpstan-type PostAuthConnectionsIdSignalsResponseReversedItem array{lineId: string, amountMinor: int, currency: string}
  * @phpstan-type PostAuthConnectionsIdSignalsResponsePartnerOption1 array{id: string, status: string}
@@ -928,6 +943,12 @@ namespace Referalli;
  * @phpstan-type PostProgramsIdStripeCreditsRequeueResponse array{requeued: int, creditIds: list<string>}
  * @phpstan-type GetProgramsIdStripeCreditsLogResponseDataItem array{id: string, programId: string, sourceEventId: string, kind: 'referrer_credit'|'referrer_debit'|'referee_credit', commissionId: string|null, partnerId: string|null, customerRef: string|null, amountMinor: int, currency: string, appliedAmountMinor: int|null, appliedCurrency: string|null, stripeCustomerId: string|null, status: 'pending'|'applied'|'failed'|'no_customer'|'ambiguous_customer'|'fx_rate_missing'|'canceled', attempts: int, stripeBalanceTransactionId: string|null, lastError: string|null, createdAt: string, updatedAt: string}
  * @phpstan-type GetProgramsIdStripeCreditsLogResponse array{object: 'list', data: list<GetProgramsIdStripeCreditsLogResponseDataItem>, has_more: bool, next_cursor: string|null}
+ * @phpstan-type GetProgramsIdCreditRailResponseCreateCustomerIfMissingOption1 array{metadata?: array<string, string>}
+ * @phpstan-type GetProgramsIdCreditRailResponseCapabilities array{customerCurrency: bool, createCustomer: bool}
+ * @phpstan-type GetProgramsIdCreditRailResponse array{programId: string, provider: string, connectionId: string|null, enabled: bool, referrerMatch: 'billing_link'|'metadata'|'email', metadataKey: string|null, refereeRewards: bool, balanceCurrency: string|null, createCustomerIfMissing: GetProgramsIdCreditRailResponseCreateCustomerIfMissingOption1|null, waitForCustomer: bool, credentialsConnected: bool, capabilities: GetProgramsIdCreditRailResponseCapabilities}
+ * @phpstan-type PostProgramsIdCreditRailRequeueResponse array{requeued: int, creditIds: list<string>}
+ * @phpstan-type GetProgramsIdCreditRailLogResponseDataItem array{id: string, programId: string, sourceEventId: string, kind: 'referrer_credit'|'referrer_debit'|'referee_credit', commissionId: string|null, partnerId: string|null, customerRef: string|null, amountMinor: int, currency: string, appliedAmountMinor: int|null, appliedCurrency: string|null, status: 'pending'|'applied'|'failed'|'no_customer'|'ambiguous_customer'|'fx_rate_missing'|'canceled', attempts: int, lastError: string|null, createdAt: string, updatedAt: string, provider: string, connectionId: string|null, customerId: string|null, transactionId: string|null}
+ * @phpstan-type GetProgramsIdCreditRailLogResponse array{object: 'list', data: list<GetProgramsIdCreditRailLogResponseDataItem>, has_more: bool, next_cursor: string|null}
  * @phpstan-type PostWebhooksBillingConnectionIdResponseResultsItem array{duplicate: bool, billingEventId: string|null, conversions: int, linesCreated: int, reversals: int, ignored?: 'filter'|'internal_customer'}
  * @phpstan-type PostWebhooksBillingConnectionIdResponse array{received: int, results: list<PostWebhooksBillingConnectionIdResponseResultsItem>}
  * @phpstan-type PostWebhooksAuthConnectionIdResponseResultsItem array{customerRef: string, attributed: bool, reason?: string, partnerId?: string|null, matchedVia?: string|null}
@@ -956,7 +977,7 @@ namespace Referalli;
  * @phpstan-type PutOrgPortalAuthBodyOption1 array{adapter: 'referalli'}
  * @phpstan-type PutOrgPortalAuthBodyOption2 array{issuer: string, clientId: string, clientSecret?: string, scopes?: string, name?: string, trustEmailVerified?: bool, adapter: 'oidc', autoEnrollProgramId?: string|null}
  * @phpstan-type PutOrgPortalAuthBodyOption3Claims array{sub?: string, email?: string, name?: string, emailVerified?: string}
- * @phpstan-type PutOrgPortalAuthBodyOption3 array{adapter: 'custom', preset?: 'clerk'|'supabase'|'firebase'|'auth0'|'cognito'|'stytch'|'kinde'|'okta'|'entra'|'google'|'keycloak'|'descope'|'fusionauth', tenant?: string, issuer?: string, jwksUrl?: string, keyType?: 'jwks'|'hs256', sharedSecret?: string, audience?: string, maxAgeS?: int, claims?: PutOrgPortalAuthBodyOption3Claims, trustEmailVerified?: bool, autoEnrollProgramId?: string|null, name?: string, loginUrl?: string}
+ * @phpstan-type PutOrgPortalAuthBodyOption3 array{adapter: 'custom', preset?: 'clerk'|'supabase'|'firebase'|'auth0'|'cognito'|'stytch'|'kinde'|'okta'|'entra'|'google'|'keycloak'|'descope'|'workos'|'atlas'|'fusionauth', tenant?: string, issuer?: string, jwksUrl?: string, keyType?: 'jwks'|'hs256', sharedSecret?: string, audience?: string, maxAgeS?: int, claims?: PutOrgPortalAuthBodyOption3Claims, trustEmailVerified?: bool, autoEnrollProgramId?: string|null, name?: string, loginUrl?: string}
  * @phpstan-type PutOrgPortalAuthBodyOption4 array{adapter: 'atlas-suite', instanceId: string, trustEmailVerified?: bool, autoEnrollProgramId?: string|null, name?: string, loginUrl?: string, verifyErrorsSecret?: string}
  * @phpstan-type PostMobilePurchasesBody array{eventId: string, customerRef: string, type?: 'purchase'|'refund', amountMinor: int, currency?: string, productRef?: string}
  * @phpstan-type PatchOrgBody array{name?: string, settings?: array<string, mixed>, payoutKycRequired?: bool}
@@ -1024,6 +1045,7 @@ namespace Referalli;
  * @phpstan-type PostLinksBody array{programId: string, partnerId: string, code?: string, destinationUrl: string}
  * @phpstan-type PostCouponsBody array{programId: string, partnerId: string, code: string}
  * @phpstan-type PostWidgetTokensBody array{programId: string, customerRef?: string, partnerExternalRef?: string, email?: string, displayName?: string, ttlSeconds?: int}
+ * @phpstan-type PostWidgetSessionBody array{programId: string}
  * @phpstan-type PostReferralsAssociateBodyConsent array{provider: string, state: 'granted'|'denied'|'unknown', at?: string, stamp?: string, tcString?: string, gppString?: string, purposes?: list<string>}
  * @phpstan-type PostReferralsAssociateBody array{programId: string, customerRef: string, anonId?: string, referralToken?: string, couponCode?: string, emailHash?: string, ip?: string, ua?: string, idempotencyKey?: string, occurredAt?: string, emailDomain?: string, consent?: PostReferralsAssociateBodyConsent}
  * @phpstan-type PatchReferralsIdBody array{status: 'paused'|'active'}
@@ -1055,9 +1077,9 @@ namespace Referalli;
  * @phpstan-type PostBillingConnectionsBodyFilter array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
  * @phpstan-type PostBillingConnectionsBodyCreditRailCreateCustomerIfMissingOption1 array{metadata?: array<string, string>}
  * @phpstan-type PostBillingConnectionsBodyCreditRail array{enabled?: bool, referrerMatch?: 'billing_link'|'metadata'|'email', metadataKey?: string, refereeRewards?: bool, balanceCurrency?: string|null, createCustomerIfMissing?: PostBillingConnectionsBodyCreditRailCreateCustomerIfMissingOption1|null, waitForCustomer?: bool, programId: string}
- * @phpstan-type PostBillingConnectionsBody array{provider: 'stripe'|'paddle'|'lemonsqueezy'|'polar'|'chargebee'|'shopify'|'generic'|'recurly'|'braintree'|'woocommerce'|'bigcommerce', name?: string, webhookSecret?: string, filter?: PostBillingConnectionsBodyFilter, customerRefMetadataKey?: string|null, programIds?: list<string>|null, stripeKey?: string, creditRail?: PostBillingConnectionsBodyCreditRail}
+ * @phpstan-type PostBillingConnectionsBody array{provider: 'stripe'|'paddle'|'lemonsqueezy'|'polar'|'chargebee'|'shopify'|'generic'|'recurly'|'braintree'|'woocommerce'|'bigcommerce', name?: string, webhookSecret?: string, filter?: PostBillingConnectionsBodyFilter, customerRefMetadataKey?: string|null, programIds?: list<string>|null, stripeKey?: string, creditRail?: PostBillingConnectionsBodyCreditRail, autoRegister?: bool, credentials?: array<string, string|float|int|bool>}
  * @phpstan-type PutBillingConnectionsIdSecretBody array{webhookSecret: string}
- * @phpstan-type PutBillingConnectionsIdCredentialsBody array{apiKey?: string, apiToken?: string, storeHash?: string, region?: 'us'|'eu'}
+ * @phpstan-type PutBillingConnectionsIdCredentialsBody array{apiKey?: string, apiToken?: string, storeHash?: string, region?: 'us'|'eu', site?: string}
  * @phpstan-type PatchBillingConnectionsIdBodyFilterOption1 array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
  * @phpstan-type PatchBillingConnectionsIdBody array{status?: 'active'|'paused', name?: string, filter?: PatchBillingConnectionsIdBodyFilterOption1|null, customerRefMetadataKey?: string|null, programIds?: list<string>|null}
  * @phpstan-type PutBillingConnectionsIdValueMappingBody array{cash?: string, creditApplied?: string, discount?: string, cost?: string, productRef?: string, unit: 'minor'|'major'}
@@ -1094,8 +1116,10 @@ namespace Referalli;
  * @phpstan-type PostWebhookEndpointsBody array{url: string, topics?: list<string>, legacySignature?: bool, programIds?: list<string>|null, alertContacts?: list<string>, status?: 'active'|'paused'}
  * @phpstan-type PatchWebhookEndpointsIdBody array{status?: 'active'|'paused', url?: string, topics?: list<string>, legacySignature?: bool, programIds?: list<string>|null, alertContacts?: list<string>}
  * @phpstan-type PostSandboxSimulateBody array{programId: string, partnerId: string, scenario?: 'subscription'|'refund'|'churn', priceMinor?: int, months?: int}
- * @phpstan-type PostSandboxStripeFixturesBodyOverrides array{customerRef?: string, amountMinor?: int, currency?: string, metadata?: array<string, string>, invoiceId?: string, chargeId?: string}
- * @phpstan-type PostSandboxStripeFixturesBody array{connectionId: string, event: 'invoice.paid'|'charge.refunded'|'charge.dispute.created'|'customer.created'|'customer.updated'|'customer.subscription.created'|'customer.subscription.updated'|'customer.subscription.deleted', eventId?: string, overrides?: PostSandboxStripeFixturesBodyOverrides}
+ * @phpstan-type PostSandboxBillingFixturesBodyOverrides array{customerRef?: string, amountMinor?: int, currency?: string, metadata?: array<string, string>, invoiceId?: string, orderId?: string, chargeId?: string, subscriptionId?: string}
+ * @phpstan-type PostSandboxBillingFixturesBody array{connectionId: string, eventId?: string, overrides?: PostSandboxBillingFixturesBodyOverrides, event: string}
+ * @phpstan-type PostSandboxStripeFixturesBodyOverrides array{customerRef?: string, amountMinor?: int, currency?: string, metadata?: array<string, string>, invoiceId?: string, orderId?: string, chargeId?: string, subscriptionId?: string}
+ * @phpstan-type PostSandboxStripeFixturesBody array{connectionId: string, eventId?: string, overrides?: PostSandboxStripeFixturesBodyOverrides, event: 'invoice.paid'|'charge.refunded'|'charge.dispute.created'|'customer.created'|'customer.updated'|'customer.subscription.created'|'customer.subscription.updated'|'customer.subscription.deleted'}
  * @phpstan-type PostImportProviderBody array{csv: string}
  * @phpstan-type PutBrandingBody array{logoUrl?: string, theme?: array<string, string>, emailFrom?: string}
  * @phpstan-type PostBrandingLinkDomainBody array{domain: string}
@@ -1168,16 +1192,21 @@ namespace Referalli;
  * @phpstan-type PostPartnerSecurityTotpEnableBody array{code: string}
  * @phpstan-type PostPartnerSecurityTotpDisableBody array{code: string}
  * @phpstan-type PostAuthConnectionsBodyKeys array{referralToken?: string, anonId?: string, couponCode?: string, programId?: string, autoEnroll?: string}
- * @phpstan-type PostAuthConnectionsBody array{provider: 'atlas'|'clerk'|'auth0'|'supabase'|'firebase'|'cognito'|'stytch'|'kinde'|'workos'|'generic'|'custom', programId: string, instanceId?: string, appId?: string, autoEnrollUsers?: bool, destinationUrl?: string, name?: string, secret?: string, keys?: PostAuthConnectionsBodyKeys}
+ * @phpstan-type PostAuthConnectionsBodyTokenVerificationClaims array{customerRef?: string, email?: string, emailVerified?: string, name?: string}
+ * @phpstan-type PostAuthConnectionsBodyTokenVerification array{preset?: 'clerk'|'supabase'|'firebase'|'auth0'|'cognito'|'stytch'|'kinde'|'okta'|'entra'|'google'|'keycloak'|'descope'|'workos'|'atlas'|'fusionauth', tenant?: string, issuer?: string, jwksUrl?: string, keyType?: 'jwks'|'hs256', sharedSecret?: string, audience?: string, maxAgeS?: int, claims?: PostAuthConnectionsBodyTokenVerificationClaims}
+ * @phpstan-type PostAuthConnectionsBody array{provider: 'atlas'|'clerk'|'auth0'|'supabase'|'firebase'|'cognito'|'stytch'|'kinde'|'workos'|'generic'|'custom', programId: string, instanceId?: string, appId?: string, autoEnrollUsers?: bool, destinationUrl?: string, name?: string, secret?: string, keys?: PostAuthConnectionsBodyKeys, tokenVerification?: PostAuthConnectionsBodyTokenVerification, allowedOrigins?: list<string>}
  * @phpstan-type PutAuthConnectionsIdSecretBody array{secret: string}
- * @phpstan-type PatchAuthConnectionsIdBody array{status?: 'active'|'paused', name?: string, autoEnrollUsers?: bool, destinationUrl?: string|null, signatureVersion?: 'v1+v2'|'v2'}
+ * @phpstan-type PatchAuthConnectionsIdBodyTokenVerificationOption1Claims array{customerRef?: string, email?: string, emailVerified?: string, name?: string}
+ * @phpstan-type PatchAuthConnectionsIdBodyTokenVerificationOption1 array{preset?: 'clerk'|'supabase'|'firebase'|'auth0'|'cognito'|'stytch'|'kinde'|'okta'|'entra'|'google'|'keycloak'|'descope'|'workos'|'atlas'|'fusionauth', tenant?: string, issuer?: string, jwksUrl?: string, keyType?: 'jwks'|'hs256', sharedSecret?: string, audience?: string, maxAgeS?: int, claims?: PatchAuthConnectionsIdBodyTokenVerificationOption1Claims}
+ * @phpstan-type PatchAuthConnectionsIdBody array{status?: 'active'|'paused', name?: string, autoEnrollUsers?: bool, destinationUrl?: string|null, resolveBillingCustomers?: bool, signatureVersion?: 'v1+v2'|'v2', tokenVerification?: PatchAuthConnectionsIdBodyTokenVerificationOption1|null, allowedOrigins?: list<string>}
  * @phpstan-type PostAuthConnectionsIdSignupsBodyReferral array{code?: string, clickId?: string, anonId?: string, capturedAt?: string, consent?: 'granted'|'not_required'}
  * @phpstan-type PostAuthConnectionsIdSignupsBodyRisk array{botScore?: float|int, disposableEmail?: bool, emailVerified?: bool, selfReferral?: bool, velocity?: int, reasons?: list<string>, score?: float|int, level?: 'low'|'medium'|'high', dropped?: bool}
  * @phpstan-type PostAuthConnectionsIdSignupsBody array{customerRef: string, email?: string, emailHash?: string, name?: string, ip?: string, ua?: string, signedUpAt: string, referral?: PostAuthConnectionsIdSignupsBodyReferral, risk?: PostAuthConnectionsIdSignupsBodyRisk, emailDomain?: string, referralCode?: string, autoEnroll?: bool, test?: bool}
  * @phpstan-type PostAuthConnectionsIdPartnersBody array{customerRef: string, email?: string, emailHash?: string, name?: string, code?: string}
  * @phpstan-type PostAuthConnectionsIdEraseBody array{customerRef: string}
  * @phpstan-type PostAuthConnectionsIdAliasesBody array{fromCustomerRef: string, toCustomerRef: string}
- * @phpstan-type PostAuthConnectionsIdUsersBody array{customerRef: string, email?: string, name?: string, status?: 'active'|'suspended'|'deleted'}
+ * @phpstan-type PostAuthConnectionsIdUsersBody array{customerRef: string, email?: string, emailVerified?: bool, name?: string, status?: 'active'|'suspended'|'deleted'}
+ * @phpstan-type PostAuthConnectionsIdWidgetTokensBody array{customerRef: string, email?: string, emailVerified?: bool, displayName?: string, ttlSeconds?: int}
  * @phpstan-type PostAuthConnectionsIdSignalsBody array{customerRef: string, signal: 'email_verified'|'banned'|'unbanned'|'fraud_confirmed'|'self_referral', at?: string, details?: array<string, mixed>}
  * @phpstan-type PostAuthConnectionsInstallBody array{clientId: string, scope: string, redirectUri: string, state?: string, codeChallenge: string, instanceId: string, programId?: string, decision: 'allow'|'deny'}
  * @phpstan-type PostOauthTokenBodyOption1 array{grant_type: 'authorization_code', code: string, code_verifier: string, client_id: string, redirect_uri: string}
@@ -1211,6 +1240,9 @@ namespace Referalli;
  * @phpstan-type PutProgramsIdStripeCreditsBodyCreateCustomerIfMissingOption1 array{metadata?: array<string, string>}
  * @phpstan-type PutProgramsIdStripeCreditsBody array{enabled: bool, referrerMatch?: 'billing_link'|'metadata'|'email', metadataKey?: string, refereeRewards?: bool, balanceCurrency?: string|null, createCustomerIfMissing?: PutProgramsIdStripeCreditsBodyCreateCustomerIfMissingOption1|null, waitForCustomer?: bool, secretKey?: string|null}
  * @phpstan-type PostProgramsIdStripeCreditsRequeueBody array{creditIds?: list<string>}
+ * @phpstan-type PutProgramsIdCreditRailBodyCreateCustomerIfMissingOption1 array{metadata?: array<string, string>}
+ * @phpstan-type PutProgramsIdCreditRailBody array{enabled: bool, referrerMatch?: 'billing_link'|'metadata'|'email', metadataKey?: string, refereeRewards?: bool, balanceCurrency?: string|null, createCustomerIfMissing?: PutProgramsIdCreditRailBodyCreateCustomerIfMissingOption1|null, waitForCustomer?: bool, connectionId?: string|null}
+ * @phpstan-type PostProgramsIdCreditRailRequeueBody array{creditIds?: list<string>}
  * @phpstan-type PostGraphqlBody array{query: string, variables?: array<string, mixed>, operationName?: string}
  */
 final class Models

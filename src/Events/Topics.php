@@ -12,6 +12,9 @@ final class Topics
 {
     /** @var array<string, class-string<WebhookEvent>> */
     public const CLASSES = [
+        'account_credit.applied' => AccountCreditAppliedEvent::class,
+        'account_credit.failed' => AccountCreditFailedEvent::class,
+        'account_credit.reversed' => AccountCreditReversedEvent::class,
         'api_key.expiring' => ApiKeyExpiringEvent::class,
         'billing_event.recorded' => BillingEventRecordedEvent::class,
         'click.recorded' => ClickRecordedEvent::class,
@@ -54,6 +57,9 @@ final class Topics
     ];
 
     public const ALL = [
+        'account_credit.applied',
+        'account_credit.failed',
+        'account_credit.reversed',
         'api_key.expiring',
         'billing_event.recorded',
         'click.recorded',
