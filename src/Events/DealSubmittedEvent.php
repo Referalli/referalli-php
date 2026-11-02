@@ -47,6 +47,13 @@ namespace Referalli\Events;
  * @phpstan-import-type CommissionLine from \Referalli\Models
  * @phpstan-import-type Settlement from \Referalli\Models
  * @phpstan-import-type CommissionRule from \Referalli\Models
+ * @phpstan-import-type ProgramTermsBaseOption1 from \Referalli\Models
+ * @phpstan-import-type ProgramTermsBaseOption2 from \Referalli\Models
+ * @phpstan-import-type ProgramTermsRecurringOption1 from \Referalli\Models
+ * @phpstan-import-type ProgramTermsRecurringOption2 from \Referalli\Models
+ * @phpstan-import-type ProgramTermsRecurringOption3 from \Referalli\Models
+ * @phpstan-import-type ProgramTermsSummary from \Referalli\Models
+ * @phpstan-import-type ProgramTerms from \Referalli\Models
  * @phpstan-import-type BillingFilter from \Referalli\Models
  * @phpstan-import-type ValueMapping from \Referalli\Models
  * @phpstan-import-type ValueMappingPreviewValue from \Referalli\Models
@@ -1045,6 +1052,8 @@ namespace Referalli\Events;
  * @phpstan-import-type PostCommissionsIdAdjustBody from \Referalli\Models
  * @phpstan-import-type PostCommissionsIdSettleBody from \Referalli\Models
  * @phpstan-import-type PostBillingConnectionsBodyFilter from \Referalli\Models
+ * @phpstan-import-type PostBillingConnectionsBodyCreditRailCreateCustomerIfMissingOption1 from \Referalli\Models
+ * @phpstan-import-type PostBillingConnectionsBodyCreditRail from \Referalli\Models
  * @phpstan-import-type PostBillingConnectionsBody from \Referalli\Models
  * @phpstan-import-type PutBillingConnectionsIdSecretBody from \Referalli\Models
  * @phpstan-import-type PutBillingConnectionsIdCredentialsBody from \Referalli\Models

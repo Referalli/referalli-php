@@ -48,6 +48,13 @@ namespace Referalli;
  * @phpstan-type CommissionLine array{id: string, programId: string, partnerId: string, referralId: string|null, type: 'earned'|'approved'|'paid'|'reversed'|'adjusted', amountMinor: int, currency: string, relatedCommissionId: string|null, holdUntil: string|null, level: int|null, memo: string|null, settlementMethod?: string|null, settlementReference?: string|null, ts: string, billingEventId?: string|null, netMinor?: int, state?: 'pending'|'approved'|'paid', events?: list<CommissionEvent>}
  * @phpstan-type Settlement array{commissionId: string, paidEventId: string, partnerId: string, programId: string, amountMinor: int, currency: string, method: 'store_credit'|'merchant_credit', reference: string, status: 'paid'}
  * @phpstan-type CommissionRule array{id: string, programId: string, version: int, config: GetOpenapiJsonResponse, createdAt: string}
+ * @phpstan-type ProgramTermsBaseOption1 array{kind: 'percent', percentBps: int}
+ * @phpstan-type ProgramTermsBaseOption2 array{kind: 'fixed', amountMinor: int, currency: string}
+ * @phpstan-type ProgramTermsRecurringOption1 array{type: 'one_time'}
+ * @phpstan-type ProgramTermsRecurringOption2 array{type: 'lifetime'}
+ * @phpstan-type ProgramTermsRecurringOption3 array{type: 'months', months: int}
+ * @phpstan-type ProgramTermsSummary array{en: string}
+ * @phpstan-type ProgramTerms array{programId: string, ruleVersion: int, base: ProgramTermsBaseOption1|ProgramTermsBaseOption2, recurring: ProgramTermsRecurringOption1|ProgramTermsRecurringOption2|ProgramTermsRecurringOption3, holdDays: int, ratesVary: bool, summary: ProgramTermsSummary}
  * @phpstan-type BillingFilter array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
  * @phpstan-type ValueMapping array{cash?: string, creditApplied?: string, discount?: string, cost?: string, productRef?: string, unit: 'minor'|'major', version: int}
  * @phpstan-type ValueMappingPreviewValue array{cashMinor: int, creditAppliedMinor: int, discountMinor: int, costMinor?: int, productRef?: string, fields: array<string, float|int>, warnings?: list<string>, source?: 'mapping', mappingVersion?: int}
@@ -57,9 +64,9 @@ namespace Referalli;
  * @phpstan-type ValueMappingPreviewEventsItem array{currency: string, value: ValueMappingPreviewEventsItemValue, wouldRecord: list<ValueMappingPreviewEventsItemWouldRecordItem>, index: int}
  * @phpstan-type ValueMappingPreview array{mappingVersion: int, currency?: string, value?: ValueMappingPreviewValue, wouldRecord?: list<ValueMappingPreviewWouldRecordItem>, events?: list<ValueMappingPreviewEventsItem>}
  * @phpstan-type BillingConnectionRotation array{inProgress: bool, previousSecretExpiresAt?: string}
- * @phpstan-type BillingConnection array{id: string, provider: string, name: string, status: 'active'|'paused', createdAt: string, webhookUrl: string, needsCredentials: bool, hasCredentials: bool, valueMapping: ValueMapping|null, filter: BillingFilter|null, customerRefMetadataKey?: string|null, rotation: BillingConnectionRotation}
- * @phpstan-type CreatedBillingConnection array{id: string, provider: string, webhookSecret: string, webhookUrl: string, filter: BillingFilter|null, customerRefMetadataKey?: string|null}
- * @phpstan-type BillingEvent array{id: string, provider: string, type: string, customerRef: string, invoiceRef: string|null, amountGross: int, tax: int, fees: int, currency: string, occurredAt: string, connectionId: string|null, productRef: string, status: 'processed'|'ignored_by_filter', ignoredReason: 'filter'|'internal_customer'|null, catalog: array<string, list<string>>|null}
+ * @phpstan-type BillingConnection array{id: string, provider: string, name: string, status: 'active'|'paused'|'awaiting_secret', programIds: list<string>|null, createdAt: string, webhookUrl: string, needsCredentials: bool, hasCredentials: bool, valueMapping: ValueMapping|null, filter: BillingFilter|null, customerRefMetadataKey?: string|null, stripeWebhookEndpointId?: string|null, rotation: BillingConnectionRotation}
+ * @phpstan-type CreatedBillingConnection array{id: string, provider: string, status: 'active'|'awaiting_secret', webhookSecret: string, webhookUrl: string, filter: BillingFilter|null, customerRefMetadataKey?: string|null, programIds: list<string>|null, stripeWebhookEndpointId?: string, reused?: bool}
+ * @phpstan-type BillingEvent array{id: string, provider: string, type: string, customerRef: string, invoiceRef: string|null, amountGross: int, tax: int, fees: int, currency: string, occurredAt: string, connectionId: string|null, productRef: string, status: 'processed'|'ignored_by_filter', ignoredReason: 'filter'|'internal_customer'|'no_referral_in_scope'|null, catalog: array<string, list<string>>|null}
  * @phpstan-type InternalCustomer array{customerRef: string, note: string, createdAt: string}
  * @phpstan-type IdentityProviderSampleHookOption1 array{language: string, filename: string, code: string}
  * @phpstan-type IdentityProviderMetadataPaths array{anonId: list<string>, clickId: list<string>, coupon: list<string>}
@@ -367,7 +374,7 @@ namespace Referalli;
  * @phpstan-type GetPartnersIdStatsResponseReferrals array{total: int, active: int, pendingReview: int, paused: int, void: int}
  * @phpstan-type GetPartnersIdStatsResponse array{partnerId: string, programId: string|null, clicks: int, referrals: GetPartnersIdStatsResponseReferrals, convertedCustomers: int, balances: list<Balance>}
  * @phpstan-type GetPartnersIdSummaryResponseReferrals array{total: int, active: int, pendingReview: int, paused: int, void: int}
- * @phpstan-type GetPartnersIdSummaryResponse array{partnerId: string, programId: string|null, clicks: int, referrals: GetPartnersIdSummaryResponseReferrals, convertedCustomers: int, balances: list<Balance>, code: string|null, linkUrl: string|null}
+ * @phpstan-type GetPartnersIdSummaryResponse array{partnerId: string, programId: string|null, clicks: int, referrals: GetPartnersIdSummaryResponseReferrals, convertedCustomers: int, balances: list<Balance>, code: string|null, linkUrl: string|null, terms: ProgramTerms|null}
  * @phpstan-type PostCommissionsApproveDueResponse array{approved: int}
  * @phpstan-type PostCommissionsIdAdjustResponse array{id: string}
  * @phpstan-type PutBillingConnectionsIdSecretResponse array{id: string, provider: string, ok: bool}
@@ -917,7 +924,7 @@ namespace Referalli;
  * @phpstan-type PostPortalThemeImportBrandResponse array{published: PostPortalThemeImportBrandResponsePublished, draft: PostPortalThemeImportBrandResponseDraftOption1|null, hasDraft: bool, publishedAt: string|null, updatedAt: string|null, previewExpiresAt: string|null, applied: list<string>}
  * @phpstan-type GetStripeCreditsConnectionResponse array{connected: bool, source: 'stripe_credits'|'payout_connection'|null, connectedAt: string|null}
  * @phpstan-type GetProgramsIdStripeCreditsResponseCreateCustomerIfMissingOption1 array{metadata?: array<string, string>}
- * @phpstan-type GetProgramsIdStripeCreditsResponse array{programId: string, enabled: bool, referrerMatch: 'billing_link'|'metadata'|'email', metadataKey: string|null, refereeRewards: bool, balanceCurrency: string|null, createCustomerIfMissing: GetProgramsIdStripeCreditsResponseCreateCustomerIfMissingOption1|null, keyConnected: bool, hasOwnKey: bool}
+ * @phpstan-type GetProgramsIdStripeCreditsResponse array{programId: string, enabled: bool, referrerMatch: 'billing_link'|'metadata'|'email', metadataKey: string|null, refereeRewards: bool, balanceCurrency: string|null, createCustomerIfMissing: GetProgramsIdStripeCreditsResponseCreateCustomerIfMissingOption1|null, waitForCustomer: bool, keyConnected: bool, hasOwnKey: bool}
  * @phpstan-type PostProgramsIdStripeCreditsRequeueResponse array{requeued: int, creditIds: list<string>}
  * @phpstan-type GetProgramsIdStripeCreditsLogResponseDataItem array{id: string, programId: string, sourceEventId: string, kind: 'referrer_credit'|'referrer_debit'|'referee_credit', commissionId: string|null, partnerId: string|null, customerRef: string|null, amountMinor: int, currency: string, appliedAmountMinor: int|null, appliedCurrency: string|null, stripeCustomerId: string|null, status: 'pending'|'applied'|'failed'|'no_customer'|'ambiguous_customer'|'fx_rate_missing'|'canceled', attempts: int, stripeBalanceTransactionId: string|null, lastError: string|null, createdAt: string, updatedAt: string}
  * @phpstan-type GetProgramsIdStripeCreditsLogResponse array{object: 'list', data: list<GetProgramsIdStripeCreditsLogResponseDataItem>, has_more: bool, next_cursor: string|null}
@@ -1046,11 +1053,13 @@ namespace Referalli;
  * @phpstan-type PostCommissionsIdAdjustBody array{amountMinor: int, memo: string, allowNegative?: bool}
  * @phpstan-type PostCommissionsIdSettleBody array{method?: 'store_credit', reference: string, memo?: string}
  * @phpstan-type PostBillingConnectionsBodyFilter array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
- * @phpstan-type PostBillingConnectionsBody array{provider: 'stripe'|'paddle'|'lemonsqueezy'|'polar'|'chargebee'|'shopify'|'generic'|'recurly'|'braintree'|'woocommerce'|'bigcommerce', name?: string, webhookSecret?: string, filter?: PostBillingConnectionsBodyFilter, customerRefMetadataKey?: string|null}
+ * @phpstan-type PostBillingConnectionsBodyCreditRailCreateCustomerIfMissingOption1 array{metadata?: array<string, string>}
+ * @phpstan-type PostBillingConnectionsBodyCreditRail array{enabled?: bool, referrerMatch?: 'billing_link'|'metadata'|'email', metadataKey?: string, refereeRewards?: bool, balanceCurrency?: string|null, createCustomerIfMissing?: PostBillingConnectionsBodyCreditRailCreateCustomerIfMissingOption1|null, waitForCustomer?: bool, programId: string}
+ * @phpstan-type PostBillingConnectionsBody array{provider: 'stripe'|'paddle'|'lemonsqueezy'|'polar'|'chargebee'|'shopify'|'generic'|'recurly'|'braintree'|'woocommerce'|'bigcommerce', name?: string, webhookSecret?: string, filter?: PostBillingConnectionsBodyFilter, customerRefMetadataKey?: string|null, programIds?: list<string>|null, stripeKey?: string, creditRail?: PostBillingConnectionsBodyCreditRail}
  * @phpstan-type PutBillingConnectionsIdSecretBody array{webhookSecret: string}
  * @phpstan-type PutBillingConnectionsIdCredentialsBody array{apiKey?: string, apiToken?: string, storeHash?: string, region?: 'us'|'eu'}
  * @phpstan-type PatchBillingConnectionsIdBodyFilterOption1 array{metadata?: array<string, string>, productIds?: list<string>, priceIds?: list<string>, skus?: list<string>}
- * @phpstan-type PatchBillingConnectionsIdBody array{status?: 'active'|'paused', name?: string, filter?: PatchBillingConnectionsIdBodyFilterOption1|null, customerRefMetadataKey?: string|null}
+ * @phpstan-type PatchBillingConnectionsIdBody array{status?: 'active'|'paused', name?: string, filter?: PatchBillingConnectionsIdBodyFilterOption1|null, customerRefMetadataKey?: string|null, programIds?: list<string>|null}
  * @phpstan-type PutBillingConnectionsIdValueMappingBody array{cash?: string, creditApplied?: string, discount?: string, cost?: string, productRef?: string, unit: 'minor'|'major'}
  * @phpstan-type PostBillingConnectionsIdValueMappingPreviewBodyMapping array{cash?: string, creditApplied?: string, discount?: string, cost?: string, productRef?: string, unit: 'minor'|'major'}
  * @phpstan-type PostBillingConnectionsIdValueMappingPreviewBody array{payload: mixed, currency?: string, mapping?: PostBillingConnectionsIdValueMappingPreviewBodyMapping}
@@ -1200,7 +1209,7 @@ namespace Referalli;
  * @phpstan-type PostPortalThemeImportBrandBody array{document?: array<string, mixed>, url?: string}
  * @phpstan-type PutStripeCreditsConnectionBody array{secretKey: string}
  * @phpstan-type PutProgramsIdStripeCreditsBodyCreateCustomerIfMissingOption1 array{metadata?: array<string, string>}
- * @phpstan-type PutProgramsIdStripeCreditsBody array{enabled: bool, referrerMatch?: 'billing_link'|'metadata'|'email', metadataKey?: string, refereeRewards?: bool, balanceCurrency?: string|null, createCustomerIfMissing?: PutProgramsIdStripeCreditsBodyCreateCustomerIfMissingOption1|null, secretKey?: string|null}
+ * @phpstan-type PutProgramsIdStripeCreditsBody array{enabled: bool, referrerMatch?: 'billing_link'|'metadata'|'email', metadataKey?: string, refereeRewards?: bool, balanceCurrency?: string|null, createCustomerIfMissing?: PutProgramsIdStripeCreditsBodyCreateCustomerIfMissingOption1|null, waitForCustomer?: bool, secretKey?: string|null}
  * @phpstan-type PostProgramsIdStripeCreditsRequeueBody array{creditIds?: list<string>}
  * @phpstan-type PostGraphqlBody array{query: string, variables?: array<string, mixed>, operationName?: string}
  */

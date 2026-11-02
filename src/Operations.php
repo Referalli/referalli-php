@@ -47,6 +47,13 @@ namespace Referalli;
  * @phpstan-import-type CommissionLine from Models
  * @phpstan-import-type Settlement from Models
  * @phpstan-import-type CommissionRule from Models
+ * @phpstan-import-type ProgramTermsBaseOption1 from Models
+ * @phpstan-import-type ProgramTermsBaseOption2 from Models
+ * @phpstan-import-type ProgramTermsRecurringOption1 from Models
+ * @phpstan-import-type ProgramTermsRecurringOption2 from Models
+ * @phpstan-import-type ProgramTermsRecurringOption3 from Models
+ * @phpstan-import-type ProgramTermsSummary from Models
+ * @phpstan-import-type ProgramTerms from Models
  * @phpstan-import-type BillingFilter from Models
  * @phpstan-import-type ValueMapping from Models
  * @phpstan-import-type ValueMappingPreviewValue from Models
@@ -1045,6 +1052,8 @@ namespace Referalli;
  * @phpstan-import-type PostCommissionsIdAdjustBody from Models
  * @phpstan-import-type PostCommissionsIdSettleBody from Models
  * @phpstan-import-type PostBillingConnectionsBodyFilter from Models
+ * @phpstan-import-type PostBillingConnectionsBodyCreditRailCreateCustomerIfMissingOption1 from Models
+ * @phpstan-import-type PostBillingConnectionsBodyCreditRail from Models
  * @phpstan-import-type PostBillingConnectionsBody from Models
  * @phpstan-import-type PutBillingConnectionsIdSecretBody from Models
  * @phpstan-import-type PutBillingConnectionsIdCredentialsBody from Models
@@ -1392,6 +1401,7 @@ trait Operations
         'getProgramsIdRefereeReward' => ['GET', '/v1/programs/{id}/referee-reward', ['id'], [], false, 'json', 'getProgramsIdRefereeReward', ['id'], 2],
         'getProgramsIdStripeCredits' => ['GET', '/v1/programs/{id}/stripe-credits', ['id'], [], false, 'json', 'getProgramsIdStripeCredits', ['id'], 2],
         'getProgramsIdStripeCreditsLog' => ['GET', '/v1/programs/{id}/stripe-credits/log', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdStripeCreditsLog', ['id'], 7],
+        'getProgramsIdTerms' => ['GET', '/v1/programs/{id}/terms', ['id'], [], false, 'json', 'getProgramsIdTerms', ['id'], 2],
         'getProgramsIdTermsAcceptances' => ['GET', '/v1/programs/{id}/terms-acceptances', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdTermsAcceptances', ['id'], 7],
         'getProspects' => ['GET', '/v1/prospects', [], ['status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProspects', [], 7],
         'getPublicProgramsHandle' => ['GET', '/v1/public/programs/{handle}', ['handle'], [], false, 'json', 'getPublicProgramsHandle', ['handle'], 2],
@@ -1676,7 +1686,9 @@ trait Operations
      *
      * Revokes a key at once. `cascade=true` also revokes every key it minted (and theirs); `pair=true` also revokes its live/test twin. Returns the revoked ids. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      *
      * cascade: true: also revoke every key this key minted, and theirs.
      * pair: true: also revoke its live/test twin.
@@ -1692,7 +1704,9 @@ trait Operations
      *
      * Removes a marketing asset.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteAssetsId(string $id, ?string $idempotencyKey = null): mixed
@@ -1705,7 +1719,9 @@ trait Operations
      *
      * Removes the connection; its webhook URL and signed endpoints stop accepting calls. Referrals it filed stay.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `connections:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteAuthConnectionsId(string $id, ?string $idempotencyKey = null): mixed
@@ -1718,7 +1734,9 @@ trait Operations
      *
      * Deletes the connection: its secrets and credentials are wiped and its webhook URL stops accepting events. Recorded billing events stay. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteBillingConnectionsId(string $id, ?string $idempotencyKey = null): mixed
@@ -1731,7 +1749,9 @@ trait Operations
      *
      * Their payments earn again from now on (events already ignored stay ignored). Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteBillingInternalCustomersCustomerRef(string $customerRef, ?string $idempotencyKey = null): mixed
@@ -1744,7 +1764,9 @@ trait Operations
      *
      * Stops serving the partner portal on the custom domain.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteBrandingDomain(?string $idempotencyKey = null): mixed
@@ -1757,7 +1779,9 @@ trait Operations
      *
      * Stops using the custom link domain; links go back to the default host.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteBrandingLinkDomain(?string $idempotencyKey = null): mixed
@@ -1770,7 +1794,9 @@ trait Operations
      *
      * Closes the listener; queued events are dropped.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteCliListenersId(string $id, ?string $idempotencyKey = null): mixed
@@ -1783,7 +1809,9 @@ trait Operations
      *
      * Removes the override; the default template is used again.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return DeleteEmailTemplatesEventLocaleResponse
      */
     public function deleteEmailTemplatesEventLocale(string $event, string $locale, ?string $idempotencyKey = null): mixed
@@ -1796,7 +1824,9 @@ trait Operations
      *
      * Removes the HubSpot or Segment connection and its stored credential.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteIntegrationsKind(string $kind, ?string $idempotencyKey = null): mixed
@@ -1809,7 +1839,9 @@ trait Operations
      *
      * Removes a member. Members can remove themselves; otherwise owner or admin. The last owner stays (409). Audited. Live mode only.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteOrgMembersUserId(string $userId, ?string $idempotencyKey = null): mixed
@@ -1822,7 +1854,9 @@ trait Operations
      *
      * Removes the org's own IdP configuration; team SSO and "require SSO" turn off, so nobody is locked out. Owner only.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return DeleteOrgSsoDirectResponse
      */
     public function deleteOrgSsoDirect(?string $idempotencyKey = null): mixed
@@ -1848,7 +1882,9 @@ trait Operations
      *
      * Deletes a partner that never did anything, with its enrollments, links, coupons and payout profile. A partner with any clicks, referrals, commissions, payouts or other history is `409`: archive it instead (`status: "archived"`). Audited.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @return Ok
      */
     public function deletePartnersId(string $id, ?string $idempotencyKey = null): mixed
@@ -1861,7 +1897,9 @@ trait Operations
      *
      * Removes the stored credentials for a provider. Payouts by that method are then simulated until you reconnect. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return DeletePayoutConnectionsProviderResponse
      */
     public function deletePayoutConnectionsProvider(string $provider, ?string $idempotencyKey = null): mixed
@@ -1874,7 +1912,9 @@ trait Operations
      *
      * Drops the draft and its preview link. What partners see is unchanged. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return GetPortalThemeResponse
      */
     public function deletePortalThemeDraft(?string $idempotencyKey = null): mixed
@@ -1887,7 +1927,9 @@ trait Operations
      *
      * Removes the tool, its key and settings; its URL answers 404 from now on. The request log stays.
      *
-     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:write`, `full`, `admin`.
      * @return DeletePrivacyExecutorsAdapterResponse
      */
     public function deletePrivacyExecutorsAdapter(string $adapter, ?string $idempotencyKey = null): mixed
@@ -1900,7 +1942,9 @@ trait Operations
      *
      * The link and every token issued from it stop at once. A root action (see create).
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @return DeleteProductLinksIdResponse
      */
     public function deleteProductLinksId(string $id, ?string $idempotencyKey = null): mixed
@@ -1913,7 +1957,9 @@ trait Operations
      *
      * Removes a product from the margin catalog; its payments fall back to the program or org margin. Audited.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `analytics:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @return OkStatus
      */
     public function deleteProfitabilityProductsProductRef(string $productRef, ?string $idempotencyKey = null): mixed
@@ -1926,7 +1972,9 @@ trait Operations
      *
      * Deletes the rule. Rewards already granted through it stay.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @return DeleteRewardsRulesKeyResponse
      */
     public function deleteRewardsRulesKey(string $key, ?string $idempotencyKey = null): mixed
@@ -1939,7 +1987,9 @@ trait Operations
      *
      * Deletes the rail's own key. A Stripe payout connection, if any, is then used instead; with neither, queued credits fail until a key is connected. Owner or admin. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return GetStripeCreditsConnectionResponse
      */
     public function deleteStripeCreditsConnection(?string $idempotencyKey = null): mixed
@@ -1952,7 +2002,9 @@ trait Operations
      *
      * Removes the tool and its secret; its card URL answers 404 from now on.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @return DeleteSupportAppsAdapterResponse
      */
     public function deleteSupportAppsAdapter(string $adapter, ?string $idempotencyKey = null): mixed
@@ -1965,7 +2017,9 @@ trait Operations
      *
      * Removes the endpoint and its delivery history. Audited.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteWebhookEndpointsId(string $id, ?string $idempotencyKey = null): mixed
@@ -1978,7 +2032,9 @@ trait Operations
      *
      * REST hook unsubscribe, called by Zapier when a Zap turns off.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @return Ok
      */
     public function deleteZapierHooksId(string $id, ?string $idempotencyKey = null): mixed
@@ -2060,7 +2116,9 @@ trait Operations
      *
      * The AI agents partnered with this org, with their wallet, metadata and how many recommendations each has attributed, most active first.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session with role `owner`, `admin`, `analyst`.
+     * **Auth:** an API key with `growth:read`, or a session with role `owner`, `admin`, `analyst`.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2088,7 +2146,9 @@ trait Operations
      *
      * Signed recommendations AI agents have attributed in this org, newest first.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session with role `owner`, `admin`, `analyst`.
+     * **Auth:** an API key with `growth:read`, or a session with role `owner`, `admin`, `analyst`.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2116,7 +2176,9 @@ trait Operations
      *
      * Referrals and referred revenue by how they were matched (`coupon`, `deterministic` click, `email_hash`, `probabilistic`, `manual`…).
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2144,7 +2206,9 @@ trait Operations
      *
      * Referrals and referred revenue by the country of the winning click, highest revenue first.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2172,7 +2236,9 @@ trait Operations
      *
      * Referred customers grouped by sign-up month over the last `months` (default 6), with net revenue (payments minus refunds) and revenue per customer.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2200,7 +2266,9 @@ trait Operations
      *
      * Referrals and revenue per coupon code, highest revenue first.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2228,7 +2296,9 @@ trait Operations
      *
      * Over the last `days` (default 30), optionally for one program: clicks (and how many were filtered), visitors, sign-ups, payments, referred revenue, commission earned and reversed, active partners and the click-to-sign-up and sign-up-to-paid rates.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetAnalyticsOverviewResponse
      */
     public function getAnalyticsOverview(?string $programId = null, ?int $days = null, ?string $idempotencyKey = null): mixed
@@ -2241,7 +2311,9 @@ trait Operations
      *
      * One `metric` (`clicks`, `signups` or `revenue` in minor units) per day over the last `days`, optionally for one program.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2269,7 +2341,9 @@ trait Operations
      *
      * Every key of the org, live and test (a test-mode caller sees test keys only), oldest first, with scopes, pinned version, owner, expiry and last use. Never returns the secret. Filter by `mode` (`live`, `test`, or `both`, the default) or `owner`.
      *
-     * **Auth:** an API key with `team:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:read`, or a session of any role.
+     *
+     * **Scopes:** `team:read`, `team:write`, `read`, `full`, `admin`.
      *
      * mode: Only live or only test keys; `both` (the default) lists both.
      * owner: Only keys with this owner.
@@ -2299,7 +2373,9 @@ trait Operations
      *
      * One key of the org, without its secret.
      *
-     * **Auth:** an API key with `team:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:read`, or a session of any role.
+     *
+     * **Scopes:** `team:read`, `team:write`, `read`, `full`, `admin`.
      * @return ApiKey
      */
     public function getApiKeysId(string $id, ?string $idempotencyKey = null): mixed
@@ -2312,7 +2388,9 @@ trait Operations
      *
      * Marketing assets, filtered by `programId`.
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `partners:read`, or a session of any role.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2340,7 +2418,9 @@ trait Operations
      *
      * Draft-only suggestions for running the program, each with a suggested action for a person to take: partners who never drove a click, links with clicks but no referrals, programs without a commission rule, the review queue, and credit ROI findings. It never changes anything.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2368,7 +2448,9 @@ trait Operations
      *
      * Every change recorded in the org, newest first: who did it (`actor`, `actorType`), what (`action`; a trailing `*` matches a prefix such as `payout.*`) and to what (`subjectType`, `subjectId`). Filter by any of those and by `created[gte]`/`created[lte]`.
      *
-     * **Auth:** an API key with `audit:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `audit:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `audit:read`, `audit:write`, `read`, `full`, `admin`.
      *
      * actor: Actor id: a user, API key or connection id.
      * action: Exact action, or a prefix ending in * (e.g. payout.*).
@@ -2395,7 +2477,9 @@ trait Operations
      *
      * Auth-platform connections with provider, program, status, signature version and rotation state. Secrets are never returned.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `integrations:read`, or a session of any role.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `connections:read`, `connections:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2436,7 +2520,9 @@ trait Operations
      *
      * Every auth provider you can connect (Atlas, Clerk, Auth0, Supabase, Firebase, Cognito, Stytch, Kinde, WorkOS, generic, your own auth), with how it connects, who issues the secret, the setup steps, a copyable template where the vendor has no native webhook, and where the referral metadata lands.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `integrations:read`, or a session of any role.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `connections:read`, `connections:write`, `read`, `full`, `admin`.
      * @return GetAuthConnectionsProvidersResponse
      */
     public function getAuthConnectionsProviders(?string $idempotencyKey = null): mixed
@@ -2460,9 +2546,11 @@ trait Operations
     /**
      * List billing connections. GET /v1/billing/connections
      *
-     * Billing connections (deleted ones excluded), with status, whether credentials are needed and set, the value mapping and secret-rotation state.
+     * Billing connections (deleted ones excluded), with status (`active`, `paused`, or `awaiting_secret` until a provider-issued secret is set), `programIds`, whether credentials are needed and set, the value mapping and secret-rotation state. A program-scoped API key sees only connections whose `programIds` are all within its own.
      *
-     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2490,7 +2578,9 @@ trait Operations
      *
      * One billing connection, without its secrets.
      *
-     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
      * @return BillingConnection
      */
     public function getBillingConnectionsId(string $id, ?string $idempotencyKey = null): mixed
@@ -2501,9 +2591,11 @@ trait Operations
     /**
      * List billing events. GET /v1/billing/events
      *
-     * Payments, refunds and other billing events received from every connection, newest first. Filter with `customerRef`, or `status=ignored_by_filter` for the events a product filter or the internal-customer list set aside (recorded, never processed).
+     * Payments, refunds and other billing events received from every connection, newest first. Filter with `customerRef`, or `status=ignored_by_filter` for the events a product filter or the internal-customer list set aside (recorded, never processed). `ignoredReason: "no_referral_in_scope"` (with `status: "processed"`) marks a payment on a connection limited to some programs from a customer referred only in other programs: it earned nothing.
      *
-     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2531,7 +2623,9 @@ trait Operations
      *
      * The org's own customers (staff, test accounts, your own plans) whose payments never earn on any connection. Metadata `planSource: "internal"` on the provider's customer does the same without a list.
      *
-     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
      * @return list<InternalCustomer>
      */
     public function getBillingInternalCustomers(?string $idempotencyKey = null): mixed
@@ -2544,7 +2638,9 @@ trait Operations
      *
      * The org's Referalli plan and status, its limits and current usage (programs, partners), the plan catalog, whether there is a subscription to manage and whether this caller may activate a plan without checkout.
      *
-     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
      * @return GetBillingPlanResponse
      */
     public function getBillingPlan(?string $idempotencyKey = null): mixed
@@ -2557,7 +2653,9 @@ trait Operations
      *
      * The org's logo, theme tokens, sender address, and its custom portal and link domains with their status (`none`, `pending` DNS, `provisioning` a certificate, `active`), and `warnings` for theme colour pairs below WCAG AA contrast.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetBrandingResponse
      */
     public function getBranding(?string $idempotencyKey = null): mixed
@@ -2583,7 +2681,9 @@ trait Operations
      *
      * A customer's recorded consent: whether granted, its purposes, the attributes they declared and when it changed. `consent: null` when none is recorded.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      * @return GetCleanroomConsentResponse
      */
     public function getCleanroomConsent(string $customerRef, ?string $idempotencyKey = null): mixed
@@ -2596,7 +2696,9 @@ trait Operations
      *
      * Aggregates over consenting customers only, grouped by a zero-party attribute they declared (`dimension`): customers, converted customers and referred revenue per value. Cohorts smaller than 5 are suppressed (k-anonymity); individual rows never leave.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      * @return GetCleanroomQueryResponse
      */
     public function getCleanroomQuery(string $dimension, ?string $idempotencyKey = null): mixed
@@ -2609,7 +2711,9 @@ trait Operations
      *
      * The share of attributed sign-ups in the last `days` (default 30) whose referral carries consent evidence, on its click or on the `associate` call. Low coverage means sign-ups are attributed from tags without a consent setting (`none`) or from server-side calls that don't pass `consent`.
      *
-     * **Auth:** an API key with `links:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `links:read`, or a session of any role.
+     *
+     * **Scopes:** `links:read`, `links:write`, `read`, `full`, `admin`.
      *
      * days: Look-back window in days.
      * @return GetClicksConsentCoverageResponse
@@ -2624,7 +2728,9 @@ trait Operations
      *
      * One click with its consent evidence: what the visitor's CMP said when the tracker stored the referral (`consent.provider`, `state`, `stamp`, `tcString`…). A redirect click (`/go`) is recorded before the landing page reads the CMP, so its evidence comes from the first consented visit beacon naming it. `consent` is null when none arrived.
      *
-     * **Auth:** an API key with `links:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `links:read`, or a session of any role.
+     *
+     * **Scopes:** `links:read`, `links:write`, `read`, `full`, `admin`.
      * @return GetClicksIdResponse
      */
     public function getClicksId(string $id, ?string $idempotencyKey = null): mixed
@@ -2637,7 +2743,9 @@ trait Operations
      *
      * For the approval page: the pending code, which CLI asked and when it expires. Needs a signed-in person (owner or admin). 404 when expired or used.
      *
-     * **Auth:** an API key with `team:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:read`, `team:write`, `read`, `full`, `admin`.
      * @return GetCliDeviceCodesUserCodeResponse
      */
     public function getCliDeviceCodesUserCode(string $userCode, ?string $idempotencyKey = null): mixed
@@ -2650,7 +2758,9 @@ trait Operations
      *
      * Up to 50 queued events for the listener, oldest first, each with its body and signed headers. `wait` long-polls up to 25 seconds for the first event. Polling keeps the listener alive.
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      * @return GetCliListenersIdEventsResponse
      */
     public function getCliListenersIdEvents(string $id, ?int $wait = null, ?string $idempotencyKey = null): mixed
@@ -2663,7 +2773,9 @@ trait Operations
      *
      * The CLI's `logs tail` command: the org's recent API requests (method, path without query string, status, latency, actor). The first call returns the latest 20 and a `cursor`; pass it as `after` (with `wait` to long-poll up to 25 seconds) for newer entries. Kept for a day.
      *
-     * **Auth:** an API key with `audit:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `audit:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `audit:read`, `audit:write`, `read`, `full`, `admin`.
      *
      * after: Return entries after this cursor.
      * @return GetCliLogsResponse
@@ -2678,7 +2790,9 @@ trait Operations
      *
      * The event topics `POST /v1/cli/trigger` can send.
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `webhooks:read`, or a session of any role.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      * @return GetCliTopicsResponse
      */
     public function getCliTopics(?string $idempotencyKey = null): mixed
@@ -2691,7 +2805,9 @@ trait Operations
      *
      * Every rule version, by program and newest version first. Filter with `programId`.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2719,7 +2835,9 @@ trait Operations
      *
      * The append-only commission ledger, newest first: `earned` lines and the `approved`, `paid`, `reversed` and `adjusted` events recorded against them (`relatedCommissionId`). Filter by `partnerId`, `programId`, `type` or `referralId`.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2747,7 +2865,9 @@ trait Operations
      *
      * One ledger event. An `earned` line also carries its billing event, its net after reversals and adjustments, its state (`pending`, `approved` or `paid`) and every event recorded against it.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      * @return CommissionLine
      */
     public function getCommissionsId(string $id, ?string $idempotencyKey = null): mixed
@@ -2760,7 +2880,9 @@ trait Operations
      *
      * The org's contracts and their status (`draft`, `sent`, `accepted`, `declined`, `void`).
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2788,7 +2910,9 @@ trait Operations
      *
      * Coupon codes, filtered by `programId` and/or `partnerId`.
      *
-     * **Auth:** an API key with `links:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `links:read`, or a session of any role.
+     *
+     * **Scopes:** `links:read`, `links:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2816,7 +2940,9 @@ trait Operations
      *
      * Published creator profiles, most engaged first, filtered by text (`q`), `category`, `channel`, minimum audience, minimum engagement and audience country. Each carries verified stats and whether this org already invited them. Emails are never returned.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2844,7 +2970,9 @@ trait Operations
      *
      * One published creator profile with verified stats. 404 when not listed.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      * @return CreatorProfile
      */
     public function getCreatorsAccountId(string $accountId, ?string $idempotencyKey = null): mixed
@@ -2857,7 +2985,9 @@ trait Operations
      *
      * Deals partners registered, newest first. Filter with `status` (`submitted`, `approved`, `rejected`, `won`, `lost`).
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2885,7 +3015,9 @@ trait Operations
      *
      * Disputes partners filed with this org, newest first.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2913,7 +3045,9 @@ trait Operations
      *
      * The org's own email provider (`resend`, `brevo` or `postmark`), sender identity, branding and sending-domain status. The API key is never returned.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return EmailSettings
      */
     public function getEmailSettings(?string $idempotencyKey = null): mixed
@@ -2926,7 +3060,9 @@ trait Operations
      *
      * Every email event with its placeholders and, per locale, the default template and the org's override if any.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -2967,7 +3103,9 @@ trait Operations
      *
      * The org's events, oldest first, in the shape webhook deliveries carry: filter with `since` and `topics`, page with `after` (the previous page's `nextCursor`). Every event is listed whether or not an endpoint subscribed to it. `referalli events tail --since 1h` uses it to backfill before tailing live.
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `webhooks:read`, or a session of any role.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      *
      * since: Only events created at or after this time.
      * topics: Comma-separated topics (default: every topic).
@@ -2984,7 +3122,9 @@ trait Operations
      *
      * A year's sent payouts as a CSV that QuickBooks (`format=quickbooks`, the default) or Xero imports.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      * @return string
      */
     public function getExportAccounting(int $year, ?string $format = null, ?string $idempotencyKey = null): string
@@ -2997,7 +3137,9 @@ trait Operations
      *
      * Every tenant table of the org as NDJSON (one JSON object per line, tagged with its table), streamed so any size works. Owner or admin.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `analytics:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return string
      */
     public function getExportFull(?string $idempotencyKey = null): string
@@ -3010,7 +3152,9 @@ trait Operations
      *
      * The fraud case queue (self-referrals, quality, rings, value patterns, identity risk), newest first, with the evidence. Filter with `status`.
      *
-     * **Auth:** an API key with `fraud:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `fraud:read`, or a session of any role.
+     *
+     * **Scopes:** `fraud:read`, `fraud:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3038,7 +3182,9 @@ trait Operations
      *
      * The org's rates first, then the platform fallback, newest per pair first. A payout uses the org's latest rate at or before the run, else the platform's. Filter by `base`, `quote`, `effectiveAt[gte]` and `effectiveAt[lte]`. Live mode leaves out the `fixture` sample rows; test mode lists them.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      *
      * effectiveAt[gte]: Only rates effective at or after this time.
      * effectiveAt[lte]: Only rates effective at or before this time.
@@ -3068,7 +3214,9 @@ trait Operations
      *
      * A read-only GraphQL endpoint over the same org-scoped data as REST (programs, partners, referrals, analytics), with the same authentication. Mutations stay in REST.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetGraphqlResponse
      */
     public function getGraphql(?string $idempotencyKey = null): mixed
@@ -3107,7 +3255,9 @@ trait Operations
      *
      * On a merchant's portal domain, for the signed-in partner of that merchant: the head tags that tell the merchant's chat who they are (partner id, email, name) and, when the merchant saved its chat vendor's identity-verification secret, the vendor's proof (Intercom `user_hash`, a Zendesk messaging JWT, a HubSpot visitor token…). The secret itself never leaves the API. Elsewhere, or for someone who isn't this merchant's partner, `tags` is empty. Partner session; `private, no-store`.
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `partners:read`, or a session of any role.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      * @return GetHostsCurrentChatIdentityResponse
      */
     public function getHostsCurrentChatIdentity(?string $idempotencyKey = null): mixed
@@ -3133,7 +3283,9 @@ trait Operations
      *
      * For a program's active referrals: treatment and control counts, conversion rates and lift, overall and per partner.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetIncrementalityResponse
      */
     public function getIncrementality(string $programId, ?string $idempotencyKey = null): mixed
@@ -3146,7 +3298,9 @@ trait Operations
      *
      * Every connection the org depends on, each with `ok`, a `detail`, and when it fails a `fix` and `docs` link: billing connections (and when each last received an event), sign-up connections, the tracking snippet (a visit in the last 30 days), payout connections, outbound webhook endpoints, and every adapter of a connected port. `hop` names the leg that failed on a path between systems. `ok` at the top is true only when every check is.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `integrations:read`, or a session of any role.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `read`, `full`, `admin`.
      * @return GetIntegrationHealthResponse
      */
     public function getIntegrationHealth(?string $idempotencyKey = null): mixed
@@ -3159,7 +3313,9 @@ trait Operations
      *
      * The HubSpot and Segment connections with status, settings and the last test result. Credentials are never returned.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `read`, `full`, `admin`.
      * @return GetIntegrationsResponse
      */
     public function getIntegrations(?string $idempotencyKey = null): mixed
@@ -3172,7 +3328,9 @@ trait Operations
      *
      * What was sent to Zapier, HubSpot and Segment, newest first, filtered by `kind` and `status`.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3200,7 +3358,9 @@ trait Operations
      *
      * The org's creator invitations and their status (`pending`, `accepted`, `declined`, `withdrawn`).
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3228,7 +3388,9 @@ trait Operations
      *
      * Tracked links with their short URL and click count, filtered by `programId` and/or `partnerId`.
      *
-     * **Auth:** an API key with `links:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `links:read`, or a session of any role.
+     *
+     * **Scopes:** `links:read`, `links:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3256,7 +3418,9 @@ trait Operations
      *
      * An SVG QR code for the link's short URL.
      *
-     * **Auth:** an API key with `links:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `links:read`, or a session of any role.
+     *
+     * **Scopes:** `links:read`, `links:write`, `read`, `full`, `admin`.
      * @return string
      */
     public function getLinksIdQr(string $id, ?string $idempotencyKey = null): string
@@ -3269,7 +3433,9 @@ trait Operations
      *
      * The org's listings with their platform-computed stats: eligible clicks, active referrals, earnings per click, conversion rate, payout reliability and approval latency.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3297,7 +3463,9 @@ trait Operations
      *
      * Who is calling. With a user session: the user and their org memberships (no `x-org-id` needed). With an API key: `{ user: null, memberships: [], apiKey, org: { id, name } }`, where `apiKey` holds the key (name, prefix, scopes, pinned `apiVersion`, `livemode`, owner, expiry, `programIds`). The mode is `apiKey.livemode`; there is no top-level `livemode`.
      *
-     * **Auth:** an API key with `team:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:read`, or a session of any role.
+     *
+     * **Scopes:** `team:read`, `team:write`, `read`, `full`, `admin`.
      * @return GetMeResponse
      */
     public function getMe(?string $idempotencyKey = null): mixed
@@ -3310,7 +3478,9 @@ trait Operations
      *
      * Agent negotiation rounds and their decisions, newest first, optionally for one program.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3338,7 +3508,9 @@ trait Operations
      *
      * For a hashed customer email, the partner accounts that touched them at any opted-in merchant (never which merchant) and each one's credit under `model`. 403 unless the org has joined the network.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      * @return GetNetworkJourneyResponse
      */
     public function getNetworkJourney(string $emailHash, ?string $model = null, ?string $idempotencyKey = null): mixed
@@ -3351,7 +3523,9 @@ trait Operations
      *
      * Whether the org contributes to (and can read) the attribution network.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      * @return GetNetworkSettingsResponse
      */
     public function getNetworkSettings(?string $idempotencyKey = null): mixed
@@ -3364,7 +3538,9 @@ trait Operations
      *
      * The org's in-app notifications (failing webhooks, anomalies, answered invitations…), newest first. `unread=true` for unread only.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      *
      * unread: true: unread notifications only.
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3393,7 +3569,9 @@ trait Operations
      *
      * The org's on-chain conversion connections.
      *
-     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3447,7 +3625,9 @@ trait Operations
      *
      * The current org: `id`, name, plan, settings, public `trackingToken`, payout KYC requirement and mode (`livemode`; test orgs also carry `liveOrgId`).
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return Org
      */
     public function getOrg(?string $idempotencyKey = null): mixed
@@ -3460,7 +3640,9 @@ trait Operations
      *
      * What to enter in Cookie Munch to send your site's consent events to Referalli: link partner `referalli` with `externalId` (your org id); deliveries go to `receiverUrl`. `sites` are the Cookie Munch sites (cbids) whose events this org accepts, and `grants` says, per site, whether its owner granted Referalli that site in Cookie Munch (`granted`, `waiting_on_partner`, `revoked`, `expired`, `none`, or `unknown` when Cookie Munch couldn't be asked; `grantCheck` says why). `stampCheck.status` is `live` when Referalli checks visitors' consent stamps with Cookie Munch, else `not_configured`.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgConsentPartnersCookiemunchResponse
      */
     public function getOrgConsentPartnersCookiemunch(?string $idempotencyKey = null): mixed
@@ -3473,7 +3655,9 @@ trait Operations
      *
      * Consent evidence from Cookie Munch, newest first: each `consent.recorded` and `consent.withdrawn` event for your registered sites, with the visitor's consent `stamp`, the `choices` (and for a withdrawal, the `withdrawn` categories), and the id of the key that signed it. Filter by `stamp` to see one visitor's history; with `stamp`, `checks` lists what Cookie Munch said about it (newest first, `credited` only for `consented`). Append-only.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      *
      * stamp: Only this visitor's consent stamp.
      * @return GetOrgConsentPartnersCookiemunchEventsResponse
@@ -3488,7 +3672,9 @@ trait Operations
      *
      * Whether the daily ECB reference-rate feed is on for this org, and the date of its latest rate.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `org:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgFxFeedResponse
      */
     public function getOrgFxFeed(?string $idempotencyKey = null): mixed
@@ -3501,7 +3687,9 @@ trait Operations
      *
      * What runs on the pages Referalli hosts for you on your own portal domain (the partner portal and `/join`): your consent banner (Cookie Munch, OneTrust, Cookiebot, Usercentrics, Didomi, Osano, Termly, iubenda, CookieYes, TrustArc, Ketch, Transcend, CookieFirst, consentmanager, Cookie Information, CookieScript, CookieHub, Google Privacy & messaging, Axeptio, Sourcepoint, InMobi Choice, Securiti, Enzuzo, CookiePro, TrustCommander, Klaro, Civic Cookie Control, a custom CMP, a built-in necessary-only notice, or none) and your support chat (Chatly, Intercom, Crisp, Zendesk Messaging, HubSpot, Drift, LiveChat, Tawk.to, Freshchat, Tidio, Help Scout Beacon, Front, Chatwoot, Olark, Smartsupp, JivoChat, Gorgias, Pylon, Plain, Userlike, Zoho SalesIQ, Re:amaze, Chatra, Kustomer, Gladly, Brevo, Trengo, Dixa, Gist, Freshdesk, LiveAgent, Chatbase, Voiceflow, Botpress, Salesforce, Dynamics 365 or custom). `adapters.consent[].fields` are the `config.params` a CMP's inline snippet needs. `adapters.chat[].fields` lists each chat's config keys; `chat.hasIdentitySecret` says whether an identity-verification secret is saved (never the secret). `served` is exactly what visitors get: the head tags, the "Cookie settings" link and the Content-Security-Policy built from these adapters. Referalli's own banner and chat never run on your domain.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgHostedPagesResponse
      */
     public function getOrgHostedPages(?string $idempotencyKey = null): mixed
@@ -3514,7 +3702,9 @@ trait Operations
      *
      * Members of the org with their role and email, oldest first.
      *
-     * **Auth:** an API key with `team:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:read`, or a session of any role.
+     *
+     * **Scopes:** `team:read`, `team:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -3542,7 +3732,9 @@ trait Operations
      *
      * The org schedule and its next run date, plus each program's override (`{ kind: 'off' }`, its own schedule, or `null` to follow the org) and next run date.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      * @return GetOrgPayoutScheduleResponse
      */
     public function getOrgPayoutSchedule(?string $idempotencyKey = null): mixed
@@ -3555,7 +3747,9 @@ trait Operations
      *
      * How partners sign in to the org's portal: `referalli` (partner accounts, the default), `oidc` (the merchant's IdP) or `custom` (the merchant's own session, as a short-lived JWT). Includes the audience tokens must carry, the URL to send partners to, the redirect URI to register, and the last check. Never the secret.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgPortalAuthResponse
      */
     public function getOrgPortalAuth(?string $idempotencyKey = null): mixed
@@ -3568,7 +3762,9 @@ trait Operations
      *
      * The query parameters aff.js reads a referral code from: the built-in ones (`via`, `ref`, `aff`) and the org's extra ones.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgReferralParamsResponse
      */
     public function getOrgReferralParams(?string $idempotencyKey = null): mixed
@@ -3581,7 +3777,9 @@ trait Operations
      *
      * How many days each kind of raw data is kept before the nightly purge, the allowed minimum and default per kind, and the last purge run.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return Retention
      */
     public function getOrgRetention(?string $idempotencyKey = null): mixed
@@ -3594,7 +3792,9 @@ trait Operations
      *
      * Single sign-on for the org: whether SSO is configured on this deployment and linked to a directory tenant, its connections and domains, whether SSO is required, the role mapping, recent setup tickets and any provider error.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgSsoResponse
      */
     public function getOrgSso(?string $idempotencyKey = null): mixed
@@ -3607,7 +3807,9 @@ trait Operations
      *
      * The SAML service-provider metadata for one of the org's SSO connections, to give the identity provider.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgSsoConnectionsIdSamlMetadataResponse
      */
     public function getOrgSsoConnectionsIdSamlMetadata(string $id, ?string $idempotencyKey = null): mixed
@@ -3620,7 +3822,9 @@ trait Operations
      *
      * The org's legal name, address, country, VAT id, EIN, domestic VAT rate, whether partner VAT ids are checked against EU VIES, and the 1099 filing provider.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `org:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return TaxProfile
      */
     public function getOrgTaxProfile(?string $idempotencyKey = null): mixed
@@ -3633,7 +3837,9 @@ trait Operations
      *
      * How `aff.js` reads visitor consent unless the tag says otherwise (`data-consent`): `auto` detects the site's CMP (Cookie Munch, OneTrust, Cookiebot, Usercentrics, Didomi, Osano, Termly, IAB TCF and GPP, Google Consent Mode, or `window.referalliConsent`), an adapter id pins one, `pending` waits for `aff.consent(true|false)`, and `none` always stores. Until consent is granted nothing is stored or sent; the referral stays in memory for the sign-up. `noCmp` is what `auto` does on a site without a CMP. `configured: false` is an org that never chose: it serves `none`, so existing tags behave as before. Lists the adapters with their default category.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetOrgTrackingConsentResponse
      */
     public function getOrgTrackingConsent(?string $idempotencyKey = null): mixed
@@ -3646,7 +3852,9 @@ trait Operations
      *
      * Drafted, approved and sent outreach messages, newest first.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4235,7 +4443,9 @@ trait Operations
      *
      * Partners, newest first. Filter by `email`, `externalRef` (the partner's own or a program-scoped one on an enrollment) or `status`. `programId` returns only partners enrolled in that program, each with the program's own `externalRef` for them when it has one, and then `externalRef` matches that. Archived partners are hidden unless you ask for them with `status=archived` or `includeArchived=true`. Always a list, even for a filter that matches one partner: read `data[0]`. Partner reads carry no `code` or `link`; use `GET /v1/partners/{id}/summary?programId=` or `GET /v1/links?partnerId=` for those.
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `partners:read`, or a session of any role.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4276,7 +4486,9 @@ trait Operations
      *
      * One partner, with a cross-network warning when the same account is flagged or banned by other merchants (it never says which). With `programId`, `externalRef` is the one that program knows them by: its own externalRef for them when it has one, else the partner's.
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `partners:read`, or a session of any role.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      * @return GetPartnersIdResponse
      */
     public function getPartnersId(string $id, ?string $programId = null, ?string $idempotencyKey = null): mixed
@@ -4289,7 +4501,9 @@ trait Operations
      *
      * The partner's commission balances per currency: pending (in hold), approved (payable), paid and reversed.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4317,7 +4531,9 @@ trait Operations
      *
      * The programs a partner is enrolled in or applied to, with status, group and `externalRef` (that program's own id for the partner, or null when the partner's own applies).
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `partners:read`, or a session of any role.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4345,7 +4561,9 @@ trait Operations
      *
      * The partner's payout method, currency, threshold and tax form status. Method details are not returned. 404 when none is set.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      * @return PayoutProfile
      */
     public function getPartnersIdPayoutProfile(string $id, ?string $idempotencyKey = null): mixed
@@ -4358,7 +4576,9 @@ trait Operations
      *
      * The partner's quality score computed now (with its metrics) and the last stored snapshot.
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `partners:read`, or a session of any role.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      * @return GetPartnersIdQualityResponse
      */
     public function getPartnersIdQuality(string $id, ?string $idempotencyKey = null): mixed
@@ -4371,7 +4591,9 @@ trait Operations
      *
      * What the partner brought in, in one call: eligible clicks, referrals by status, converted customers (referred, not void, with at least one payment) and balances per currency. Pass `programId` to count one program only (an org shared by several products).
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      * @return GetPartnersIdStatsResponse
      */
     public function getPartnersIdStats(string $id, ?string $programId = null, ?string $idempotencyKey = null): mixed
@@ -4382,9 +4604,11 @@ trait Operations
     /**
      * Get a partner's referrer summary. GET /v1/partners/{id}/summary
      *
-     * Everything a referrer panel shows, in one call: the stats for one program (`programId` is required) plus the partner's current `code` there (the newest coupon, else the newest link's code) and `linkUrl` (null when they have only a coupon).
+     * Everything a referrer panel shows, in one call: the stats for one program (`programId` is required) plus the partner's current `code` there (the newest coupon, else the newest link's code), `linkUrl` (null when they have only a coupon) and the program's `terms` (as `GET /v1/programs/{id}/terms`; null when it has no rule yet).
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      * @return GetPartnersIdSummaryResponse
      */
     public function getPartnersIdSummary(string $id, string $programId, ?string $idempotencyKey = null): mixed
@@ -4507,7 +4731,9 @@ trait Operations
      *
      * The payout providers the org connected with its own credentials (PayPal, Stripe, Circle, Wise, Payoneer, Tremendous), with environment and status. Secrets are never returned.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4535,7 +4761,9 @@ trait Operations
      *
      * Payout runs, newest first, with their status and summary.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4563,7 +4791,9 @@ trait Operations
      *
      * Individual payouts, newest first, with rail, provider reference and failure reason. Filter with `partnerId`.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4591,7 +4821,9 @@ trait Operations
      *
      * The self-billing invoice issued for a payout, as JSON or (`format=html`) a printable page. 404 when the payout has no invoice.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      * @return Invoice
      */
     public function getPayoutsIdInvoice(string $id, ?string $format = null, ?string $idempotencyKey = null): mixed
@@ -4630,7 +4862,9 @@ trait Operations
      *
      * The partner portal's look and layout on your portal domain: `published` (what partners see) and `draft` (what you are editing, or null). Colours with a separate dark palette, the colour scheme, widths and density, fonts (a stylesheet URL, `@font-face` files, a family per role, the type scale), the logo set and favicon, component shape (radius, shadow, buttons, inputs, focus ring, links), an announcement, the header and footer, the home sections and navigation, the sign-in page, interface string overrides, typed theme settings, CSS snippets, custom CSS, phone tuning and embedding. Every key is optional; an unset key keeps the built-in look.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetPortalThemeResponse
      */
     public function getPortalTheme(?string $idempotencyKey = null): mixed
@@ -4643,7 +4877,9 @@ trait Operations
      *
      * The draft (or `?which=published`) compiled: `css`, the stylesheet partners load, and `view`, the layout, brand and text the portal draws. For a live preview in your own editor.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetPortalThemeCompiledResponse
      */
     public function getPortalThemeCompiled(?string $which = null, ?string $idempotencyKey = null): mixed
@@ -4656,7 +4892,9 @@ trait Operations
      *
      * Every key the portal design takes, as JSON Schema (draft 2020-12): build an editor or validate a theme file before you send it.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetPortalThemeSchemaResponse
      */
     public function getPortalThemeSchema(?string $idempotencyKey = null): mixed
@@ -4669,7 +4907,9 @@ trait Operations
      *
      * The last 50 published versions, newest first.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetPortalThemeVersionsResponse
      */
     public function getPortalThemeVersions(?string $idempotencyKey = null): mixed
@@ -4682,7 +4922,9 @@ trait Operations
      *
      * The last 200 requests connected DSAR tools sent: operation, outcome and the vendor request id. Subjects are kept only as hashes.
      *
-     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:read`, `privacy:write`, `read`, `full`, `admin`.
      * @return GetPrivacyExecutorRequestsResponse
      */
     public function getPrivacyExecutorRequests(?string $idempotencyKey = null): mixed
@@ -4695,7 +4937,9 @@ trait Operations
      *
      * Every DSAR tool that can reach Referalli as a connected system (Cookie Munch cm-standard-v1, OneTrust, Transcend, DataGrail, Ketch, Osano, `custom` for any tool speaking Standard Webhooks), with the per-org URL to register, install steps and a health check. Keys are never returned.
      *
-     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:read`, `privacy:write`, `read`, `full`, `admin`.
      * @return GetPrivacyExecutorsResponse
      */
     public function getPrivacyExecutors(?string $idempotencyKey = null): mixed
@@ -4708,7 +4952,9 @@ trait Operations
      *
      * Every stored row that references the customer, for a data-subject access request.
      *
-     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:read`, `privacy:write`, `read`, `full`, `admin`.
      * @return CustomerExport
      */
     public function getPrivacyExport(string $customerRef, ?string $idempotencyKey = null): mixed
@@ -4721,7 +4967,9 @@ trait Operations
      *
      * Access and erasure requests, newest first, with their status.
      *
-     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:read`, `privacy:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4749,7 +4997,9 @@ trait Operations
      *
      * Poll one request: `pending`, `completed` or `failed`, and whether data was found.
      *
-     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:read`, `privacy:write`, `read`, `full`, `admin`.
      * @return PrivacyRequest
      */
     public function getPrivacyRequestsId(string $id, ?string $idempotencyKey = null): mixed
@@ -4762,7 +5012,9 @@ trait Operations
      *
      * The full result of a completed request; for access requests, the exported data. 400 until it is completed.
      *
-     * **Auth:** an API key with `privacy:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:read`, `privacy:write`, `read`, `full`, `admin`.
      * @return GetPrivacyRequestsIdResultResponse
      */
     public function getPrivacyRequestsIdResult(string $id, ?string $idempotencyKey = null): mixed
@@ -4775,7 +5027,9 @@ trait Operations
      *
      * Other products allowed to call this organization's API (REF-S28), newest first, with status, scopes and last use. Secrets are never shown again. Owners and admins, or a key with team:read.
      *
-     * **Auth:** an API key with `team:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:read`, `team:write`, `read`, `full`, `admin`.
      * @return GetProductLinksResponse
      */
     public function getProductLinks(?string $idempotencyKey = null): mixed
@@ -4788,7 +5042,9 @@ trait Operations
      *
      * The margin catalog: per product, a margin (bps) or a unit cost, used to turn revenue into profit.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetProfitabilityProductsResponse
      */
     public function getProfitabilityProducts(?string $idempotencyKey = null): mixed
@@ -4801,7 +5057,9 @@ trait Operations
      *
      * One product of the margin catalog.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetProfitabilityProductsProductRefResponse
      */
     public function getProfitabilityProductsProductRef(string $productRef, ?string $idempotencyKey = null): mixed
@@ -4814,7 +5072,9 @@ trait Operations
      *
      * Progress of a rebuild: `queued`, `running`, `done` or `failed` (a job untouched for an hour reports `failed` with `error: "stale"`), with processed and total counts.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetProfitabilityRebuildJobIdResponse
      */
     public function getProfitabilityRebuildJobId(string $jobId, ?string $idempotencyKey = null): mixed
@@ -4827,7 +5087,9 @@ trait Operations
      *
      * The economics credit ROI is computed with: reporting currency, default margin, how a credit's cost is modelled, how credit use is inferred, attribution and churn windows, target ROI and more. With `programId`, the program's overrides merged over the org's.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetProfitabilitySettingsResponse
      */
     public function getProfitabilitySettings(?string $programId = null, ?string $idempotencyKey = null): mixed
@@ -4840,7 +5102,9 @@ trait Operations
      *
      * The org's programs, oldest first, with their settings. `slug` returns just that program, still as a list (`data` holds one program, or none).
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4868,7 +5132,9 @@ trait Operations
      *
      * One program with its settings (defaults filled in) and public page.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      * @return Program
      */
     public function getProgramsId(string $id, ?string $idempotencyKey = null): mixed
@@ -4881,7 +5147,9 @@ trait Operations
      *
      * The program's autopricing configuration, or `null` when it's off.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      * @return GetProgramsIdAutopricingResponse
      */
     public function getProgramsIdAutopricing(string $id, ?string $idempotencyKey = null): mixed
@@ -4894,7 +5162,9 @@ trait Operations
      *
      * The program's enrollments and applications, newest first, each with the partner and a cross-network warning when other merchants banned the same account and `externalRef` (this program's own id for the partner, or null). Filter with `status` or `partnerId`.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4922,7 +5192,9 @@ trait Operations
      *
      * Who referred whom from one partner (`root`) down, with revenue and net commission per node. Where customers are partners too (customerRef equals a partner's externalRef), the tree continues up to `depth` partner levels. Stops at 5,000 referrals and says so.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      * @return GetProgramsIdGraphResponse
      */
     public function getProgramsIdGraph(string $id, string $root, ?int $depth = null, ?string $idempotencyKey = null): mixed
@@ -4935,7 +5207,9 @@ trait Operations
      *
      * The program's partner groups with member counts. Archived groups are hidden unless `includeArchived=true`.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      *
      * includeArchived: true: include archived groups.
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -4964,7 +5238,9 @@ trait Operations
      *
      * The program's negotiation policy, or `null` when it isn't open to negotiation.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      * @return GetProgramsIdNegotiationPolicyResponse
      */
     public function getProgramsIdNegotiationPolicy(string $id, ?string $idempotencyKey = null): mixed
@@ -4977,7 +5253,9 @@ trait Operations
      *
      * The program's promotions, latest start first.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5005,7 +5283,9 @@ trait Operations
      *
      * The program's reward for referred customers (the friend's side of a double-sided program), or `null` when it has none.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      * @return GetProgramsIdRefereeRewardResponse
      */
     public function getProgramsIdRefereeReward(string $id, ?string $idempotencyKey = null): mixed
@@ -5018,7 +5298,9 @@ trait Operations
      *
      * Whether settled lines of this program are credited to the partner's Stripe customer balance, how that customer is found (`referrerMatch`), and whether store-credit referee rewards are credited too. `keyConnected` says whether a Stripe key is available to this program; `hasOwnKey` whether that is the program's own key rather than the org's. The key is never returned.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      * @return GetProgramsIdStripeCreditsResponse
      */
     public function getProgramsIdStripeCredits(string $id, ?string $idempotencyKey = null): mixed
@@ -5029,9 +5311,11 @@ trait Operations
     /**
      * List a program's Stripe balance credits. GET /v1/programs/{id}/stripe-credits/log
      *
-     * Every credit and debit the rail queued for this program, newest first: amount and currency (the commission's), `appliedAmountMinor`/`appliedCurrency` (what is sent to Stripe after any conversion; a debit uses its credit's currency and rate), Stripe customer, `status` (`pending`, `applied`, `no_customer`, `ambiguous_customer`, `fx_rate_missing`, `failed`, `canceled`), attempts, the Stripe balance transaction id once applied, and the last error. Unapplied rows are retried hourly, up to 24 tries.
+     * Every credit and debit the rail queued for this program, newest first: amount and currency (the commission's), `appliedAmountMinor`/`appliedCurrency` (what is sent to Stripe after any conversion; a debit uses its credit's currency and rate), Stripe customer, `status` (`pending`, `applied`, `no_customer`, `ambiguous_customer`, `fx_rate_missing`, `failed`, `canceled`), attempts, the Stripe balance transaction id once applied, and the last error. Unapplied rows are retried hourly, up to 24 tries (a row waiting under `waitForCustomer` has no cap).
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5055,11 +5339,28 @@ trait Operations
     }
 
     /**
+     * Get a program's terms. GET /v1/programs/{id}/terms
+     *
+     * The program's commission terms for product copy, from its latest commission rule version (`ruleVersion`): the `base` (`percentBps`, or `amountMinor` and `currency`), how long it recurs, the hold, and `summary.en`, an English sentence built deterministically from the rule, such as "20% of every payment for 12 months" or "$50.00 for the first payment only". Bounties are added (", plus $5.00 per signup"); rule conditions add "(conditions apply)"; overrides, tiers or new-vs-expansion rates set `ratesVary` and add "(rates vary)" rather than quote one rate. Partner-group rates and promotions are not included. Publishing a new rule version changes the terms on the next read. `404` when the program has no rule yet. Program-scoped keys read their own programs.
+     *
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
+     * @return ProgramTerms
+     */
+    public function getProgramsIdTerms(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/programs/' . self::seg($id) . '/terms', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * List terms acceptances. GET /v1/programs/{id}/terms-acceptances
      *
      * Which partner accepted which version of the program's terms, newest first.
      *
-     * **Auth:** an API key with `programs:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5087,7 +5388,9 @@ trait Operations
      *
      * Prospects, best fit first, with channel, audience, evidence and outreach status. Filter with `status`.
      *
-     * **Auth:** an API key with `growth:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `growth:read`, or a session of any role.
+     *
+     * **Scopes:** `growth:read`, `growth:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5128,7 +5431,9 @@ trait Operations
      *
      * Referrals, newest first, filtered by `programId`, `partnerId`, `status` or `customerRef`.
      *
-     * **Auth:** an API key with `referrals:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `referrals:read`, or a session of any role.
+     *
+     * **Scopes:** `referrals:read`, `referrals:write`, `read`, `full`, `admin`.
      *
      * customerRef: Your id for the referred customer.
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5157,7 +5462,9 @@ trait Operations
      *
      * One referral with its touch credits and attribution reasoning.
      *
-     * **Auth:** an API key with `referrals:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `referrals:read`, or a session of any role.
+     *
+     * **Scopes:** `referrals:read`, `referrals:write`, `read`, `full`, `admin`.
      * @return Referral
      */
     public function getReferralsId(string $id, ?string $idempotencyKey = null): mixed
@@ -5170,7 +5477,9 @@ trait Operations
      *
      * The referral with every touchpoint considered: each click's time, URL, fraud score, eligibility, credit weight and which one won.
      *
-     * **Auth:** an API key with `referrals:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `referrals:read`, or a session of any role.
+     *
+     * **Scopes:** `referrals:read`, `referrals:write`, `read`, `full`, `admin`.
      * @return GetReferralsIdJourneyResponse
      */
     public function getReferralsIdJourney(string $id, ?string $idempotencyKey = null): mixed
@@ -5183,7 +5492,9 @@ trait Operations
      *
      * Per day, newest first: total clicks, clicks excluded from attribution (bots, rate limits, invalid traffic) and the average fraud score.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5211,7 +5522,9 @@ trait Operations
      *
      * Per partner, highest revenue first: clicks, referrals, payments, referred revenue, commission earned and reversed. `format=csv` returns the same as a CSV file.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * format: csv: the same rows as a CSV file.
      * @return GetReportsPartnerPerformanceResponse
@@ -5226,7 +5539,9 @@ trait Operations
      *
      * Rewards issued to referred customers, newest first, with code and status (`issued`, `redeemed`, `void`). Filter with `status`.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5254,7 +5569,9 @@ trait Operations
      *
      * The last 200 rewards granted through `POST /v1/rewards`, with the commission line each one posted.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      * @return GetRewardsGrantedResponse
      */
     public function getRewardsGranted(?string $idempotencyKey = null): mixed
@@ -5267,7 +5584,9 @@ trait Operations
      *
      * Whether a reward code is valid (issued and unredeemed), with its kind and amount, so your checkout can apply it. Unknown codes answer `{ "valid": false }`.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      * @return GetRewardsLookupCodeResponse
      */
     public function getRewardsLookupCode(string $code, ?string $idempotencyKey = null): mixed
@@ -5280,7 +5599,9 @@ trait Operations
      *
      * Your rules that turn an inbound event (or a rule key) into a fixed partner reward.
      *
-     * **Auth:** an API key with `commissions:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `commissions:read`, or a session of any role.
+     *
+     * **Scopes:** `commissions:read`, `commissions:write`, `read`, `full`, `admin`.
      * @return list<PutRewardsRulesKeyResponse>
      */
     public function getRewardsRules(?string $idempotencyKey = null): mixed
@@ -5293,7 +5614,9 @@ trait Operations
      *
      * The summary figures grouped `by` program, partner, cohort (grant month), source or role, best ROI first (cohorts in date order). Partner and program rows also carry their referrals' combined figures. `from`/`to` select grants by grant date (a date covers its whole UTC day), `programId` and `partnerId` narrow them, `windowDays` overrides each program's attribution window (30, 90, 180, 365, or 0 for lifetime), and `currency` views one native currency instead of the reporting currency. `format=csv` returns the same as a CSV file.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * from: Grants (or referrals) from this instant or date, inclusive.
      * to: Up to this instant, or through the end of this date (UTC), inclusive.
@@ -5326,7 +5649,9 @@ trait Operations
      *
      * How complete the inputs to ROI are over `from`/`to`: payments with credit-applied info, products with a margin, partners linked to their own customer id, events excluded for a missing FX rate, and a list of gaps with how to fix each.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * from: Grants (or referrals) from this instant or date, inclusive.
      * to: Up to this instant, or through the end of this date (UTC), inclusive.
@@ -5342,7 +5667,9 @@ trait Operations
      *
      * Each credit grant in view with its status (`open`, `used`, `expired`, `revoked`) and figures, newest first. Filter by `status`, `role` (`referee` or `referrer`) and `paidBack`. `from`/`to` select grants by grant date (a date covers its whole UTC day), `programId` and `partnerId` narrow them, `windowDays` overrides each program's attribution window (30, 90, 180, 365, or 0 for lifetime), and `currency` views one native currency instead of the reporting currency. `format=csv` returns the same as a CSV file. CSV returns every grant, unpaged.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * from: Grants (or referrals) from this instant or date, inclusive.
      * to: Up to this instant, or through the end of this date (UTC), inclusive.
@@ -5375,7 +5702,9 @@ trait Operations
      *
      * The same trace for a partner's own customer identity (through their externalRef).
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * windowDays: Attribution window; default each program's setting. 0 = lifetime.
      * @return RoiTrace
@@ -5390,7 +5719,9 @@ trait Operations
      *
      * Every value pattern from one detection run, with the matching subjects: `credit_only` (a referee used their credit and paid no cash after within the window), `churn_at_exhaustion` (used it up, paid, then stopped), `bonus_collector` (a partner holding commission credit who never spends their own cash) and `negative_partner` (a partner whose referrals net below zero). Matches wait until the evidence is in, so young customers are never flagged.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetRoiPatternsResponse
      */
     public function getRoiPatterns(?string $idempotencyKey = null): mixed
@@ -5403,7 +5734,9 @@ trait Operations
      *
      * The subjects currently matching one pattern, with the detail of each match.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5431,7 +5764,9 @@ trait Operations
      *
      * Credit ROI for the grants in view: credit cost, cash and profit from the recipients after each grant, net, ROI, payback share and median days, outstanding credit and how much of it is measured rather than inferred. With `programId`, also status against the program's target ROI. `model=incremental` adds the lift against the program's holdout group; `includeProjection=true` adds the expected payback of open grants. `from`/`to` select grants by grant date (a date covers its whole UTC day), `programId` and `partnerId` narrow them, `windowDays` overrides each program's attribution window (30, 90, 180, 365, or 0 for lifetime), and `currency` views one native currency instead of the reporting currency. `format=csv` returns the same as a CSV file.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * from: Grants (or referrals) from this instant or date, inclusive.
      * to: Up to this instant, or through the end of this date (UTC), inclusive.
@@ -5452,7 +5787,9 @@ trait Operations
      *
      * Every value event of a customer (and the identities linked to them) in order, with the running net, to see exactly how their ROI was computed. `format=csv` for a file.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      *
      * windowDays: Attribution window; default each program's setting. 0 = lifetime.
      * @return RoiTrace
@@ -5467,7 +5804,9 @@ trait Operations
      *
      * Test mode only. The Stripe event types `POST /v1/sandbox/stripe-fixtures` can send, each with the `overrides` fields it uses.
      *
-     * **Auth:** an API key with `billing:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
      * @return GetSandboxStripeFixturesResponse
      */
     public function getSandboxStripeFixtures(?string $idempotencyKey = null): mixed
@@ -5480,7 +5819,9 @@ trait Operations
      *
      * The install checker: which integration steps are done (auth or associate, program and rule, partner, snippet or click, billing, a payable partner, webhooks) and the next steps as hints.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetSetupStatusResponse
      */
     public function getSetupStatus(?string $idempotencyKey = null): mixed
@@ -5559,7 +5900,9 @@ trait Operations
      *
      * Whether the Stripe balance credit rail has a key: its own (`source: "stripe_credits"`) or your Stripe payout connection (`source: "payout_connection"`). The key is never returned.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `payouts:read`, or a session of any role.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      * @return GetStripeCreditsConnectionResponse
      */
     public function getStripeCreditsConnection(?string $idempotencyKey = null): mixed
@@ -5572,7 +5915,9 @@ trait Operations
      *
      * Every support tool Referalli can show referral context in (Chatly cards and AI tools, Intercom, Zendesk, HubSpot, Front, Help Scout, custom), with its card URL, install steps and whether it is set up. Secrets are never returned.
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      * @return GetSupportAppsResponse
      */
     public function getSupportApps(?string $idempotencyKey = null): mixed
@@ -5598,7 +5943,9 @@ trait Operations
      *
      * What a support agent should know about a contact: the partner (status, tier, programs, referral link, pending/approved/paid balances, next payout, open flags) and/or the referred customer (who referred them, when, the referee reward and what is left of it). Name the contact by `partnerExternalRef`, `ext` (a tool's verified external id), `customerRef` or `email`; the email is used only when no stronger key is given. Your org's data only; `partner` and `customer` are null when nothing matches.
      *
-     * **Auth:** an API key with `partners:read` (or `full`), or a session with role `owner`, `admin`, `support`, `finance`, `analyst`.
+     * **Auth:** an API key with `partners:read`, or a session with role `owner`, `admin`, `support`, `finance`, `analyst`.
+     *
+     * **Scopes:** `partners:read`, `partners:write`, `read`, `full`, `admin`.
      *
      * email: Used only when no stronger key is given.
      * ext: A support tool's verified external id: matched as a partner externalRef, then as a customer ref.
@@ -5627,7 +5974,9 @@ trait Operations
      *
      * For each partner with a W-9 on file: the total actually paid in the tax year, in USD at recorded FX rates, and whether a form is required (US$600 or more, or a currency that couldn't be converted, listed in `fxMissingCurrencies` for review).
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5655,7 +6004,9 @@ trait Operations
      *
      * A tax year's filings with their provider status and the documents in each.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5683,7 +6034,9 @@ trait Operations
      *
      * Which partners would get a 1099-NEC for a tax year, with amounts and anything missing (W-9s, TINs), without filing.
      *
-     * **Auth:** an API key with `payouts:read` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:read`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:read`, `payouts:write`, `read`, `full`, `admin`.
      * @return NecPreview
      */
     public function getTax1099Preview(int $year, ?string $idempotencyKey = null): mixed
@@ -5696,7 +6049,9 @@ trait Operations
      *
      * Test mode only (`409 test_mode_only` otherwise). The test org's current time and how far it has been advanced.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      * @return GetTestClockResponse
      */
     public function getTestClock(?string $idempotencyKey = null): mixed
@@ -5709,7 +6064,9 @@ trait Operations
      *
      * Test mode only. Emails the test org would have sent, captured instead of delivered, newest first.
      *
-     * **Auth:** an API key with `org:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
      *
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * ending_before: A cursor: returns the items before this item id (the previous page). Not with `starting_after`. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5736,7 +6093,9 @@ trait Operations
      *
      * Progress and result of a background import: status, processed and total rows, recorded and duplicate counts and row errors.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @return GetValueImportJobIdResponse
      */
     public function getValueImportJobId(string $jobId, ?string $idempotencyKey = null): mixed
@@ -5762,7 +6121,9 @@ trait Operations
      *
      * Deliveries to every endpoint, newest first: topic, status (`pending`, `delivered`, `failed`), attempts, the last response code and, while pending, when the next attempt is. Filter with `endpointId`.
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `webhooks:read`, or a session of any role.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      *
      * endpointId: Only deliveries to this endpoint.
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5791,7 +6152,9 @@ trait Operations
      *
      * One delivery in full: the exact `payload` sent, its `eventId`, and what the endpoint answered last (`lastStatusCode`, the first 2,000 characters of `lastResponseBody`, or `lastError` when there was no response).
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `webhooks:read`, or a session of any role.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      * @return GetWebhookDeliveriesIdResponse
      */
     public function getWebhookDeliveriesId(string $id, ?string $idempotencyKey = null): mixed
@@ -5804,7 +6167,9 @@ trait Operations
      *
      * Endpoints with their topics, programs, status (`active`, `paused`, `disabled`), secret-rotation state and failure state. Secrets are never returned. `programId` lists only the endpoints limited to that program (org-wide endpoints, which get every program's events, are left out).
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `webhooks:read`, or a session of any role.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      *
      * programId: Only endpoints limited to this program (not the org-wide ones, which get every program's events).
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5833,7 +6198,9 @@ trait Operations
      *
      * One endpoint with its status, rotation and failure state.
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `webhooks:read`, or a session of any role.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      * @return WebhookEndpoint
      */
     public function getWebhookEndpointsId(string $id, ?string $idempotencyKey = null): mixed
@@ -5846,7 +6213,9 @@ trait Operations
      *
      * What one endpoint was sent, newest first.
      *
-     * **Auth:** an API key with `webhooks:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `webhooks:read`, or a session of any role.
+     *
+     * **Scopes:** `webhooks:read`, `webhooks:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5874,7 +6243,9 @@ trait Operations
      *
      * The event keys Zapier triggers can subscribe to.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `integrations:read`, or a session of any role.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `read`, `full`, `admin`.
      * @return GetZapierEventsResponse
      */
     public function getZapierEvents(?string $idempotencyKey = null): mixed
@@ -5887,7 +6258,9 @@ trait Operations
      *
      * Active Zapier REST hook subscriptions, newest first.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:read`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `read`, `full`, `admin`.
      *
      * limit: Items per page, 1 to 100 (default 50). From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * starting_after: A cursor: the id of an item (the previous page's `next_cursor`); returns the items after it. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
@@ -5915,7 +6288,9 @@ trait Operations
      *
      * Zapier polling and sample data: the latest `limit` events of that kind, newest first, in the shape the hook delivers. Always a plain array (Zapier's contract), whatever the API version.
      *
-     * **Auth:** an API key with `integrations:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `integrations:read`, or a session of any role.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `read`, `full`, `admin`.
      * @return GetZapierTriggersEventResponse
      */
     public function getZapierTriggersEvent(string $event, ?int $limit = null, ?string $idempotencyKey = null): mixed
@@ -5942,7 +6317,9 @@ trait Operations
      *
      * Changes a key's pinned `apiVersion`, `owner`, expiry (`expiresInDays` from now; `null` removes it) or `programIds` (`null` makes it org-wide); `apiVersion: "latest"` pins it to today's newest version. A new expiry re-arms the `api_key.expiring` notices. Revoked keys are 404. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PatchApiKeysIdBody $body
      * @return PatchApiKeysIdResponse
      */
@@ -5956,7 +6333,9 @@ trait Operations
      *
      * Pauses or resumes a connection, renames it, changes `autoEnrollUsers` or the destination of auto-created links, or (signed-protocol connections) sets `signatureVersion`: `v2` to require request-line signatures, `v1+v2` to accept both again.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `connections:write`, `full`, `admin`.
      * @param PatchAuthConnectionsIdBody $body
      * @return PatchAuthConnectionsIdResponse
      */
@@ -5968,9 +6347,11 @@ trait Operations
     /**
      * Update a billing connection. PATCH /v1/billing/connections/{id}
      *
-     * Renames a connection, sets `status` (`paused` makes its webhook URL refuse events until set back to `active`), or sets its product `filter` (`null` removes it). A filter applies to events received from then on. Audited.
+     * Renames a connection, sets `status` (`paused` makes its webhook URL refuse events until set back to `active`), or sets its product `filter` (`null` removes it) or `programIds` (`null` = every program). Both apply to events received from then on. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PatchBillingConnectionsIdBody $body
      * @return BillingConnection
      */
@@ -5984,7 +6365,9 @@ trait Operations
      *
      * Changes the org name, merges keys into `settings` (a free-form map) and turns `payoutKycRequired` on or off. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PatchOrgBody $body
      * @return PatchOrgResponse
      */
@@ -5998,7 +6381,9 @@ trait Operations
      *
      * Changes a member's role. Only owners change owner roles, and the last owner can't be demoted (409). Audited. Live mode only.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PatchOrgMembersUserIdBody $body
      * @return PatchOrgMembersUserIdResponse
      */
@@ -6012,7 +6397,9 @@ trait Operations
      *
      * Requires SSO for members on the org's SSO domains (`requireSso`; needs an active connection and the owner signed in through SSO, so nobody is locked out) and maps identity-provider roles to Referalli roles. Owner only. Live mode only.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PatchOrgSsoBody $body
      * @return PatchOrgSsoResponse
      */
@@ -6026,7 +6413,9 @@ trait Operations
      *
      * Changes a group's terms, or archives it (`archived: true`); archived groups take no new members.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PatchPartnerGroupsIdBody $body
      * @return PartnerGroup
      */
@@ -6040,7 +6429,9 @@ trait Operations
      *
      * Changes the display name, status (`active`, `suspended`, `banned`, `archived`), tags, notes or externalRef (`null` clears it). Suspended partners keep earning but are not paid; banned ones stop attributing. 409 when another partner has the externalRef. Audited.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PatchPartnersIdBody $body
      * @return Partner
      */
@@ -6054,7 +6445,9 @@ trait Operations
      *
      * Changes only the minimum balance before a payout (`minThresholdMinor`). 404 when the partner has no profile. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PatchPartnersIdPayoutProfileBody $body
      * @return PatchPartnersIdPayoutProfileResponse
      */
@@ -6068,7 +6461,9 @@ trait Operations
      *
      * Deep-merges into the draft (or, with no draft, into a copy of what is published): objects merge key by key, arrays and values replace, `null` deletes a key. The result is validated as a whole. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param array<string, mixed> $body
      * @return GetPortalThemeResponse
      */
@@ -6082,7 +6477,9 @@ trait Operations
      *
      * Changes any program field or setting; omitted fields keep their value, and `publicPage` is merged. Changing `termsMd` records a new terms version. Setting `status` to `paused` or `archived` stops new attribution. `mobileApp` (iOS Team ID and bundle id, Android package and signing-certificate fingerprints) publishes the program's apps in the universal-links and App Links files on the org's link hosts. `destinationUrl` moves the program's default link destination: every link still on the old default (the widget's or a sign-in connection's) is repointed in the same call, custom destinations stay, and links already shared follow at click time; `{code}` in it becomes the link's code. Audited.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PatchProgramsIdBody $body
      * @return Program
      */
@@ -6096,7 +6493,9 @@ trait Operations
      *
      * Sets `status` to `paused` (no new commissions) or back to `active`. Only active referrals can be paused and only paused ones resumed (409 otherwise); setting the current status is a no-op. Publishes `referral.paused` or `referral.resumed`. Audited.
      *
-     * **Auth:** an API key with `referrals:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `referrals:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `referrals:write`, `full`, `admin`.
      * @param PatchReferralsIdBody $body
      * @return Referral
      */
@@ -6110,7 +6509,9 @@ trait Operations
      *
      * Changes the URL, topics, programs (`null` or `[]` for every program) or legacy signature, or pauses it (`status: "paused"`, deliveries held). Setting `active` re-enables a paused or auto-disabled endpoint: held deliveries resume and the failure clock starts over. `warnings` has `domain_changed` when the URL moves to another host. Audited.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @param PatchWebhookEndpointsIdBody $body
      * @return PatchWebhookEndpointsIdResponse
      */
@@ -6247,7 +6648,9 @@ trait Operations
      *
      * Compares the last 24 hours of clicks, sign-ups and revenue with the trailing 7-day average and returns this org's spikes (3x or more) and drops (under 20%). Findings also become notifications; nothing is changed automatically. Also runs hourly.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `analytics:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @return PostAnomaliesScanResponse
      */
     public function postAnomaliesScan(?string $idempotencyKey = null): mixed
@@ -6258,9 +6661,11 @@ trait Operations
     /**
      * Create an API key. POST /v1/api-keys
      *
-     * Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response (and in its `Idempotency-Key` replay: a retry with the same key and body within 24 hours returns this response again, secret included, without minting another). `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key to a version, or `latest` (the default) to the newest version at the time of the call; the pin never moves on its own (a key keeps answering in that version after newer ones ship) until you `PATCH` it or send a `referalli-version` header. A key pinned to `2026-10-21` gets every list as a capped plain array instead of the paginated envelope. `programIds` limits the key to those programs (their partners, links, referrals, commissions, enrollments, and webhook endpoints whose `programIds` are all within the key's, with their deliveries); a program-scoped key gets 403 `program_scoped_key` on org-wide endpoints (keys, team, org settings, billing, payouts, the event feed, analytics, creating programs). An `api_keys:mint` key may also call this (and no other key endpoint): it can't mint `admin` or `api_keys:mint` keys or scopes it doesn't hold, and a program-scoped one must send `programIds` within its own (`403` otherwise). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response (and in its `Idempotency-Key` replay: a retry with the same key and body within 24 hours returns this response again, secret included, without minting another). `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key to a version, or `latest` (the default) to the newest version at the time of the call; the pin never moves on its own (a key keeps answering in that version after newer ones ship) until you `PATCH` it or send a `referalli-version` header. A key pinned to `2026-10-21` gets every list as a capped plain array instead of the paginated envelope. `programIds` limits the key to those programs (their partners, links, referrals, commissions, enrollments, webhook endpoints whose `programIds` are all within the key's, with their deliveries, and billing connections likewise); a program-scoped key gets 403 `program_scoped_key` on org-wide endpoints (keys, team, org settings, the rest of billing, payouts, the event feed, analytics, creating programs). An `api_keys:mint` key may also call this (and no other key endpoint): it can't mint `admin` or `api_keys:mint` keys or scopes it doesn't hold, and a program-scoped one must send `programIds` within its own (`403` otherwise). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `api_keys:mint`, `full`, `admin`.
      * @param PostApiKeysBody $body
      * @return PostApiKeysResponse
      */
@@ -6274,7 +6679,9 @@ trait Operations
      *
      * Mints a replacement key with the same name, scopes, origins, version pin, owner, programs and lifetime (an expiring key's new expiry is the same length from now), returned once with `rotatedFrom: { id, expiresAt }`. The old key keeps working for `graceHours` (default 24, at most 168, 0 = stop now), then expires; it gets no `api_key.expiring` notice. An expired or revoked key can't be rotated (409 `api_key_expired` / 404). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PostApiKeysIdRotateBody $body
      * @return PostApiKeysIdRotateResponse
      */
@@ -6288,7 +6695,9 @@ trait Operations
      *
      * Adds a marketing asset (`banner`, `copy`, `video` or `logo`) to a program for its approved partners, or only for one group's members with `groupId`.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PostAssetsBody $body
      * @return PostAssetsResponse
      */
@@ -6302,7 +6711,9 @@ trait Operations
      *
      * Deterministically recomputes attribution for a program's referrals from the recorded clicks and identity links, under its current model. Returns what changed. Audited.
      *
-     * **Auth:** an API key with `referrals:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `referrals:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `referrals:write`, `full`, `admin`.
      * @param PostAttributionReplayBody $body
      * @return PostAttributionReplayResponse
      */
@@ -6330,7 +6741,9 @@ trait Operations
      *
      * Connects your sign-up system so new users are attributed server-side without calling associate: `clerk`, `supabase`, `workos` or `generic` receive the platform's user webhooks at the returned URL; `atlas` and `custom` call the signed protocol endpoints under `/v1/auth/connections/{id}/`. `autoEnrollUsers` makes every new user a partner too. Returns the signing secret once. 409 when an Atlas instance already has a connection.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `connections:write`, `full`, `admin`.
      * @param PostAuthConnectionsBody $body
      * @return CreatedAuthConnection
      */
@@ -6400,7 +6813,9 @@ trait Operations
      *
      * Ends the rotation overlap at once: only the newest secret verifies from now on.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `connections:write`, `full`, `admin`.
      * @return PostAuthConnectionsIdRevokePreviousSecretResponse
      */
     public function postAuthConnectionsIdRevokePreviousSecret(string $id, ?string $idempotencyKey = null): mixed
@@ -6413,7 +6828,9 @@ trait Operations
      *
      * Issues a new signing secret, returned once. The previous one keeps verifying for 24 hours, or until revoked.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `connections:write`, `full`, `admin`.
      * @return PostAuthConnectionsIdRotateSecretResponse
      */
     public function postAuthConnectionsIdRotateSecret(string $id, ?string $idempotencyKey = null): mixed
@@ -6468,7 +6885,9 @@ trait Operations
      *
      * The dashboard's consent step for `GET /v1/oauth/authorize`: `allow` returns the redirect back to the platform with a single-use code (10 minutes) for the chosen program; `deny` returns it with `error=access_denied`. Owner or admin. Audited.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `connections:write`, `full`, `admin`.
      * @param PostAuthConnectionsInstallBody $body
      * @return PostAuthConnectionsInstallResponse
      */
@@ -6495,7 +6914,9 @@ trait Operations
      *
      * Moves the org to a plan without checkout: anyone may move to Free (after cancelling a subscription); paid plans only for platform admins or self-hosted deployments (403 otherwise). Owner only. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostBillingActivateBody $body
      * @return PostBillingActivateResponse
      */
@@ -6509,7 +6930,9 @@ trait Operations
      *
      * Creates a checkout session for a paid plan and returns its `url` to redirect to. 400 when billing is not configured on this deployment.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostBillingCheckoutBody $body
      * @return PostBillingCheckoutResponse
      */
@@ -6521,9 +6944,11 @@ trait Operations
     /**
      * Create a billing connection. POST /v1/billing/connections
      *
-     * Connects a billing provider (`stripe`, `paddle`, `lemonsqueezy`, `polar`, `chargebee`, `shopify`, `recurly`, `braintree`, `woocommerce`, `bigcommerce` or `generic`) so its payment webhooks become commissions. Returns the `webhookUrl` path to register with the provider and its signing secret (generated unless you pass the provider's own `webhookSecret`); the secret is returned only here. A `filter` (`productIds`, `priceIds`, `skus` and/or exact `metadata`) limits which payments and subscription events earn when one provider account sells several products; the rest are recorded as `ignored_by_filter`. Audited.
+     * Connects a billing provider (`stripe`, `paddle`, `lemonsqueezy`, `polar`, `chargebee`, `shopify`, `recurly`, `braintree`, `woocommerce`, `bigcommerce` or `generic`) so its payment webhooks become commissions. Returns the `webhookUrl` path to register with the provider and its signing secret (generated unless you pass the provider's own `webhookSecret`); the secret is returned only here. For Stripe, pass `stripeKey` (a restricted key with Webhook Endpoints write and Customers write) instead of `webhookSecret`: Referalli registers a webhook endpoint at this connection's URL on your Stripe account with the events it reads and API version 2025-03-31.basil, stores the signing secret Stripe returns and answers with `stripeWebhookEndpointId`; nothing is saved unless Stripe registered it. If an endpoint on the account already points at one of your Stripe connections, it is updated and that connection returned with `reused: true` (one still `awaiting_secret` gets a fresh endpoint and its secret). `creditRail: { programId, ...settings }` also stores the key as that program's Stripe credit key and applies the `PUT /v1/programs/{id}/stripe-credits` settings (`enabled` defaults to true). The key is never returned and is stored only for `creditRail`. Deleting the connection leaves the Stripe endpoint in place. Errors: `422 stripe_key_wrong_mode`, `422 stripe_key_invalid`, `422 stripe_key_permission`, `502 stripe_unavailable`. A `filter` (`productIds`, `priceIds`, `skus` and/or exact `metadata`) limits which payments and subscription events earn when one provider account sells several products; the rest are recorded as `ignored_by_filter`. `programIds` limits the connection to those programs when one org runs several products: its events earn only through referrals in them, and a payment from a customer referred only in another program earns nothing (the event records `ignoredReason: "no_referral_in_scope"`); null or omitted = every program. A program-scoped API key must send `programIds` within its own. `status` is `awaiting_secret` when a provider that issues its own signing secret (Stripe, Paddle, Polar, Shopify, Recurly, Braintree) is connected without `webhookSecret`: its webhooks fail `401` until `PUT …/secret` stores the provider's secret, then it reads `active`. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostBillingConnectionsBody $body
      * @return CreatedBillingConnection
      */
@@ -6537,7 +6962,9 @@ trait Operations
      *
      * Generates a new signing secret, returned once. The previous one keeps verifying until `previousSecretExpiresAt` (24 hours). Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @return PostBillingConnectionsIdRotateSecretResponse
      */
     public function postBillingConnectionsIdRotateSecret(string $id, ?string $idempotencyKey = null): mixed
@@ -6550,7 +6977,9 @@ trait Operations
      *
      * Applies the saved mapping (or a draft `mapping`) to a sample `payload` and returns what would be recorded. Writes nothing. A generic-connector body with `events` gets one result per event.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostBillingConnectionsIdValueMappingPreviewBody $body
      * @return ValueMappingPreview
      */
@@ -6564,7 +6993,9 @@ trait Operations
      *
      * Marks a customer ref (the provider customer id, or the `referalli_customer_ref` it is linked to) as internal: its payments are recorded as `ignored_by_filter` from now on. Idempotent; a repeat updates the note. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostBillingInternalCustomersBody $body
      * @return PostBillingInternalCustomersResponse
      */
@@ -6578,7 +7009,9 @@ trait Operations
      *
      * Returns the `url` of the billing portal where the owner manages or cancels the subscription. 400 before there is a subscription.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @return PostBillingPortalResponse
      */
     public function postBillingPortal(?string $idempotencyKey = null): mixed
@@ -6591,7 +7024,9 @@ trait Operations
      *
      * Starts serving the partner portal on your own domain (such as `partners.example.com`), in your branding: returns the CNAME and TXT records to add. Needs a plan with custom domains (402 otherwise).
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostBrandingDomainBody $body
      * @return PostBrandingDomainResponse
      */
@@ -6605,7 +7040,9 @@ trait Operations
      *
      * Checks the portal domain's TXT record and CNAME, routes it and reports `provisioning` or `active` as for the link domain.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostBrandingLinkDomainVerifyResponse
      */
     public function postBrandingDomainVerify(?string $idempotencyKey = null): mixed
@@ -6618,7 +7055,9 @@ trait Operations
      *
      * Starts using your own domain (such as `go.example.com`) for partner links: returns the CNAME target and the TXT record that proves you control it. Links move onto it once verified. Needs a plan with custom domains (402 otherwise); 409 when the domain is in use.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostBrandingLinkDomainBody $body
      * @return PostBrandingLinkDomainResponse
      */
@@ -6632,7 +7071,9 @@ trait Operations
      *
      * Checks the TXT record and the CNAME. When both are right the domain is routed here; it is `active` once HTTPS answers on it (`provisioning` while the certificate is issued, which finishes on its own). 400 with what is missing otherwise.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostBrandingLinkDomainVerifyResponse
      */
     public function postBrandingLinkDomainVerify(?string $idempotencyKey = null): mixed
@@ -6673,7 +7114,9 @@ trait Operations
      *
      * Approves the sign-in and mints its API key in this org. `access` picks the scopes: `cli` (webhooks write and read access to the rest, the default), `read` or `full`. Needs a signed-in owner or admin. Audited.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PostCliDeviceCodesUserCodeApproveBody $body
      * @return PostCliDeviceCodesUserCodeApproveResponse
      */
@@ -6687,7 +7130,9 @@ trait Operations
      *
      * Refuses a pending sign-in; the CLI then sees `denied`.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @return Ok
      */
     public function postCliDeviceCodesUserCodeDeny(string $userCode, ?string $idempotencyKey = null): mixed
@@ -6700,7 +7145,9 @@ trait Operations
      *
      * The CLI `listen` command opens a listener for some `topics` (default every topic). Events are queued for it while it polls at least every 2 minutes, and each comes with Standard Webhooks headers signed with the returned `secret`, so the CLI can forward them to a local server.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @param PostCliListenersBody $body
      * @return PostCliListenersResponse
      */
@@ -6714,7 +7161,9 @@ trait Operations
      *
      * The CLI `trigger` command sends a realistic sample event (ids `*_test_…`, `test: true`) to the org's listeners and webhook endpoints. `data` overrides fields of the sample. 400 for a topic with no sample; `GET /v1/cli/topics` lists them.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @param PostCliTriggerBody $body
      * @return PostCliTriggerResponse
      */
@@ -6728,7 +7177,9 @@ trait Operations
      *
      * Publishes a new version of a program's commission rule; the latest version applies to new payments, and past lines keep the version that earned them. A rule has a `base` (percent in basis points, or a fixed amount), what it applies to (gross or net of tax or fees), how long it recurs, a hold before lines can be paid (`holdDays`, default 30), and optional conditions, per-partner/link/product overrides, volume tiers, event bounties, sub-affiliate levels and new-vs-expansion rates. Unknown fields at any depth are rejected. Audited.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PostCommissionRulesBody $body
      * @return PostCommissionRulesResponse
      */
@@ -6742,7 +7193,9 @@ trait Operations
      *
      * Approves every pending line whose hold has elapsed (this also runs on a schedule). Returns how many were approved. Audited.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @return PostCommissionsApproveDueResponse
      */
     public function postCommissionsApproveDue(?string $idempotencyKey = null): mixed
@@ -6755,7 +7208,9 @@ trait Operations
      *
      * Records an `adjusted` event against an earned line (a correction; the ledger is append-only). `amountMinor` is signed. An adjustment that would take the line below zero is refused unless `allowNegative`. Audited.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PostCommissionsIdAdjustBody $body
      * @return PostCommissionsIdAdjustResponse
      */
@@ -6769,7 +7224,9 @@ trait Operations
      *
      * Marks an earned line paid because you credited the partner yourself (for example as store credit), with your `reference`: records `approved` (if it isn't yet) and `paid`, and publishes `commission.settled`. The line never reaches a payout run or the 1099 export. Repeating the same reference returns the original settlement; a line already paid otherwise is 409. Audited.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PostCommissionsIdSettleBody $body
      * @return Settlement
      */
@@ -6783,7 +7240,9 @@ trait Operations
      *
      * A contract offering one partner custom terms (`termsMd`) and `compensation` (percent or fixed) in a program, as a draft or sent at once (`send: true`). When accepted, the compensation becomes a partner override on a new rule version. Audited.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PostContractsBody $body
      * @return PostContractsResponse
      */
@@ -6797,7 +7256,9 @@ trait Operations
      *
      * Sends a draft contract to the partner. 400 when it is not a draft.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @return OkStatus
      */
     public function postContractsIdSend(string $id, ?string $idempotencyKey = null): mixed
@@ -6810,7 +7271,9 @@ trait Operations
      *
      * Registers a coupon code for a partner in a program, so checkouts that use it attribute to them (coupon codes win over clicks). Codes match case-insensitively and are unique per org (409).
      *
-     * **Auth:** an API key with `links:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `links:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `links:write`, `full`, `admin`.
      * @param PostCouponsBody $body
      * @return PostCouponsResponse
      */
@@ -6824,7 +7287,9 @@ trait Operations
      *
      * Invites a listed creator to a program with an optional message. 400 when they do not accept invitations or were already invited to that program.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PostCreatorsAccountIdInviteBody $body
      * @return PostCreatorsAccountIdInviteResponse
      */
@@ -6838,7 +7303,9 @@ trait Operations
      *
      * Approves a submitted deal and protects it for the partner for `protectionDays` (default 90). 404 when there's no submitted deal with that id.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PostDealsIdApproveBody $body
      * @return PostDealsIdApproveResponse
      */
@@ -6852,7 +7319,9 @@ trait Operations
      *
      * Rejects a submitted deal.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @return PostDealsIdRejectResponse
      */
     public function postDealsIdReject(string $id, ?string $idempotencyKey = null): mixed
@@ -6865,7 +7334,9 @@ trait Operations
      *
      * Marks an approved deal won, within its protection window: creates the referral for `customerRef` so the customer's payments earn the partner commission. Publishes `referral.created`.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PostDealsIdWonBody $body
      * @return PostDealsIdWonResponse
      */
@@ -6879,7 +7350,9 @@ trait Operations
      *
      * Adds up to 500 prospects from your own crawl or data source. Raw page `html` is scanned for affiliate footprints (the competitor programs it recognizes) to enrich the evidence; `keywords` scores fit. Duplicate URLs are skipped. Needs a plan with discovery (402 otherwise).
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PostDiscoveryCorpusBody $body
      * @return PostDiscoveryCorpusResponse
      */
@@ -6893,7 +7366,9 @@ trait Operations
      *
      * Searches the configured corpus for creators and sites matching `keywords` (and `category`), scores their fit and saves them as prospects. Needs a plan with discovery (402 otherwise).
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PostDiscoverySearchBody $body
      * @return PostDiscoverySearchResponse
      */
@@ -6907,7 +7382,9 @@ trait Operations
      *
      * Resolves an open dispute with a `resolution` note, which the partner sees. Publishes `dispute.resolved`. 404 when not open. Audited.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PostDisputesIdResolveBody $body
      * @return Ok
      */
@@ -6921,7 +7398,9 @@ trait Operations
      *
      * Renders an event's email with sample values, from the stored template or an unsaved draft.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostEmailPreviewBody $body
      * @return EmailRendered
      */
@@ -6935,7 +7414,9 @@ trait Operations
      *
      * Asks the email provider whether the from address's domain is verified for sending, and stores the result. 400 until a provider, key and from address are set.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostEmailSettingsVerifyDomainResponse
      */
     public function postEmailSettingsVerifyDomain(?string $idempotencyKey = null): mixed
@@ -6948,7 +7429,9 @@ trait Operations
      *
      * Sends one email with sample values to `to` through the org's provider. 400 without a provider or when the provider refuses it.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostEmailTestBody $body
      * @return PostEmailTestResponse
      */
@@ -6962,7 +7445,9 @@ trait Operations
      *
      * A 15-minute token for the partner with this email, for the partner stats web component (`/embed.js`) in your app.
      *
-     * **Auth:** an API key with `links:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `links:write`, or a session of any role.
+     *
+     * **Scopes:** `links:write`, `full`, `admin`.
      * @param PostEmbedTokensBody $body
      * @return PostEmbedTokensResponse
      */
@@ -6976,7 +7461,9 @@ trait Operations
      *
      * Closes a case with an `action`: `dismiss` (a held referral is approved), `void_referral`, `suspend_partner` or `ban_partner`. The matching `referral.*` events are published. Audited.
      *
-     * **Auth:** an API key with `fraud:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `fraud:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `fraud:write`, `full`, `admin`.
      * @param PostFraudCasesIdResolveBody $body
      * @return Ok
      */
@@ -6990,7 +7477,9 @@ trait Operations
      *
      * Looks for partners who are likely one operator with many accounts (a shared payout destination or a shared non-freemail sign-up domain) and opens a `ring` case for each group.
      *
-     * **Auth:** an API key with `fraud:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `fraud:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `fraud:write`, `full`, `admin`.
      * @return PostFraudDetectRingsResponse
      */
     public function postFraudDetectRings(?string $idempotencyKey = null): mixed
@@ -7003,7 +7492,9 @@ trait Operations
      *
      * Scores each partner's clicks over the last `windowHours` (1 to 168, default 24) for invalid traffic and returns the probability, label and contributing signals per partner, plus how many were flagged.
      *
-     * **Auth:** an API key with `fraud:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `fraud:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `fraud:write`, `full`, `admin`.
      * @param PostFraudInvalidTrafficScanBody $body
      * @return PostFraudInvalidTrafficScanResponse
      */
@@ -7017,7 +7508,9 @@ trait Operations
      *
      * Records the rate cross-currency payouts convert at, for a currency pair, as a decimal string (`"1.0825"`), effective now or at `effectiveAt`. A manual rate pins its pair over the daily feed until cleared. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PostFxRatesBody $body
      * @return FxRate
      */
@@ -7031,7 +7524,9 @@ trait Operations
      *
      * Retires the manual rates for a pair, handing it back to the feed. Returns how many were cleared. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PostFxRatesClearOverrideBody $body
      * @return PostFxRatesClearOverrideResponse
      */
@@ -7045,7 +7540,9 @@ trait Operations
      *
      * Fetches the latest ECB reference rates for this org now, instead of waiting for the daily sync.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return PostFxRatesSyncResponse
      */
     public function postFxRatesSync(?string $idempotencyKey = null): mixed
@@ -7058,7 +7555,9 @@ trait Operations
      *
      * The GraphQL endpoint with the query in a JSON body. Read-only, so a read-scoped API key may call it.
      *
-     * **Auth:** an API key with `analytics:read` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:read`, or a session of any role.
+     *
+     * **Scopes:** `analytics:read`, `analytics:write`, `read`, `full`, `admin`.
      * @param PostGraphqlBody $body
      * @return PostGraphqlResponse
      */
@@ -7072,7 +7571,9 @@ trait Operations
      *
      * Imports partners, links and codes from a Rewardful, FirstPromoter, Tolt or PartnerStack CSV export (as a `text/csv` body or `{ "csv": "…" }`) into a program. `dryRun=true` reports what would happen; `destinationUrl` is used when the export has no link column. The tool's referral parameter is added to aff.js so shared links keep crediting. Audited.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @param PostImportProviderBody $body
      * @return PostImportProviderResponse
      */
@@ -7086,7 +7587,9 @@ trait Operations
      *
      * Queues a failed or skipped delivery again. 404 when there is no failed or skipped delivery with that id.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @return IntegrationDelivery
      */
     public function postIntegrationsDeliveriesIdRetry(string $id, ?string $idempotencyKey = null): mixed
@@ -7099,7 +7602,9 @@ trait Operations
      *
      * Checks the token against HubSpot and (unless `setupProperties: false`) creates the custom properties the sync uses. Returns `ok` and the error, if any, rather than failing.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @param PostIntegrationsHubspotTestBody $body
      * @return PostIntegrationsHubspotTestResponse
      */
@@ -7113,7 +7618,9 @@ trait Operations
      *
      * Sends one test track event with the write key and reports whether Segment accepted it.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @return PostIntegrationsSegmentTestResponse
      */
     public function postIntegrationsSegmentTest(?string $idempotencyKey = null): mixed
@@ -7126,7 +7633,9 @@ trait Operations
      *
      * Withdraws a pending creator invitation. 400 when it was already answered or withdrawn.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @return OkStatus
      */
     public function postInvitationsIdWithdraw(string $id, ?string $idempotencyKey = null): mixed
@@ -7139,7 +7648,9 @@ trait Operations
      *
      * Creates a partner's tracked link in a program. `code` (letters, digits, `-`; stored lowercase) is unique per org and generated when omitted. Returns the `shortUrl` to share, on the org's verified link domain when it has one. 409 when the code is taken. Audited.
      *
-     * **Auth:** an API key with `links:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `links:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `links:write`, `full`, `admin`.
      * @param PostLinksBody $body
      * @return CreatedLink
      */
@@ -7153,7 +7664,9 @@ trait Operations
      *
      * Your backend reports a validated App Store or Play purchase (or refund), after checking the receipt; it flows through the same commission engine as web billing. Idempotent per `eventId`. Never call this from the app itself.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostMobilePurchasesBody $body
      * @return PostMobilePurchasesResponse
      */
@@ -7167,7 +7680,9 @@ trait Operations
      *
      * Marks one notification read. Unknown or already-read ids are a no-op.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `org:write`, or a session of any role.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return Ok
      */
     public function postNotificationsIdRead(string $id, ?string $idempotencyKey = null): mixed
@@ -7194,7 +7709,9 @@ trait Operations
      *
      * Connects an on-chain indexer: on-chain conversions posted to its webhook URL become billing events. Returns the webhook URL and signing secret.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostOnchainConnectionsBody $body
      * @return PostOnchainConnectionsResponse
      */
@@ -7208,7 +7725,9 @@ trait Operations
      *
      * Asks Cookie Munch (`GET /v1/partner/sites/{cbid}/stamps/{stamp}`) what the visitor's consent stamp says on your registered site (`cbid`, or each registered site in turn) and keeps the answer. `verdict`: `consented` (found, with the `referrals` category on: the only verdict that credits a referral's consent), `not_consented`, `withdrawn` (a later decision turned `referrals` off: `withdrawnAt`), `not_found` (the site never recorded the stamp), `no_grant` (Cookie Munch's 403: the site has no live link to Referalli) or `error`. Clicks and consent events that carry a Cookie Munch stamp are checked the same way in the background. 409 when the partner token isn't configured or no site is registered. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostOrgConsentPartnersCookiemunchStampsCheckBody $body
      * @return PostOrgConsentPartnersCookiemunchStampsCheckResponse
      */
@@ -7222,7 +7741,9 @@ trait Operations
      *
      * Read-only checks against the vendors: does the Cookie Munch site exist (and a reminder to add your portal domain as its alias), does each script URL answer. Updates `status` and `lastError`. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostOrgHostedPagesCheckResponse
      */
     public function postOrgHostedPagesCheck(?string $idempotencyKey = null): mixed
@@ -7235,7 +7756,9 @@ trait Operations
      *
      * Adds an existing Referalli user (by email) with a role: `owner`, `admin`, `finance`, `analyst` or `support`. Only an owner can add an owner. 404 when no user has that email; 409 when already a member. Live mode only.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PostOrgMembersBody $body
      * @return PostOrgMembersResponse
      */
@@ -7249,7 +7772,9 @@ trait Operations
      *
      * Checks the partner sign-in configuration (JWKS reachable, or OIDC discovery) and records the result.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostOrgPortalAuthTestResponse
      */
     public function postOrgPortalAuthTest(?string $idempotencyKey = null): mixed
@@ -7262,7 +7787,9 @@ trait Operations
      *
      * Creates an organization with the signed-in user as its owner. Needs a user session (not an API key) but no `x-org-id`. Limited to 20 per hour per user. Live mode only.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PostOrgsBody $body
      * @return PostOrgsResponse
      */
@@ -7290,7 +7817,9 @@ trait Operations
      *
      * Checks the configuration against the IdP (OIDC discovery, or the WorkOS organization) and records the result as the configuration's last success or last error.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostOrgPortalAuthTestResponse
      */
     public function postOrgSsoDirectTest(?string $idempotencyKey = null): mixed
@@ -7303,7 +7832,9 @@ trait Operations
      *
      * Creates the org's directory tenant at the SSO provider, with the calling owner (who must have signed in with the provider) as its first admin. Owner session only. 409 when already linked elsewhere. Live mode only.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostOrgSsoLinkResponse
      */
     public function postOrgSsoLink(?string $idempotencyKey = null): mixed
@@ -7316,7 +7847,9 @@ trait Operations
      *
      * A one-time link (valid `expiresInDays`, default 3) for the customer's IT admin to configure SAML or OIDC (and SCIM) on the provider's hosted page. The URL is returned once and never stored. Live mode only.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostOrgSsoTicketsBody $body
      * @return PostOrgSsoTicketsResponse
      */
@@ -7330,7 +7863,9 @@ trait Operations
      *
      * Revokes a pending setup link. Live mode only.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostOrgSsoTicketsIdRevokeResponse
      */
     public function postOrgSsoTicketsIdRevoke(string $id, ?string $idempotencyKey = null): mixed
@@ -7343,7 +7878,9 @@ trait Operations
      *
      * Drafts a recruiting email sequence for a prospect. Drafts are only sent after you approve them.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PostOutreachDraftBody $body
      * @return PostOutreachDraftResponse
      */
@@ -7357,7 +7894,9 @@ trait Operations
      *
      * Approves a drafted message so `POST /v1/outreach/send-due` sends it when due. Audited.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @return Ok
      */
     public function postOutreachIdApprove(string $id, ?string $idempotencyKey = null): mixed
@@ -7370,7 +7909,9 @@ trait Operations
      *
      * Sends approved outreach messages that are due, skipping prospects without an email and addresses on the do-not-contact list (unsubscribed).
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @return PostOutreachSendDueResponse
      */
     public function postOutreachSendDue(?string $idempotencyKey = null): mixed
@@ -7601,7 +8142,9 @@ trait Operations
      *
      * Creates a partner. `email` is unique per org, and so is `externalRef` (your own id for them, such as a user id). With `upsert: true` an existing partner matching the email or externalRef is returned instead of a 409 (and gets the externalRef if it had none), with `matchedBy` (`email` or `externalRef`) and `externalRefKept`: true when the partner keeps its own externalRef (another product's) and yours was not applied to it, because yours is the program-scoped one on its enrollment. An email match whose partner has a different externalRef and no enrollment carrying yours is a 409. Over the plan's partner limit this is `402 payment_required`. Audited.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PostPartnersBody $body
      * @return PostPartnersResponse
      */
@@ -7656,7 +8199,9 @@ trait Operations
      *
      * A single-use `url` (valid 5 minutes) for a "View earnings" button in your app: opening it signs the partner in to the partner portal for `programId`, with no second account. The session is read-only and limited to this partner in your organization (never the partner's other merchants or account settings) and lasts 12 hours. `returnUrl` must be a path inside the portal, such as `/portal/earnings`. 404 for a partner outside your organization or not enrolled in the program. Owner or admin.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PostPartnersIdPortalLinkBody $body
      * @return PostPartnersIdPortalLinkResponse
      */
@@ -7670,7 +8215,9 @@ trait Operations
      *
      * Records a W-9, W-8BEN or W-8BEN-E for the partner (`data` is the form's fields). A tax form on file is required before a partner is included in a payout run.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PostPartnersIdTaxFormBody $body
      * @return Ok
      */
@@ -7711,7 +8258,9 @@ trait Operations
      *
      * Builds a draft run: one payout per partner who has a payout profile, a tax form and an approved, unpaid balance over their threshold, converted into their payout currency at recorded FX, each with a self-billing invoice. Partners left out are listed in `skipped` with the reason. Nothing is paid until you execute it. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return PayoutRunCreated
      */
     public function postPayoutRuns(?string $idempotencyKey = null): mixed
@@ -7724,7 +8273,9 @@ trait Operations
      *
      * Cancels a run that hasn't paid out and releases its lines back to the partners' approved balances. A run with money in flight is 409. Publishes `payout.cancelled` per payout. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return PostPayoutRunsIdCancelResponse
      */
     public function postPayoutRunsIdCancel(string $id, ?string $idempotencyKey = null): mixed
@@ -7737,7 +8288,9 @@ trait Operations
      *
      * Pays a draft run through the org's own connected payout providers (methods with no connection are simulated and logged; test mode uses the test rail). Returns how many were sent, submitted (settling asynchronously) and failed; each outcome publishes `payout.sent`, `payout.submitted` or `payout.failed`. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return PostPayoutRunsIdExecuteResponse
      */
     public function postPayoutRunsIdExecute(string $id, ?string $idempotencyKey = null): mixed
@@ -7750,7 +8303,9 @@ trait Operations
      *
      * Creates and executes payout runs for every schedule (org or program) that is due now. This also runs hourly on its own.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return PostPayoutRunsRunScheduledResponse
      */
     public function postPayoutRunsRunScheduled(?string $idempotencyKey = null): mixed
@@ -7763,7 +8318,9 @@ trait Operations
      *
      * A W3C design-tokens (DTCG) brand file, sent as `document` or fetched from an https `url`, merged into the draft: colours (`color.primary`, `color.background`, `color.surface`, `color.text`, `color.muted`, `color.border`, status colours), fonts (`font.body`, `font.heading`, `font.mono`, `font.url`), `radius.base`, `logo.url` and `brand.name`. `applied` lists the tokens used. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostPortalThemeImportBrandBody $body
      * @return PostPortalThemeImportBrandResponse
      */
@@ -7777,7 +8334,9 @@ trait Operations
      *
      * A link that shows the draft on your verified portal domain (`?themePreview=rpv_…`) for 7 days, to anyone who has it; minting another retires the last. Partners without the link keep seeing the published design. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return PostPortalThemePreviewResponse
      */
     public function postPortalThemePreview(?string $idempotencyKey = null): mixed
@@ -7790,7 +8349,9 @@ trait Operations
      *
      * Makes the draft what partners see (within a minute), keeps it as a version you can restore, and retires the preview link. Optional `note`. Owner or admin. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostPortalThemePublishBody $body
      * @return GetPortalThemeResponse
      */
@@ -7804,7 +8365,9 @@ trait Operations
      *
      * Copies a published version into the draft; publish it to make it live again. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @return GetPortalThemeResponse
      */
     public function postPortalThemeVersionsIdRestore(string $id, ?string $idempotencyKey = null): mixed
@@ -7817,7 +8380,9 @@ trait Operations
      *
      * Enables a DSAR tool for your org and mints its executor key (a bearer key, or a `whsec_` secret for Standard Webhooks), returned once. Rotating stops the old key at once. Also stores vendor settings: a Transcend public key and API key for completion callbacks, an Osano webhook secret.
      *
-     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:write`, `full`, `admin`.
      * @param PostPrivacyExecutorKeysBody $body
      * @return PostPrivacyExecutorKeysResponse
      */
@@ -7831,7 +8396,9 @@ trait Operations
      *
      * Whether the tool is ready: a key or the vendor credentials it needs, and no failing requests since it was set up. Answers `{ok, detail, fix}`.
      *
-     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:write`, `full`, `admin`.
      * @return PostPrivacyExecutorsAdapterCheckResponse
      */
     public function postPrivacyExecutorsAdapterCheck(string $adapter, ?string $idempotencyKey = null): mixed
@@ -7844,7 +8411,9 @@ trait Operations
      *
      * Erases (pseudonymizes, keeping the ledger balanced) a customer by `customerRef`, a partner by `partnerId`, or by `email` both the partner with that email and every customer stored under its hash. Send exactly one. 400 when nothing is found. Audited.
      *
-     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:write`, `full`, `admin`.
      * @param PostPrivacyForgetBody $body
      * @return PostPrivacyForgetResponse
      */
@@ -7858,7 +8427,9 @@ trait Operations
      *
      * Which customers and partners an email refers to. The email is hashed on the server and never stored.
      *
-     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:write`, `full`, `admin`.
      * @param PostPrivacyLookupBody $body
      * @return PostPrivacyLookupResponse
      */
@@ -7872,7 +8443,9 @@ trait Operations
      *
      * Opens an `access` or `erasure` request for one subject (`email`, `customerRef` or `partnerId`) and answers `202` with the request to poll. Publishes `privacy.request_completed` when done.
      *
-     * **Auth:** an API key with `privacy:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `privacy:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `privacy:write`, `full`, `admin`.
      * @param PostPrivacyRequestsBody $body
      * @return PostPrivacyRequestsResponse
      */
@@ -7886,7 +8459,9 @@ trait Operations
      *
      * `{partner, name?, scopes[], expires_at?}` (Unix ms or ISO 8601, at most a year; default a year; never "never"). Scopes are resource scopes (`integrations:write`, `partners:read`, …) or `connections:read|write` (the auth-platform connection routes only, what Atlas asks for); never admin, full or team. Returns `client_id` and `client_secret` once; the partner swaps them at POST /v1/oauth/token (client_credentials) or sends the secret as a bearer. A root action: an API key cannot hand out more than it holds, and an Atlas operator token needs an MFA sign-in at most 5 minutes old (403 `step_up_required` otherwise).
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `team:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PostProductLinksBody $body
      * @return PostProductLinksResponse
      */
@@ -7900,7 +8475,9 @@ trait Operations
      *
      * Recomputes every stored ROI figure from the value events with the current settings and mappings, in the background. Returns a `jobId` to poll; while one rebuild is running, the same job is returned. Audited.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `analytics:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @return PostProfitabilityRebuildResponse
      */
     public function postProfitabilityRebuild(?string $idempotencyKey = null): mixed
@@ -7913,7 +8490,9 @@ trait Operations
      *
      * Creates an affiliate program: its attribution model, cookie window, how long after sign-up a conversion still counts (`signupToConversionDays`, 1 to 1095, default 365; `cookieWindowDays` is 1 to 400, default 60), terms, public page and settings. `slug` is unique per org. Terms are versioned so partners can be asked to accept new ones. Over the plan's program limit this is `402 payment_required`.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PostProgramsBody $body
      * @return Program
      */
@@ -7927,7 +8506,9 @@ trait Operations
      *
      * Promotes the program's partners to the highest level their referral count qualifies for (never demotes). Publishes `partner.level_up` per promotion.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @return PostProgramsIdApplyLevelingResponse
      */
     public function postProgramsIdApplyLeveling(string $id, ?string $idempotencyKey = null): mixed
@@ -7940,7 +8521,9 @@ trait Operations
      *
      * Moves each partner's rate toward the target and publishes the new rates as partner overrides on a new rule version. Objective `roas` compares attributed revenue to commission; `roi` uses each partner's matured referral ROI, holding partners with too few matured referrals or an unknown ROI (listed in `held`). 400 when autopricing is off, the program has no percent-based rule, or no partner has a known ROI under `roi`.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PostProgramsIdAutopriceRunBody $body
      * @return PostProgramsIdAutopriceRunResponse
      */
@@ -7954,7 +8537,9 @@ trait Operations
      *
      * Enrolls an existing partner in the program, approved at once. Publishes `partner.enrolled`. 409 when already enrolled. `externalRef` is this program's own id for the partner, when their partner `externalRef` belongs to another product sharing the org; this program's webhooks and `GET /v1/partners?externalRef=` then use it. `mint` also gives them a referral code in the program, as `POST /v1/programs/{id}/referrers` does: `coupon: true` a coupon, `link: {}` a tracked link to `link.destinationUrl` or else the program's default destination (`{code}` in it becomes the code; 400 when the program has none and you send none). Their existing code in the program is reused. The response then adds `code` and `linkUrl` (null without a link).
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PostProgramsIdEnrollmentsBody $body
      * @return PostProgramsIdEnrollmentsResponse
      */
@@ -7968,7 +8553,9 @@ trait Operations
      *
      * Approves a pending application (`status: "applied"`). Publishes `partner.approved`. 404 when there is no pending application with that id. Audited.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @return PostProgramsIdEnrollmentsEnrollmentIdApproveResponse
      */
     public function postProgramsIdEnrollmentsEnrollmentIdApprove(string $id, string $enrollmentId, ?string $idempotencyKey = null): mixed
@@ -7981,7 +8568,9 @@ trait Operations
      *
      * Rejects a pending application. 404 when there is no pending application with that id. Audited.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @return PostProgramsIdEnrollmentsEnrollmentIdRejectResponse
      */
     public function postProgramsIdEnrollmentsEnrollmentIdReject(string $id, string $enrollmentId, ?string $idempotencyKey = null): mixed
@@ -7994,7 +8583,9 @@ trait Operations
      *
      * A group of partners in a program with its own commission base (or `null` to keep the program rule's), hold days, payout threshold, payout currency, onboarding message and checklist. Names are unique per program (409).
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PostProgramsIdGroupsBody $body
      * @return PartnerGroup
      */
@@ -8008,7 +8599,9 @@ trait Operations
      *
      * A time-boxed commission change for the whole program or one group: `replace` the base rate, or `boost` it by `bps`, between `startsAt` and `endsAt`. Payments in that window get it.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PostProgramsIdPromotionsBody $body
      * @return Promotion
      */
@@ -8022,7 +8615,9 @@ trait Operations
      *
      * One idempotent call for one of your users: finds the partner by `externalRef` (or by `email`, enrolling them under this program's own `externalRef` when they refer for another product in the org), else creates it, then enrolls them and creates a coupon code and a link to the program's default destination when missing. `email` is needed only to create the partner (400 without it). 409 `email_taken` when that email is already enrolled in this program under another id.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PostProgramsIdReferrersBody $body
      * @return PostProgramsIdReferrersResponse
      */
@@ -8036,7 +8631,9 @@ trait Operations
      *
      * Resets the attempt count of this program's `no_customer`, `ambiguous_customer` and `fx_rate_missing` rows (all of them, or only `creditIds`) so the hourly sweep gives them another 24 tries: call it after adding the billing link, making the customer match unique or recording the FX rate. Rows in other statuses are left alone. Returns the requeued ids. Owner or admin. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PostProgramsIdStripeCreditsRequeueBody $body
      * @return PostProgramsIdStripeCreditsRequeueResponse
      */
@@ -8050,7 +8647,9 @@ trait Operations
      *
      * Ends a promotion now: payments from this moment on no longer get it.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @return Promotion
      */
     public function postPromotionsIdEnd(string $id, ?string $idempotencyKey = null): mixed
@@ -8077,7 +8676,9 @@ trait Operations
      *
      * Snapshots every partner's quality score now; per the org's policy, low scores open a `quality` case or suspend the partner. Audited.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @return PostQualityRecomputeResponse
      */
     public function postQualityRecompute(?string $idempotencyKey = null): mixed
@@ -8090,7 +8691,9 @@ trait Operations
      *
      * The key server-side call: tell Referalli a customer signed up, with whatever you know about where they came from (`referralToken`/`ref_click_id`, `anonId`, `couponCode`, `emailHash`, IP and user agent). The attribution engine picks the partner under the program's model and windows. `referral` is `null` when no partner matched (not an error); `reasoning.notes` says why. Repeating `idempotencyKey` returns the existing referral. `occurredAt` records a late call at the real sign-up time (up to 5 minutes of clock skew is tolerated) and backfills payments since. `emailDomain` lets burner-email sign-ups be held for review. Publishes `referral.created` (or `referral.held`).
      *
-     * **Auth:** an API key with `referrals:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `referrals:write`, or a session of any role.
+     *
+     * **Scopes:** `referrals:write`, `full`, `admin`.
      * @param PostReferralsAssociateBody $body
      * @return AssociateResponse
      */
@@ -8104,7 +8707,9 @@ trait Operations
      *
      * Releases a referral held for review (`pending_review`) back to `active`. 404 when it isn't pending review. Publishes `referral.approved`. Audited.
      *
-     * **Auth:** an API key with `referrals:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `referrals:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `referrals:write`, `full`, `admin`.
      * @return Referral
      */
     public function postReferralsIdApprove(string $id, ?string $idempotencyKey = null): mixed
@@ -8117,7 +8722,9 @@ trait Operations
      *
      * Moves the referral to another partner (recorded as a manual match). Publishes `referral.reassigned` with the previous partner. Audited.
      *
-     * **Auth:** an API key with `referrals:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `referrals:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `referrals:write`, `full`, `admin`.
      * @param PostReferralsIdReassignBody $body
      * @return Referral
      */
@@ -8131,7 +8738,9 @@ trait Operations
      *
      * Voids the referral so it earns nothing more. Publishes `referral.voided`. Audited.
      *
-     * **Auth:** an API key with `referrals:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `referrals:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `referrals:write`, `full`, `admin`.
      * @return Referral
      */
     public function postReferralsIdVoid(string $id, ?string $idempotencyKey = null): mixed
@@ -8144,7 +8753,9 @@ trait Operations
      *
      * Rewards a partner for something outside a sale (a community answer, an event): one `earned` commission line that is approved and paid like any other. Name the partner by `partnerId` or `partnerExternalRef`; the amount is `amountMinor` (+ `currency`) or comes from a rule (`ruleKey`, or the `event` a rule maps). Idempotent on `idempotencyKey`: a retry returns the first grant with 200; the same key with a different request is 409.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PostRewardsBody $body
      * @return PostRewardsResponse
      */
@@ -8158,7 +8769,9 @@ trait Operations
      *
      * Records a (possibly partial) redemption: `amountMinor` (default the remaining balance) is capped at what's left, and the reward becomes `redeemed` once it is used up. `externalId` makes it idempotent (409 if reused for another reward). Publishes `credit.redeemed`.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PostRewardsIdRedeemBody $body
      * @return PostRewardsRedeemByCodeResponse
      */
@@ -8172,7 +8785,9 @@ trait Operations
      *
      * Records a redemption of the reward with this code; see `POST /v1/rewards/{id}/redeem`. 404 for an unknown code.
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PostRewardsRedeemByCodeBody $body
      * @return PostRewardsRedeemByCodeResponse
      */
@@ -8186,7 +8801,9 @@ trait Operations
      *
      * Turns one live pattern match (by `customerRef` and/or `partnerId`, optionally `programId`) into a `value_pattern` fraud case against its partner, or returns the open case for the same match. Publishes `fraud.case_opened`. 404 when no such match exists. Audited.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `analytics:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @param PostRoiPatternsPatternReviewBody $body
      * @return FraudCase
      */
@@ -8200,7 +8817,9 @@ trait Operations
      *
      * Generates deterministic billing history through the real commission pipeline, so you can see commissions flow without a provider: a new sandbox customer referred to the partner, `months` (default 3) of subscription payments at `priceMinor`, then for `scenario: "refund"` a half refund of the first invoice or for `churn` a cancellation. Returns the customer and what was created. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostSandboxSimulateBody $body
      * @return PostSandboxSimulateResponse
      */
@@ -8214,7 +8833,9 @@ trait Operations
      *
      * Test mode only (`409 test_mode_only` otherwise). Builds a realistic Stripe event (`invoice.paid`, `charge.refunded`, `charge.dispute.created`, `customer.created`, `customer.updated`, `customer.subscription.created`, `customer.subscription.updated` or `customer.subscription.deleted`) and runs it through the same pipeline as a signed webhook to the stripe billing connection `connectionId`, so you can watch commissions happen without a Stripe account. `overrides` sets `customerRef` (the Stripe customer id), `amountMinor`, `currency`, `metadata`, `invoiceId` and `chargeId`; refunds and disputes find their payment by `chargeId`, so reuse the `invoice.paid` one. Each call is a new event unless you pass `eventId`, which replays (the second answers `duplicate: true`). Returns the event id, the processing results, the commission events created and the payload sent. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostSandboxStripeFixturesBody $body
      * @return PostSandboxStripeFixturesResponse
      */
@@ -8228,7 +8849,9 @@ trait Operations
      *
      * Renders what the tool would show for a contact, from your own session: the context and the tool-format card. Nothing is sent to the tool.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PostSupportAppsAdapterTestBody $body
      * @return PostSupportAppsAdapterTestResponse
      */
@@ -8270,7 +8893,9 @@ trait Operations
      *
      * Files a corrected form for one document with the partner's current amount. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return TaxFiling
      */
     public function postTax1099DocumentsIdCorrect(string $id, ?string $idempotencyKey = null): mixed
@@ -8283,7 +8908,9 @@ trait Operations
      *
      * E-files the year's 1099-NEC forms through the connected provider and records one document per partner. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PostTax1099FilingsBody $body
      * @return TaxFiling
      */
@@ -8297,7 +8924,9 @@ trait Operations
      *
      * Asks the filing provider for the latest status of a filing and its documents; accepted forms are then delivered to partners (`tax.form_delivered`).
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @return PostTax1099FilingsIdRefreshResponse
      */
     public function postTax1099FilingsIdRefresh(string $id, ?string $idempotencyKey = null): mixed
@@ -8310,7 +8939,9 @@ trait Operations
      *
      * Test mode only. Moves the test org's clock forward by `seconds` (never back), then runs what came due: held commissions are approved, payout schedules fire and retention purges run. Returns the new time and what ran. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PostTestClockAdvanceBody $body
      * @return PostTestClockAdvanceResponse
      */
@@ -8324,7 +8955,9 @@ trait Operations
      *
      * Records one event. `type: "event"` is a product event for a known customer (`event`, such as `trial_started`) that can pay a bounty under the program's commission rule; it returns whether it was recorded and the commission. `idempotencyKey` deduplicates. `type: "click"` records a server-side click for a partner; `type: "custom"` records an audited custom event. Publishable keys may send only custom events.
      *
-     * **Auth:** an API key with `events:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `events:write`, or a session of any role.
+     *
+     * **Scopes:** `events:write`, `full`, `admin`.
      * @param PostTrackEventsBodyOption1|PostTrackEventsBodyOption2|PostTrackEventsBodyOption3 $body
      * @return PostTrackEventsResponse
      */
@@ -8351,7 +8984,9 @@ trait Operations
      *
      * Reports up to 500 value facts from your platform: `payment`, `refund`, `credit_granted`, `credit_redeemed`, `credit_expired`, `credit_revoked`, `cost` or `adjustment`. Each needs `kind`, `currency`, `externalId` (your stable id, which makes it idempotent) and `occurredAt`, plus the customer, partner (`partnerId` or `partnerExternalRef`), grant, program, product and amount fields (`cashMinor`, `creditAppliedMinor`, `discountMinor`, `taxMinor`, `feesMinor`, `costMinor`, `faceMinor`) that apply. Each event is validated and recorded on its own: `results` and `errors` are by index. A repeat of an `externalId` with new figures supersedes the earlier one.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:write`, or a session of any role.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @param PostValueEventsBody $body
      * @return PostValueEventsResponse
      */
@@ -8365,7 +9000,9 @@ trait Operations
      *
      * Imports value events from CSV text (up to 10,000 rows and 5 MB, else `413 payload_too_large`) with a `mapping` from column names to event fields (money as `<field>Minor` or `<field>Major`). `kind` applies to every row unless a column maps to it. Up to 500 rows are recorded before the response; a larger file answers `202` with a `jobId` to poll. `dryRun` returns the first 20 parsed rows and every row error without recording.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `analytics:write`, or a session of any role.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @param PostValueImportBody $body
      * @return PostValueImportResponse
      */
@@ -8379,7 +9016,9 @@ trait Operations
      *
      * Queues the delivery again at once with its attempt count reset. It keeps its `webhook-id`, so receivers can deduplicate.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @return Ok
      */
     public function postWebhookDeliveriesIdReplay(string $id, ?string $idempotencyKey = null): mixed
@@ -8392,7 +9031,9 @@ trait Operations
      *
      * Subscribes an HTTPS URL to event topics (default `["*"]`, every event; see the `webhooks` section of this document for each topic's payload). `programIds` limits it to events about those programs (org-wide events such as payouts are then not sent). Deliveries are signed the Standard Webhooks way with the returned `secret` (`whsec_…`), shown only here. `legacySignature: true` also sends the deprecated body-only signature. `alertContacts` (up to 10 emails) are emailed, with the org owner, when the endpoint has failed for 1 hour and again at 24 hours; it is disabled after 72 hours of failures or 1,000 failed attempts in a row. `status: "paused"` creates it without delivering anything until you `PATCH` it to `active` (default `active`).
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @param PostWebhookEndpointsBody $body
      * @return PostWebhookEndpointsResponse
      */
@@ -8406,7 +9047,9 @@ trait Operations
      *
      * Requeues the endpoint's failed deliveries created at or after `since` (ISO 8601), for after an outage. Each keeps its `webhook-id`, so receivers can dedupe. Audited.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      *
      * since: Requeue failed deliveries created at or after this time.
      * @return PostWebhookEndpointsIdReplayResponse
@@ -8421,7 +9064,9 @@ trait Operations
      *
      * Issues a new signing secret, returned once. For 24 hours (`previousSecretExpiresAt`) every delivery carries a signature from each secret, so receivers can switch without dropping any. Audited.
      *
-     * **Auth:** an API key with `webhooks:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `webhooks:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `webhooks:write`, `full`, `admin`.
      * @return PostWebhookEndpointsIdRotateSecretResponse
      */
     public function postWebhookEndpointsIdRotateSecret(string $id, ?string $idempotencyKey = null): mixed
@@ -8434,7 +9079,9 @@ trait Operations
      *
      * Your backend mints a short-lived token (60 to 3600 seconds, default 900) for a signed-in customer, identified by `customerRef` or `partnerExternalRef`, for the in-app referral widget. When the program has `settings.widget.autoEnroll`, a customer who isn't a partner yet is created on demand (send `email`). The token only reads that partner's own data.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `partners:write`, or a session of any role.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PostWidgetTokensBody $body
      * @return PostWidgetTokensResponse
      */
@@ -8448,7 +9095,9 @@ trait Operations
      *
      * Zapier's "Record conversion" action: a payment (or refund) for a customer through a generic billing connection (the org's first active one unless `connectionId`), with no signature needed. Idempotent by `providerEventId`. 400 without a generic billing connection.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PostZapierConversionsBody $body
      * @return PostZapierConversionsResponse
      */
@@ -8462,7 +9111,9 @@ trait Operations
      *
      * REST hook subscribe, called by Zapier when a Zap turns on: events of `event` are posted to the HTTPS `target_url`.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @param PostZapierHooksBody $body
      * @return ZapierHook
      */
@@ -8476,7 +9127,9 @@ trait Operations
      *
      * For webhook connectors whose vendor issues the signing secret (Clerk, Stytch, WorkOS) or key set (Kinde's JWKS document): replaces the connection's secret. The previous one keeps verifying for 24 hours. Signed-protocol connections rotate instead. Audited.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `connections:write`, `full`, `admin`.
      * @param PutAuthConnectionsIdSecretBody $body
      * @return PutAuthConnectionsIdSecretResponse
      */
@@ -8490,7 +9143,9 @@ trait Operations
      *
      * For providers that send thin webhooks (Recurly, BigCommerce), the API credentials used to fetch the full event: `apiKey`, or `apiToken` plus `storeHash`, and `region`. Stored encrypted. 400 for providers that take no credentials or when a required field is missing. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PutBillingConnectionsIdCredentialsBody $body
      * @return PutBillingConnectionsIdCredentialsResponse
      */
@@ -8502,9 +9157,11 @@ trait Operations
     /**
      * Set the webhook signing secret. PUT /v1/billing/connections/{id}/secret
      *
-     * Replaces the connection's signing secret with the provider's own (at least 8 characters). The previous secret keeps verifying for 24 hours. Audited.
+     * Replaces the connection's signing secret with the provider's own (at least 8 characters). The previous secret keeps verifying for 24 hours. A connection reading `awaiting_secret` reads `active` from then on. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PutBillingConnectionsIdSecretBody $body
      * @return PutBillingConnectionsIdSecretResponse
      */
@@ -8518,7 +9175,9 @@ trait Operations
      *
      * Where cash, credit applied, discount, cost and product live in this connection's payloads, as dot paths (`[]` sums an array, for example `data.discounts[].amount`), and whether amounts are in minor or major units. Each save bumps the mapping version; a rebuild re-applies it to stored events. Audited.
      *
-     * **Auth:** an API key with `billing:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
      * @param PutBillingConnectionsIdValueMappingBody $body
      * @return PutBillingConnectionsIdValueMappingResponse
      */
@@ -8532,7 +9191,9 @@ trait Operations
      *
      * Sets the logo URL, theme (only the documented `--r-*` tokens, with plain CSS values) and email sender. Omitted fields keep their value. `warnings` lists theme text/background pairs (`--r-accent-ink` on `--r-accent`, `--r-ink` on `--r-paper`) below the 4.5:1 WCAG AA contrast; the theme is saved anyway.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutBrandingBody $body
      * @return PutBrandingResponse
      */
@@ -8546,7 +9207,9 @@ trait Operations
      *
      * Sets the email provider and its API key (write-only: omit to keep it, `null` to remove), the from address and name, reply-to, logo and primary color for partner emails. Without a provider, no email is sent.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutEmailSettingsBody $body
      * @return EmailSettings
      */
@@ -8560,7 +9223,9 @@ trait Operations
      *
      * Replaces the subject, text and optional HTML of one event in one locale. 404 for an unknown event or locale.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutEmailTemplatesEventLocaleBody $body
      * @return PutEmailTemplatesEventLocaleResponse
      */
@@ -8574,7 +9239,9 @@ trait Operations
      *
      * Connects HubSpot with your private-app `token` (required the first time; omit to keep it) to sync partners as contacts and referrals as deals in `pipeline`, moving them to `paidDealStage` when they pay. `status: "paused"` stops syncing.
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @param PutIntegrationsHubspotBody $body
      * @return IntegrationConnection
      */
@@ -8588,7 +9255,9 @@ trait Operations
      *
      * Connects a Segment source with its `writeKey` (required the first time) and sends referral, commission, payout and partner events as track calls; `events` limits which topics (`null` for all).
      *
-     * **Auth:** an API key with `integrations:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `integrations:write`, `full`, `admin`.
      * @param PutIntegrationsSegmentBody $body
      * @return IntegrationConnection
      */
@@ -8602,7 +9271,9 @@ trait Operations
      *
      * Creates or updates the marketplace listing of a program: visibility (`public` or `unlisted`), category, headline, description and sponsored placement. Audited.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PutMarketplaceListingBody $body
      * @return Ok
      */
@@ -8616,7 +9287,9 @@ trait Operations
      *
      * The signed-in user's preferred locale for emails. User session only.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PutMeLocaleBody $body
      * @return PutMeLocaleResponse
      */
@@ -8630,7 +9303,9 @@ trait Operations
      *
      * Whether the signed-in member receives this org's periodic credit ROI digest email. User session only.
      *
-     * **Auth:** an API key with `team:write` (or `full`), or a session of any role.
+     * **Auth:** an API key with `team:write`, or a session of any role.
+     *
+     * **Scopes:** `team:write`, `full`, `admin`.
      * @param PutMeRoiDigestBody $body
      * @return PutMeRoiDigestResponse
      */
@@ -8644,7 +9319,9 @@ trait Operations
      *
      * Opts the org in or out of the cross-merchant attribution network: contributing its referral touchpoints (as hashed customer identities and partner accounts, never merchant identity or PII) and, in return, reading the network journey.
      *
-     * **Auth:** an API key with `growth:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `growth:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `growth:write`, `full`, `admin`.
      * @param PutNetworkSettingsBody $body
      * @return PutNetworkSettingsResponse
      */
@@ -8658,7 +9335,9 @@ trait Operations
      *
      * Replaces the list of Cookie Munch sites (cbids) whose signed consent events this org keeps. An event for any other site is acknowledged and dropped, since the org a delivery names is chosen by whoever made the link. Owner or admin. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgConsentPartnersCookiemunchBody $body
      * @return GetOrgConsentPartnersCookiemunchResponse
      */
@@ -8672,7 +9351,9 @@ trait Operations
      *
      * Turns the daily ECB reference-rate feed on or off. Turning it on syncs once at once and returns how many rates were inserted. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgFxFeedBody $body
      * @return PutOrgFxFeedResponse
      */
@@ -8686,7 +9367,9 @@ trait Operations
      *
      * Validates and saves the adapters. A CMP's `scriptUrl` must be https on that vendor's own hosts; `custom` needs every origin listed; every chat vendor also takes `origins` for hosts its account needs beyond the documented list. `chat.identitySecret` (write-only, sealed) is your chat vendor's identity-verification secret, used to sign partners in to your chat: a string sets it, `null` removes it, absent keeps it, and switching vendors drops it. `customOrigins` adds origins per CSP directive (https or wss, no wildcards, no keywords). Owner or admin. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgHostedPagesBody $body
      * @return GetOrgHostedPagesResponse
      */
@@ -8700,7 +9383,9 @@ trait Operations
      *
      * When payouts run automatically for every program without its own schedule: a `schedule` (`monthly`, `weekly`, `twice_monthly` or `custom` dates), the older `dayOfMonth` form, or `null` to turn automatic payouts off. Send exactly one of `schedule` and `dayOfMonth`. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PutOrgPayoutScheduleBody $body
      * @return PutOrgPayoutScheduleResponse
      */
@@ -8714,7 +9399,9 @@ trait Operations
      *
      * Chooses the portal sign-in adapter and its settings. `custom`: `issuer` and `jwksUrl` (https), or `preset` + `tenant` for a known platform (`jwtPresets` in the GET lists them: Clerk, Supabase, Firebase, Auth0, Cognito, Stytch, Kinde, Okta, Entra ID, Google, Keycloak, Descope, FusionAuth), or `keyType: hs256` with a write-only `sharedSecret` (≥ 32 characters, sealed); optional `audience` (default `referalli:<org>`), `maxAgeS` (30 to 3600, default 300), `claims` (where `sub`, `email`, `name`, `emailVerified` live, by name or dot path), `loginUrl` (your page that mints the token) and `autoEnrollProgramId`. `oidc`: `issuer`, `clientId`, `clientSecret`. `referalli` removes any configuration. Owner only.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgPortalAuthBodyOption1|PutOrgPortalAuthBodyOption2|PutOrgPortalAuthBodyOption3|PutOrgPortalAuthBodyOption4 $body
      * @return PutOrgPortalAuthResponse
      */
@@ -8728,7 +9415,9 @@ trait Operations
      *
      * Replaces the extra query parameters aff.js reads a referral code from (up to 10; lowercase letters, digits and `_`). Built-in names are dropped. Imports add the previous tool's parameter here so already-shared links keep crediting. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgReferralParamsBody $body
      * @return GetOrgReferralParamsResponse
      */
@@ -8742,7 +9431,9 @@ trait Operations
      *
      * Changes retention days for one or more kinds of raw data (others keep their value). Values below a kind's minimum are rejected. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgRetentionBody $body
      * @return Retention
      */
@@ -8756,7 +9447,9 @@ trait Operations
      *
      * Team SSO with the org's own IdP, no broker: `adapter` `oidc` (issuer, client id and secret, the claim that holds roles) or `workos` (client id, organization id, the org's own API key). `roleMapping` maps IdP groups or roles to `admin`, `finance`, `analyst` or `support` (never owner); `defaultRole` covers everyone else, or null to keep them out; `domains` are the email domains "require SSO" applies to. The secret is encrypted and never returned; leave it out to keep the stored one. 409 while the org uses the Atlas broker. Owner only.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgSsoDirectBodyOption1|PutOrgSsoDirectBodyOption2 $body
      * @return PutOrgSsoDirectResponse
      */
@@ -8770,7 +9463,9 @@ trait Operations
      *
      * Chooses who e-files 1099-NEC forms: `test` (simulated) or `tax1099` with your own API key (stored encrypted). Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgTaxFilingBody $body
      * @return PutOrgTaxFilingResponse
      */
@@ -8784,7 +9479,9 @@ trait Operations
      *
      * Sets any of the tax profile fields; `null` clears one. A VAT id must be a valid EU VAT number; an EIN looks like `12-3456789`. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgTaxProfileBody $body
      * @return TaxProfile
      */
@@ -8798,7 +9495,9 @@ trait Operations
      *
      * Sets the consent default served inside `/t/{token}/aff.js` (cached up to 5 minutes). Owner or admin. Audited.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param PutOrgTrackingConsentBody $body
      * @return GetOrgTrackingConsentResponse
      */
@@ -8882,7 +9581,9 @@ trait Operations
      *
      * How the partner is paid: `method` (`paypal`, `wise`, `stripe_connect`, `ach`, `crypto`, `payoneer`, `tremendous` or `csv`), method `details` (a free-form map such as `{ "paypalEmail": … }`), the currency to pay in and the minimum balance before a payout. Partners can also set this themselves in the portal.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PutPartnersIdPayoutProfileBody $body
      * @return PutPartnersIdPayoutProfileResponse
      */
@@ -8896,7 +9597,9 @@ trait Operations
      *
      * Sets (or clears with `null`) the partner's EU VAT number on their payout profile. With `viesCheck` on, VIES must list it as registered. 404 until the partner has payout details. Audited.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PutPartnersIdVatBody $body
      * @return PutPartnersIdVatResponse
      */
@@ -8910,7 +9613,9 @@ trait Operations
      *
      * Connects (or replaces) your own account with a payout provider, so payouts move money from your account: `paypal` (`clientId`, `secret`), `stripe` (`secretKey`), `circle` (`apiKey`, `walletId`), `wise` (`apiToken`, `profileId`), `payoneer` (`clientId`, `secret`, `programId`) or `tremendous` (`apiKey`, `fundingSourceId`), each with `env`. Stored encrypted and never echoed. Live mode only (`409 test_mode_unsupported` in test mode). Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PutPayoutConnectionsProviderBodyOption1|PutPayoutConnectionsProviderBodyOption2|PutPayoutConnectionsProviderBodyOption3|PutPayoutConnectionsProviderBodyOption4|PutPayoutConnectionsProviderBodyOption5|PutPayoutConnectionsProviderBodyOption6 $body
      * @return PutPayoutConnectionsProviderResponse
      */
@@ -8924,7 +9629,9 @@ trait Operations
      *
      * Replaces the whole draft: keys you leave out are gone. Unknown keys are refused with 422 naming each one by its full path. Owner or admin.
      *
-     * **Auth:** an API key with `org:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `org:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `org:write`, `full`, `admin`.
      * @param array<string, mixed> $body
      * @return GetPortalThemeResponse
      */
@@ -8938,7 +9645,9 @@ trait Operations
      *
      * Sets a product's margin (`marginBps`) or unit cost (`unitCostMinor`, in `currency`, default the reporting currency); exactly one of the two. Audited.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `analytics:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @param PutProfitabilityProductsProductRefBody $body
      * @return GetProfitabilityProductsProductRefResponse
      */
@@ -8952,7 +9661,9 @@ trait Operations
      *
      * Changes the org's economics settings, or with `programId` that program's overrides (a program can't override org-only fields such as the reporting currency). Returns the resolved settings. Re-run `POST /v1/profitability/rebuild` to apply changes to past figures. Audited.
      *
-     * **Auth:** an API key with `analytics:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `analytics:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `analytics:write`, `full`, `admin`.
      * @param PutProfitabilitySettingsBody $body
      * @return GetProfitabilitySettingsResponse
      */
@@ -8966,7 +9677,9 @@ trait Operations
      *
      * Self-pricing commissions: a target (`targetRoas`, or with `objective: "roi"` a `targetRoi`) and the `minBps`/`maxBps` band partner rates may move within. `enabled: false` turns it off.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PutProgramsIdAutopricingBody $body
      * @return PutProgramsIdAutopricingResponse
      */
@@ -8980,7 +9693,9 @@ trait Operations
      *
      * Holds out a random control share of referrals (`holdoutBps`, up to 5000 = 50%) from being commissioned, so comparing control and treatment conversion measures the true lift partners cause. 0 turns it off.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PutProgramsIdIncrementalityBody $body
      * @return PutProgramsIdIncrementalityResponse
      */
@@ -8994,7 +9709,9 @@ trait Operations
      *
      * What an agent may negotiate to in this program: rates between `minBps` and `maxBps`, accepted automatically up to `autoAcceptMaxBps`. Requires `minBps <= autoAcceptMaxBps <= maxBps`. `enabled: false` closes the program to negotiation.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PutProgramsIdNegotiationPolicyBody $body
      * @return PutProgramsIdNegotiationPolicyResponse
      */
@@ -9008,7 +9725,9 @@ trait Operations
      *
      * Puts an enrolled partner in one of the program's groups, or none (`groupId: null`). A partner is in at most one group per program.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PutProgramsIdPartnersPartnerIdGroupBody $body
      * @return PutProgramsIdPartnersPartnerIdGroupResponse
      */
@@ -9022,7 +9741,9 @@ trait Operations
      *
      * Overrides the org payout schedule for this program: a schedule, `{ "kind": "off" }` to never pay it automatically, or `null` to follow the org schedule again. Returns the next run date. Audited.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`, `finance`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`, `finance`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PutProgramsIdPayoutScheduleBody $body
      * @return PutProgramsIdPayoutScheduleResponse
      */
@@ -9036,7 +9757,9 @@ trait Operations
      *
      * What a referred customer gets: `store_credit`, a `coupon` or a `gift_card`, either a flat `amountMinor` or a percent (`bps`, optionally capped with `capMinor`) of their first payment, issued on their first commission or first payment. A percent reward needs `on: "first_payment"`. `enabled: false` removes it. Each reward issued publishes `referee_reward.earned`.
      *
-     * **Auth:** an API key with `programs:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `programs:write`, `full`, `admin`.
      * @param PutProgramsIdRefereeRewardBody $body
      * @return PutProgramsIdRefereeRewardResponse
      */
@@ -9048,9 +9771,11 @@ trait Operations
     /**
      * Set a program's Stripe balance credit settings. PUT /v1/programs/{id}/stripe-credits
      *
-     * Turns the rail on or off for a program. Each `commission.settled` line with method `merchant_credit` is credited to the referrer's Stripe customer balance; a later `commission.reversed` debits it back. `referrerMatch`: `billing_link` (the partner's externalRef is a `cus_…` id or is billing-linked to one), `metadata` (Stripe customer search on `metadata[metadataKey]` = the partner's externalRef) or `email` (the one Stripe customer with the partner's email). `refereeRewards: true` also credits `store_credit` referee rewards to the referred customer. Custom units (`x_…`) are never credited. `balanceCurrency` (ISO code, stored lowercase) forces the currency every credit is sent in; without it a credit goes in the Stripe customer's balance currency, or the commission's when the customer has none yet. When that differs from the commission's currency the amount is converted at your FX rate (`POST /v1/fx-rates`, half-even rounding); with no rate the credit waits as `fx_rate_missing`. `createCustomerIfMissing: { metadata }` creates a Stripe customer for a referrer none matches (the partner's email, `metadata[metadataKey]` = the partner's externalRef, plus your metadata) and credits it; referee credits never create customers. Metadata and email matching need exactly one Stripe customer: several is `ambiguous_customer`, never a guess. `balanceCurrency` and `createCustomerIfMissing` are replaced on every PUT (omitted = off). Enabling needs a key (`409 stripe_key_required`). `secretKey` gives the program its own Stripe key, used instead of the org's for all of its credits and debits (a separate Stripe account per product, say); `null` removes it, omitting it keeps it. The key is checked with Stripe before it is saved: `422 stripe_key_invalid` (Stripe rejects it), `422 stripe_key_wrong_mode` (a test key in live mode or a live key in test mode) or `422 stripe_key_permission` (no Customers write), `502 stripe_unavailable` if Stripe cannot be reached. Owner or admin; setting or removing a key needs a recent sign-in. Audited (never the key).
+     * Turns the rail on or off for a program. Each `commission.settled` line with method `merchant_credit` is credited to the referrer's Stripe customer balance; a later `commission.reversed` debits it back. `referrerMatch`: `billing_link` (the partner's externalRef is a `cus_…` id or is billing-linked to one; with several linked customers, the one with the most recent activity on a still-active subscription, then the most recently linked, `ambiguous_customer` only on a tie), `metadata` (Stripe customer search on `metadata[metadataKey]` = the partner's externalRef) or `email` (the one Stripe customer with the partner's email). `refereeRewards: true` also credits `store_credit` referee rewards to the referred customer. Custom units (`x_…`) are never credited. `balanceCurrency` (ISO code, stored lowercase) forces the currency every credit is sent in; without it a credit goes in the Stripe customer's balance currency, or the commission's when the customer has none yet. When that differs from the commission's currency the amount is converted at your FX rate (`POST /v1/fx-rates`, half-even rounding); with no rate the credit waits as `fx_rate_missing`. `createCustomerIfMissing: { metadata }` creates a Stripe customer for a referrer none matches (the partner's email, `metadata[metadataKey]` = the partner's externalRef, plus your metadata) and credits it; referee credits never create customers. `waitForCustomer: true` keeps a credit no customer matches `pending` with no attempt cap (instead of `no_customer`) and retries it as soon as a billing webhook links a `cus_…` to that externalRef. Metadata and email matching need exactly one Stripe customer: several is `ambiguous_customer`, never a guess. `balanceCurrency`, `createCustomerIfMissing` and `waitForCustomer` are replaced on every PUT (omitted = off). Enabling needs a key (`409 stripe_key_required`). `secretKey` gives the program its own Stripe key, used instead of the org's for all of its credits and debits (a separate Stripe account per product, say); `null` removes it, omitting it keeps it. The key is checked with Stripe before it is saved: `422 stripe_key_invalid` (Stripe rejects it), `422 stripe_key_wrong_mode` (a test key in live mode or a live key in test mode) or `422 stripe_key_permission` (no Customers write), `502 stripe_unavailable` if Stripe cannot be reached. Owner or admin; setting or removing a key needs a recent sign-in. Audited (never the key).
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PutProgramsIdStripeCreditsBody $body
      * @return GetProgramsIdStripeCreditsResponse
      */
@@ -9064,7 +9789,9 @@ trait Operations
      *
      * Creates or replaces a rule: the amount, the reason, an optional program and an optional `event` it rewards (one rule per event).
      *
-     * **Auth:** an API key with `commissions:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `commissions:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `commissions:write`, `full`, `admin`.
      * @param PutRewardsRulesKeyBody $body
      * @return PutRewardsRulesKeyResponse
      */
@@ -9078,7 +9805,9 @@ trait Operations
      *
      * Stores your own Stripe restricted key (`rk_…`, with Customers write) for the balance credit rail, encrypted and never echoed. Without one the rail uses the secret key of your Stripe payout connection, if any. A program can override it with its own key (`PUT /v1/programs/{id}/stripe-credits`). The key is checked with Stripe before it is saved: `422 stripe_key_invalid` (Stripe rejects it), `422 stripe_key_wrong_mode` (a test key in live mode or a live key in test mode) or `422 stripe_key_permission` (no Customers write), `502 stripe_unavailable` if Stripe cannot be reached. Owner or admin, recent sign-in. Audited.
      *
-     * **Auth:** an API key with `payouts:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `payouts:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `payouts:write`, `full`, `admin`.
      * @param PutStripeCreditsConnectionBody $body
      * @return GetStripeCreditsConnectionResponse
      */
@@ -9092,7 +9821,9 @@ trait Operations
      *
      * Enable a support tool and store its signing secret (vendor-issued; write-only) or, for Zendesk, the app public key in `config.publicKeyPem`. For `custom` Referalli mints the secret: it is returned once, and `rotate: true` mints a new one.
      *
-     * **Auth:** an API key with `partners:write` (or `full`), or a session with role `owner`, `admin`.
+     * **Auth:** an API key with `partners:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `partners:write`, `full`, `admin`.
      * @param PutSupportAppsAdapterBody $body
      * @return PutSupportAppsAdapterResponse
      */
