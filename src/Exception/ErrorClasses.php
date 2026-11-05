@@ -14,6 +14,7 @@ final class ErrorClasses
         'validation_error' => ValidationError::class,
         'mode_mismatch' => ModeMismatchError::class,
         'bad_request' => BadRequestError::class,
+        'invalid_handoff_token' => InvalidHandoffTokenError::class,
         'unauthorized' => AuthenticationError::class,
         'step_up_required' => StepUpRequiredError::class,
         'reauth_required' => ReauthRequiredError::class,

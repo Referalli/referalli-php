@@ -43,6 +43,7 @@ namespace Referalli\Events;
  * @phpstan-import-type AssociateResponseReferralOption1 from \Referalli\Models
  * @phpstan-import-type AssociateResponseReasoning from \Referalli\Models
  * @phpstan-import-type AssociateResponse from \Referalli\Models
+ * @phpstan-import-type HandoffToken from \Referalli\Models
  * @phpstan-import-type CommissionEvent from \Referalli\Models
  * @phpstan-import-type CommissionLine from \Referalli\Models
  * @phpstan-import-type Settlement from \Referalli\Models
@@ -95,6 +96,9 @@ namespace Referalli\Events;
  * @phpstan-import-type OrgLimits from \Referalli\Models
  * @phpstan-import-type OrgUsage from \Referalli\Models
  * @phpstan-import-type Org from \Referalli\Models
+ * @phpstan-import-type TrackingTokensLive from \Referalli\Models
+ * @phpstan-import-type TrackingTokensTest from \Referalli\Models
+ * @phpstan-import-type TrackingTokens from \Referalli\Models
  * @phpstan-import-type Member from \Referalli\Models
  * @phpstan-import-type IssuedApiKey from \Referalli\Models
  * @phpstan-import-type ApiKeyCreatedByOption1 from \Referalli\Models
@@ -104,6 +108,7 @@ namespace Referalli\Events;
  * @phpstan-import-type TokenVerification from \Referalli\Models
  * @phpstan-import-type WidgetSessionPartner from \Referalli\Models
  * @phpstan-import-type WidgetSession from \Referalli\Models
+ * @phpstan-import-type AuthConnectionLastErrorOption1 from \Referalli\Models
  * @phpstan-import-type AuthConnectionRotation from \Referalli\Models
  * @phpstan-import-type AuthConnection from \Referalli\Models
  * @phpstan-import-type CreatedAuthConnection from \Referalli\Models
@@ -183,6 +188,8 @@ namespace Referalli\Events;
  * @phpstan-import-type ReferralRejectedEvent from \Referalli\Models
  * @phpstan-import-type CustomerAliasedEventData from \Referalli\Models
  * @phpstan-import-type CustomerAliasedEvent from \Referalli\Models
+ * @phpstan-import-type BillingAccountOwnerChangedEventData from \Referalli\Models
+ * @phpstan-import-type BillingAccountOwnerChangedEvent from \Referalli\Models
  * @phpstan-import-type CommissionEarnedEventData from \Referalli\Models
  * @phpstan-import-type CommissionEarnedEvent from \Referalli\Models
  * @phpstan-import-type CommissionReversedEventData from \Referalli\Models
@@ -215,6 +222,10 @@ namespace Referalli\Events;
  * @phpstan-import-type CreditRedeemedEvent from \Referalli\Models
  * @phpstan-import-type BillingEventRecordedEventData from \Referalli\Models
  * @phpstan-import-type BillingEventRecordedEvent from \Referalli\Models
+ * @phpstan-import-type BillingEventHeldEventData from \Referalli\Models
+ * @phpstan-import-type BillingEventHeldEvent from \Referalli\Models
+ * @phpstan-import-type BillingEventExpiredEventData from \Referalli\Models
+ * @phpstan-import-type BillingEventExpiredEvent from \Referalli\Models
  * @phpstan-import-type RoiPaybackReachedEventData from \Referalli\Models
  * @phpstan-import-type RoiPaybackReachedEvent from \Referalli\Models
  * @phpstan-import-type RoiPatternDetectedEventData from \Referalli\Models
@@ -248,6 +259,7 @@ namespace Referalli\Events;
  * @phpstan-import-type AccountCreditFailedEvent from \Referalli\Models
  * @phpstan-import-type WebhookEndpointRecoveredEventData from \Referalli\Models
  * @phpstan-import-type WebhookEndpointRecoveredEvent from \Referalli\Models
+ * @phpstan-import-type GetTOrgTokenConfigJsonResponse from \Referalli\Models
  * @phpstan-import-type PostTOrgTokenVisitResponse from \Referalli\Models
  * @phpstan-import-type GetTOrgTokenCodesCodeResponseRefereeRewardOption1 from \Referalli\Models
  * @phpstan-import-type GetTOrgTokenCodesCodeResponse from \Referalli\Models
@@ -331,6 +343,7 @@ namespace Referalli\Events;
  * @phpstan-import-type GetStatusResponse from \Referalli\Models
  * @phpstan-import-type GetStatusIncidentsResponse from \Referalli\Models
  * @phpstan-import-type GetOrgReferralParamsResponse from \Referalli\Models
+ * @phpstan-import-type GetProgramsHandleAvailabilityResponse from \Referalli\Models
  * @phpstan-import-type GetProgramsResponse from \Referalli\Models
  * @phpstan-import-type PostProgramsIdReferrersResponse from \Referalli\Models
  * @phpstan-import-type PostProgramsIdEnrollmentsResponse from \Referalli\Models
@@ -390,10 +403,14 @@ namespace Referalli\Events;
  * @phpstan-import-type PutBillingConnectionsIdSecretResponse from \Referalli\Models
  * @phpstan-import-type PutBillingConnectionsIdCredentialsResponse from \Referalli\Models
  * @phpstan-import-type GetBillingConnectionsResponse from \Referalli\Models
+ * @phpstan-import-type PostBillingConnectionsIdEventsResponse from \Referalli\Models
+ * @phpstan-import-type PutBillingAccountsAccountRefOwnerResponse from \Referalli\Models
+ * @phpstan-import-type GetBillingAccountsAccountRefResponse from \Referalli\Models
  * @phpstan-import-type PutBillingConnectionsIdValueMappingResponse from \Referalli\Models
  * @phpstan-import-type PostBillingConnectionsIdRotateSecretResponse from \Referalli\Models
  * @phpstan-import-type DeleteBillingConnectionsIdResponse from \Referalli\Models
  * @phpstan-import-type GetBillingEventsResponse from \Referalli\Models
+ * @phpstan-import-type PostBillingEventsIdReleaseResponse from \Referalli\Models
  * @phpstan-import-type PostBillingInternalCustomersResponse from \Referalli\Models
  * @phpstan-import-type PutPartnersIdPayoutProfileResponse from \Referalli\Models
  * @phpstan-import-type PatchPartnersIdPayoutProfileResponse from \Referalli\Models
@@ -502,6 +519,12 @@ namespace Referalli\Events;
  * @phpstan-import-type GetWebhookEndpointsIdDeliveriesResponse from \Referalli\Models
  * @phpstan-import-type GetWebhookDeliveriesIdResponse from \Referalli\Models
  * @phpstan-import-type PostWebhookEndpointsIdReplayResponse from \Referalli\Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption1 from \Referalli\Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2StepsItemOption1 from \Referalli\Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2StepsItemOption2ResultsItem from \Referalli\Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2StepsItemOption2 from \Referalli\Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2CommissionsItem from \Referalli\Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2 from \Referalli\Models
  * @phpstan-import-type PostSandboxSimulateResponse from \Referalli\Models
  * @phpstan-import-type GetSandboxBillingFixturesResponseDataItem from \Referalli\Models
  * @phpstan-import-type GetSandboxBillingFixturesResponse from \Referalli\Models
@@ -699,12 +722,15 @@ namespace Referalli\Events;
  * @phpstan-import-type GetAuthConnectionsIdExportResponse from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdPingResponseCapabilities from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdPingResponse from \Referalli\Models
+ * @phpstan-import-type PutAuthConnectionsIdOriginsResponse from \Referalli\Models
+ * @phpstan-import-type PatchAuthConnectionsIdOriginsResponse from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdAliasesResponse from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponseCustomerOption1 from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponsePartnerOption1Option1 from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponsePartnerOption1Option2 from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponse from \Referalli\Models
  * @phpstan-import-type GetAuthConnectionsIdUsersCustomerRefReferralResponse from \Referalli\Models
+ * @phpstan-import-type PostAuthConnectionsIdAccountsResponse from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponseReferralsItem from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponseReversedItem from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponsePartnerOption1 from \Referalli\Models
@@ -948,7 +974,6 @@ namespace Referalli\Events;
  * @phpstan-import-type PostProgramsIdCreditRailRequeueResponse from \Referalli\Models
  * @phpstan-import-type GetProgramsIdCreditRailLogResponseDataItem from \Referalli\Models
  * @phpstan-import-type GetProgramsIdCreditRailLogResponse from \Referalli\Models
- * @phpstan-import-type PostWebhooksBillingConnectionIdResponseResultsItem from \Referalli\Models
  * @phpstan-import-type PostWebhooksBillingConnectionIdResponse from \Referalli\Models
  * @phpstan-import-type PostWebhooksAuthConnectionIdResponseResultsItem from \Referalli\Models
  * @phpstan-import-type PostWebhooksAuthConnectionIdResponse from \Referalli\Models
@@ -1047,6 +1072,7 @@ namespace Referalli\Events;
  * @phpstan-import-type PostWidgetSessionBody from \Referalli\Models
  * @phpstan-import-type PostReferralsAssociateBodyConsent from \Referalli\Models
  * @phpstan-import-type PostReferralsAssociateBody from \Referalli\Models
+ * @phpstan-import-type PostReferralsHandoffTokensBody from \Referalli\Models
  * @phpstan-import-type PatchReferralsIdBody from \Referalli\Models
  * @phpstan-import-type PostReferralsIdReassignBody from \Referalli\Models
  * @phpstan-import-type PostAttributionReplayBody from \Referalli\Models
@@ -1081,6 +1107,8 @@ namespace Referalli\Events;
  * @phpstan-import-type PutBillingConnectionsIdCredentialsBody from \Referalli\Models
  * @phpstan-import-type PatchBillingConnectionsIdBodyFilterOption1 from \Referalli\Models
  * @phpstan-import-type PatchBillingConnectionsIdBody from \Referalli\Models
+ * @phpstan-import-type PostBillingConnectionsIdEventsBody from \Referalli\Models
+ * @phpstan-import-type PutBillingAccountsAccountRefOwnerBody from \Referalli\Models
  * @phpstan-import-type PutBillingConnectionsIdValueMappingBody from \Referalli\Models
  * @phpstan-import-type PostBillingConnectionsIdValueMappingPreviewBodyMapping from \Referalli\Models
  * @phpstan-import-type PostBillingConnectionsIdValueMappingPreviewBody from \Referalli\Models
@@ -1194,18 +1222,21 @@ namespace Referalli\Events;
  * @phpstan-import-type PostAuthConnectionsBodyTokenVerificationClaims from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsBodyTokenVerification from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsBody from \Referalli\Models
- * @phpstan-import-type PutAuthConnectionsIdSecretBody from \Referalli\Models
  * @phpstan-import-type PatchAuthConnectionsIdBodyTokenVerificationOption1Claims from \Referalli\Models
  * @phpstan-import-type PatchAuthConnectionsIdBodyTokenVerificationOption1 from \Referalli\Models
  * @phpstan-import-type PatchAuthConnectionsIdBody from \Referalli\Models
+ * @phpstan-import-type PutAuthConnectionsIdSecretBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBodyReferral from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBodyRisk from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdPartnersBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdEraseBody from \Referalli\Models
+ * @phpstan-import-type PutAuthConnectionsIdOriginsBody from \Referalli\Models
+ * @phpstan-import-type PatchAuthConnectionsIdOriginsBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdAliasesBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdUsersBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdWidgetTokensBody from \Referalli\Models
+ * @phpstan-import-type PostAuthConnectionsIdAccountsBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsBody from \Referalli\Models
  * @phpstan-import-type PostAuthConnectionsInstallBody from \Referalli\Models
  * @phpstan-import-type PostOauthTokenBodyOption1 from \Referalli\Models

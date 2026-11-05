@@ -43,6 +43,7 @@ namespace Referalli;
  * @phpstan-import-type AssociateResponseReferralOption1 from Models
  * @phpstan-import-type AssociateResponseReasoning from Models
  * @phpstan-import-type AssociateResponse from Models
+ * @phpstan-import-type HandoffToken from Models
  * @phpstan-import-type CommissionEvent from Models
  * @phpstan-import-type CommissionLine from Models
  * @phpstan-import-type Settlement from Models
@@ -95,6 +96,9 @@ namespace Referalli;
  * @phpstan-import-type OrgLimits from Models
  * @phpstan-import-type OrgUsage from Models
  * @phpstan-import-type Org from Models
+ * @phpstan-import-type TrackingTokensLive from Models
+ * @phpstan-import-type TrackingTokensTest from Models
+ * @phpstan-import-type TrackingTokens from Models
  * @phpstan-import-type Member from Models
  * @phpstan-import-type IssuedApiKey from Models
  * @phpstan-import-type ApiKeyCreatedByOption1 from Models
@@ -104,6 +108,7 @@ namespace Referalli;
  * @phpstan-import-type TokenVerification from Models
  * @phpstan-import-type WidgetSessionPartner from Models
  * @phpstan-import-type WidgetSession from Models
+ * @phpstan-import-type AuthConnectionLastErrorOption1 from Models
  * @phpstan-import-type AuthConnectionRotation from Models
  * @phpstan-import-type AuthConnection from Models
  * @phpstan-import-type CreatedAuthConnection from Models
@@ -183,6 +188,8 @@ namespace Referalli;
  * @phpstan-import-type ReferralRejectedEvent from Models
  * @phpstan-import-type CustomerAliasedEventData from Models
  * @phpstan-import-type CustomerAliasedEvent from Models
+ * @phpstan-import-type BillingAccountOwnerChangedEventData from Models
+ * @phpstan-import-type BillingAccountOwnerChangedEvent from Models
  * @phpstan-import-type CommissionEarnedEventData from Models
  * @phpstan-import-type CommissionEarnedEvent from Models
  * @phpstan-import-type CommissionReversedEventData from Models
@@ -215,6 +222,10 @@ namespace Referalli;
  * @phpstan-import-type CreditRedeemedEvent from Models
  * @phpstan-import-type BillingEventRecordedEventData from Models
  * @phpstan-import-type BillingEventRecordedEvent from Models
+ * @phpstan-import-type BillingEventHeldEventData from Models
+ * @phpstan-import-type BillingEventHeldEvent from Models
+ * @phpstan-import-type BillingEventExpiredEventData from Models
+ * @phpstan-import-type BillingEventExpiredEvent from Models
  * @phpstan-import-type RoiPaybackReachedEventData from Models
  * @phpstan-import-type RoiPaybackReachedEvent from Models
  * @phpstan-import-type RoiPatternDetectedEventData from Models
@@ -248,6 +259,7 @@ namespace Referalli;
  * @phpstan-import-type AccountCreditFailedEvent from Models
  * @phpstan-import-type WebhookEndpointRecoveredEventData from Models
  * @phpstan-import-type WebhookEndpointRecoveredEvent from Models
+ * @phpstan-import-type GetTOrgTokenConfigJsonResponse from Models
  * @phpstan-import-type PostTOrgTokenVisitResponse from Models
  * @phpstan-import-type GetTOrgTokenCodesCodeResponseRefereeRewardOption1 from Models
  * @phpstan-import-type GetTOrgTokenCodesCodeResponse from Models
@@ -331,6 +343,7 @@ namespace Referalli;
  * @phpstan-import-type GetStatusResponse from Models
  * @phpstan-import-type GetStatusIncidentsResponse from Models
  * @phpstan-import-type GetOrgReferralParamsResponse from Models
+ * @phpstan-import-type GetProgramsHandleAvailabilityResponse from Models
  * @phpstan-import-type GetProgramsResponse from Models
  * @phpstan-import-type PostProgramsIdReferrersResponse from Models
  * @phpstan-import-type PostProgramsIdEnrollmentsResponse from Models
@@ -390,10 +403,14 @@ namespace Referalli;
  * @phpstan-import-type PutBillingConnectionsIdSecretResponse from Models
  * @phpstan-import-type PutBillingConnectionsIdCredentialsResponse from Models
  * @phpstan-import-type GetBillingConnectionsResponse from Models
+ * @phpstan-import-type PostBillingConnectionsIdEventsResponse from Models
+ * @phpstan-import-type PutBillingAccountsAccountRefOwnerResponse from Models
+ * @phpstan-import-type GetBillingAccountsAccountRefResponse from Models
  * @phpstan-import-type PutBillingConnectionsIdValueMappingResponse from Models
  * @phpstan-import-type PostBillingConnectionsIdRotateSecretResponse from Models
  * @phpstan-import-type DeleteBillingConnectionsIdResponse from Models
  * @phpstan-import-type GetBillingEventsResponse from Models
+ * @phpstan-import-type PostBillingEventsIdReleaseResponse from Models
  * @phpstan-import-type PostBillingInternalCustomersResponse from Models
  * @phpstan-import-type PutPartnersIdPayoutProfileResponse from Models
  * @phpstan-import-type PatchPartnersIdPayoutProfileResponse from Models
@@ -502,6 +519,12 @@ namespace Referalli;
  * @phpstan-import-type GetWebhookEndpointsIdDeliveriesResponse from Models
  * @phpstan-import-type GetWebhookDeliveriesIdResponse from Models
  * @phpstan-import-type PostWebhookEndpointsIdReplayResponse from Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption1 from Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2StepsItemOption1 from Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2StepsItemOption2ResultsItem from Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2StepsItemOption2 from Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2CommissionsItem from Models
+ * @phpstan-import-type PostSandboxSimulateResponseValueOption2 from Models
  * @phpstan-import-type PostSandboxSimulateResponse from Models
  * @phpstan-import-type GetSandboxBillingFixturesResponseDataItem from Models
  * @phpstan-import-type GetSandboxBillingFixturesResponse from Models
@@ -699,12 +722,15 @@ namespace Referalli;
  * @phpstan-import-type GetAuthConnectionsIdExportResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdPingResponseCapabilities from Models
  * @phpstan-import-type PostAuthConnectionsIdPingResponse from Models
+ * @phpstan-import-type PutAuthConnectionsIdOriginsResponse from Models
+ * @phpstan-import-type PatchAuthConnectionsIdOriginsResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdAliasesResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponseCustomerOption1 from Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponsePartnerOption1Option1 from Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponsePartnerOption1Option2 from Models
  * @phpstan-import-type PostAuthConnectionsIdUsersResponse from Models
  * @phpstan-import-type GetAuthConnectionsIdUsersCustomerRefReferralResponse from Models
+ * @phpstan-import-type PostAuthConnectionsIdAccountsResponse from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponseReferralsItem from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponseReversedItem from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsResponsePartnerOption1 from Models
@@ -948,7 +974,6 @@ namespace Referalli;
  * @phpstan-import-type PostProgramsIdCreditRailRequeueResponse from Models
  * @phpstan-import-type GetProgramsIdCreditRailLogResponseDataItem from Models
  * @phpstan-import-type GetProgramsIdCreditRailLogResponse from Models
- * @phpstan-import-type PostWebhooksBillingConnectionIdResponseResultsItem from Models
  * @phpstan-import-type PostWebhooksBillingConnectionIdResponse from Models
  * @phpstan-import-type PostWebhooksAuthConnectionIdResponseResultsItem from Models
  * @phpstan-import-type PostWebhooksAuthConnectionIdResponse from Models
@@ -1047,6 +1072,7 @@ namespace Referalli;
  * @phpstan-import-type PostWidgetSessionBody from Models
  * @phpstan-import-type PostReferralsAssociateBodyConsent from Models
  * @phpstan-import-type PostReferralsAssociateBody from Models
+ * @phpstan-import-type PostReferralsHandoffTokensBody from Models
  * @phpstan-import-type PatchReferralsIdBody from Models
  * @phpstan-import-type PostReferralsIdReassignBody from Models
  * @phpstan-import-type PostAttributionReplayBody from Models
@@ -1081,6 +1107,8 @@ namespace Referalli;
  * @phpstan-import-type PutBillingConnectionsIdCredentialsBody from Models
  * @phpstan-import-type PatchBillingConnectionsIdBodyFilterOption1 from Models
  * @phpstan-import-type PatchBillingConnectionsIdBody from Models
+ * @phpstan-import-type PostBillingConnectionsIdEventsBody from Models
+ * @phpstan-import-type PutBillingAccountsAccountRefOwnerBody from Models
  * @phpstan-import-type PutBillingConnectionsIdValueMappingBody from Models
  * @phpstan-import-type PostBillingConnectionsIdValueMappingPreviewBodyMapping from Models
  * @phpstan-import-type PostBillingConnectionsIdValueMappingPreviewBody from Models
@@ -1194,18 +1222,21 @@ namespace Referalli;
  * @phpstan-import-type PostAuthConnectionsBodyTokenVerificationClaims from Models
  * @phpstan-import-type PostAuthConnectionsBodyTokenVerification from Models
  * @phpstan-import-type PostAuthConnectionsBody from Models
- * @phpstan-import-type PutAuthConnectionsIdSecretBody from Models
  * @phpstan-import-type PatchAuthConnectionsIdBodyTokenVerificationOption1Claims from Models
  * @phpstan-import-type PatchAuthConnectionsIdBodyTokenVerificationOption1 from Models
  * @phpstan-import-type PatchAuthConnectionsIdBody from Models
+ * @phpstan-import-type PutAuthConnectionsIdSecretBody from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBodyReferral from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBodyRisk from Models
  * @phpstan-import-type PostAuthConnectionsIdSignupsBody from Models
  * @phpstan-import-type PostAuthConnectionsIdPartnersBody from Models
  * @phpstan-import-type PostAuthConnectionsIdEraseBody from Models
+ * @phpstan-import-type PutAuthConnectionsIdOriginsBody from Models
+ * @phpstan-import-type PatchAuthConnectionsIdOriginsBody from Models
  * @phpstan-import-type PostAuthConnectionsIdAliasesBody from Models
  * @phpstan-import-type PostAuthConnectionsIdUsersBody from Models
  * @phpstan-import-type PostAuthConnectionsIdWidgetTokensBody from Models
+ * @phpstan-import-type PostAuthConnectionsIdAccountsBody from Models
  * @phpstan-import-type PostAuthConnectionsIdSignalsBody from Models
  * @phpstan-import-type PostAuthConnectionsInstallBody from Models
  * @phpstan-import-type PostOauthTokenBodyOption1 from Models
@@ -1251,6 +1282,7 @@ trait Operations
         'deleteApiKeysId' => ['DELETE', '/v1/api-keys/{id}', ['id'], ['cascade' => 'cascade', 'pair' => 'pair'], false, 'json', 'deleteApiKeysId', ['id'], 4],
         'deleteAssetsId' => ['DELETE', '/v1/assets/{id}', ['id'], [], false, 'json', 'deleteAssetsId', ['id'], 2],
         'deleteAuthConnectionsId' => ['DELETE', '/v1/auth/connections/{id}', ['id'], [], false, 'json', 'deleteAuthConnectionsId', ['id'], 2],
+        'deleteBillingAccountsAccountRef' => ['DELETE', '/v1/billing/accounts/{accountRef}', ['accountRef'], [], false, 'json', 'deleteBillingAccountsAccountRef', ['accountRef'], 2],
         'deleteBillingConnectionsId' => ['DELETE', '/v1/billing/connections/{id}', ['id'], [], false, 'json', 'deleteBillingConnectionsId', ['id'], 2],
         'deleteBillingInternalCustomersCustomerRef' => ['DELETE', '/v1/billing/internal-customers/{customerRef}', ['customerRef'], [], false, 'json', 'deleteBillingInternalCustomersCustomerRef', ['customerRef'], 2],
         'deleteBrandingDomain' => ['DELETE', '/v1/branding/domain', [], [], false, 'json', 'deleteBrandingDomain', [], 1],
@@ -1289,10 +1321,12 @@ trait Operations
         'getAssistantSuggestions' => ['GET', '/v1/assistant/suggestions', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getAssistantSuggestions', [], 6],
         'getAuditLogs' => ['GET', '/v1/audit-logs', [], ['actor' => 'actor', 'actorType' => 'actorType', 'action' => 'action', 'subjectType' => 'subjectType', 'subjectId' => 'subjectId', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore'], false, 'list', 'getAuditLogs', [], 11],
         'getAuthConnections' => ['GET', '/v1/auth/connections', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getAuthConnections', [], 6],
+        'getAuthConnectionsId' => ['GET', '/v1/auth/connections/{id}', ['id'], [], false, 'json', 'getAuthConnectionsId', ['id'], 2],
         'getAuthConnectionsIdExport' => ['GET', '/v1/auth/connections/{id}/export', ['id'], ['customerRef' => 'customerRef'], false, 'json', 'getAuthConnectionsIdExport', ['id'], 3],
         'getAuthConnectionsIdUsersCustomerRefReferral' => ['GET', '/v1/auth/connections/{id}/users/{customerRef}/referral', ['id','customerRef'], [], false, 'json', 'getAuthConnectionsIdUsersCustomerRefReferral', ['id','customerRef'], 3],
         'getAuthConnectionsProviders' => ['GET', '/v1/auth/connections/providers', [], [], false, 'json', 'getAuthConnectionsProviders', [], 1],
         'getAuthProviders' => ['GET', '/v1/auth/providers', [], [], false, 'json', 'getAuthProviders', [], 1],
+        'getBillingAccountsAccountRef' => ['GET', '/v1/billing/accounts/{accountRef}', ['accountRef'], [], false, 'json', 'getBillingAccountsAccountRef', ['accountRef'], 2],
         'getBillingConnections' => ['GET', '/v1/billing/connections', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getBillingConnections', [], 6],
         'getBillingConnectionsId' => ['GET', '/v1/billing/connections/{id}', ['id'], [], false, 'json', 'getBillingConnectionsId', ['id'], 2],
         'getBillingEvents' => ['GET', '/v1/billing/events', [], ['customerRef' => 'customerRef', 'status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getBillingEvents', [], 8],
@@ -1309,7 +1343,7 @@ trait Operations
         'getCliLogs' => ['GET', '/v1/cli/logs', [], ['after' => 'after', 'wait' => 'wait', 'limit' => 'limit'], false, 'json', 'getCliLogs', [], 4],
         'getCliTopics' => ['GET', '/v1/cli/topics', [], [], false, 'json', 'getCliTopics', [], 1],
         'getCommissionRules' => ['GET', '/v1/commission-rules', [], ['programId' => 'programId', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getCommissionRules', [], 7],
-        'getCommissions' => ['GET', '/v1/commissions', [], ['partnerId' => 'partnerId', 'programId' => 'programId', 'type' => 'type', 'referralId' => 'referralId', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getCommissions', [], 10],
+        'getCommissions' => ['GET', '/v1/commissions', [], ['partnerId' => 'partnerId', 'programId' => 'programId', 'type' => 'type', 'referralId' => 'referralId', 'customerRef' => 'customerRef', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getCommissions', [], 11],
         'getCommissionsId' => ['GET', '/v1/commissions/{id}', ['id'], [], false, 'json', 'getCommissionsId', ['id'], 2],
         'getContracts' => ['GET', '/v1/contracts', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getContracts', [], 6],
         'getCoupons' => ['GET', '/v1/coupons', [], ['programId' => 'programId', 'partnerId' => 'partnerId', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getCoupons', [], 8],
@@ -1360,6 +1394,7 @@ trait Operations
         'getOrgSsoConnectionsIdSamlMetadata' => ['GET', '/v1/org/sso/connections/{id}/saml-metadata', ['id'], [], false, 'json', 'getOrgSsoConnectionsIdSamlMetadata', ['id'], 2],
         'getOrgTaxProfile' => ['GET', '/v1/org/tax-profile', [], [], false, 'json', 'getOrgTaxProfile', [], 1],
         'getOrgTrackingConsent' => ['GET', '/v1/org/tracking-consent', [], [], false, 'json', 'getOrgTrackingConsent', [], 1],
+        'getOrgTrackingTokens' => ['GET', '/v1/org/tracking-tokens', [], [], false, 'json', 'getOrgTrackingTokens', [], 1],
         'getOutreach' => ['GET', '/v1/outreach', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getOutreach', [], 6],
         'getPartnerAchievements' => ['GET', '/v1/partner/achievements', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerAchievements', [], 6],
         'getPartnerAdvance' => ['GET', '/v1/partner/advance', [], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPartnerAdvance', [], 6],
@@ -1424,6 +1459,7 @@ trait Operations
         'getProfitabilityRebuildJobId' => ['GET', '/v1/profitability/rebuild/{jobId}', ['jobId'], [], false, 'json', 'getProfitabilityRebuildJobId', ['jobId'], 2],
         'getProfitabilitySettings' => ['GET', '/v1/profitability/settings', [], ['programId' => 'programId'], false, 'json', 'getProfitabilitySettings', [], 2],
         'getPrograms' => ['GET', '/v1/programs', [], ['slug' => 'slug', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getPrograms', [], 7],
+        'getProgramsHandleAvailability' => ['GET', '/v1/programs/handle-availability', [], ['handle' => 'handle'], false, 'json', 'getProgramsHandleAvailability', [], 2],
         'getProgramsId' => ['GET', '/v1/programs/{id}', ['id'], [], false, 'json', 'getProgramsId', ['id'], 2],
         'getProgramsIdAutopricing' => ['GET', '/v1/programs/{id}/autopricing', ['id'], [], false, 'json', 'getProgramsIdAutopricing', ['id'], 2],
         'getProgramsIdCreditRail' => ['GET', '/v1/programs/{id}/credit-rail', ['id'], [], false, 'json', 'getProgramsIdCreditRail', ['id'], 2],
@@ -1436,10 +1472,10 @@ trait Operations
         'getProgramsIdRefereeReward' => ['GET', '/v1/programs/{id}/referee-reward', ['id'], [], false, 'json', 'getProgramsIdRefereeReward', ['id'], 2],
         'getProgramsIdStripeCredits' => ['GET', '/v1/programs/{id}/stripe-credits', ['id'], [], false, 'json', 'getProgramsIdStripeCredits', ['id'], 2],
         'getProgramsIdStripeCreditsLog' => ['GET', '/v1/programs/{id}/stripe-credits/log', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdStripeCreditsLog', ['id'], 7],
-        'getProgramsIdTerms' => ['GET', '/v1/programs/{id}/terms', ['id'], [], false, 'json', 'getProgramsIdTerms', ['id'], 2],
+        'getProgramsIdTerms' => ['GET', '/v1/programs/{id}/terms', ['id'], ['locale' => 'locale'], false, 'json', 'getProgramsIdTerms', ['id'], 3],
         'getProgramsIdTermsAcceptances' => ['GET', '/v1/programs/{id}/terms-acceptances', ['id'], ['limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProgramsIdTermsAcceptances', ['id'], 7],
         'getProspects' => ['GET', '/v1/prospects', [], ['status' => 'status', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getProspects', [], 7],
-        'getPublicProgramsHandle' => ['GET', '/v1/public/programs/{handle}', ['handle'], [], false, 'json', 'getPublicProgramsHandle', ['handle'], 2],
+        'getPublicProgramsHandle' => ['GET', '/v1/public/programs/{handle}', ['handle'], ['locale' => 'locale'], false, 'json', 'getPublicProgramsHandle', ['handle'], 3],
         'getReferrals' => ['GET', '/v1/referrals', [], ['programId' => 'programId', 'partnerId' => 'partnerId', 'status' => 'status', 'customerRef' => 'customerRef', 'limit' => 'limit', 'starting_after' => 'startingAfter', 'ending_before' => 'endingBefore', 'created[gte]' => 'createdGte', 'created[lte]' => 'createdLte'], false, 'list', 'getReferrals', [], 10],
         'getReferralsId' => ['GET', '/v1/referrals/{id}', ['id'], [], false, 'json', 'getReferralsId', ['id'], 2],
         'getReferralsIdJourney' => ['GET', '/v1/referrals/{id}/journey', ['id'], [], false, 'json', 'getReferralsIdJourney', ['id'], 2],
@@ -1487,6 +1523,7 @@ trait Operations
         'patchAdminStatusIncidentsId' => ['PATCH', '/v1/admin/status/incidents/{id}', ['id'], [], true, 'json', 'patchAdminStatusIncidentsId', ['id'], 3],
         'patchApiKeysId' => ['PATCH', '/v1/api-keys/{id}', ['id'], [], true, 'json', 'patchApiKeysId', ['id'], 3],
         'patchAuthConnectionsId' => ['PATCH', '/v1/auth/connections/{id}', ['id'], [], true, 'json', 'patchAuthConnectionsId', ['id'], 3],
+        'patchAuthConnectionsIdOrigins' => ['PATCH', '/v1/auth/connections/{id}/origins', ['id'], [], true, 'json', 'patchAuthConnectionsIdOrigins', ['id'], 3],
         'patchBillingConnectionsId' => ['PATCH', '/v1/billing/connections/{id}', ['id'], [], true, 'json', 'patchBillingConnectionsId', ['id'], 3],
         'patchOrg' => ['PATCH', '/v1/org', [], [], true, 'json', 'patchOrg', [], 2],
         'patchOrgMembersUserId' => ['PATCH', '/v1/org/members/{userId}', ['userId'], [], true, 'json', 'patchOrgMembersUserId', ['userId'], 3],
@@ -1514,6 +1551,7 @@ trait Operations
         'postAttributionReplay' => ['POST', '/v1/attribution/replay', [], [], true, 'json', 'postAttributionReplay', [], 2],
         'postAuthBackchannelLogout' => ['POST', '/v1/auth/backchannel-logout', [], [], true, 'json', 'postAuthBackchannelLogout', [], 2],
         'postAuthConnections' => ['POST', '/v1/auth/connections', [], [], true, 'json', 'postAuthConnections', [], 2],
+        'postAuthConnectionsIdAccounts' => ['POST', '/v1/auth/connections/{id}/accounts', ['id'], [], true, 'json', 'postAuthConnectionsIdAccounts', ['id'], 3],
         'postAuthConnectionsIdAliases' => ['POST', '/v1/auth/connections/{id}/aliases', ['id'], [], true, 'json', 'postAuthConnectionsIdAliases', ['id'], 3],
         'postAuthConnectionsIdErase' => ['POST', '/v1/auth/connections/{id}/erase', ['id'], [], true, 'json', 'postAuthConnectionsIdErase', ['id'], 3],
         'postAuthConnectionsIdPartners' => ['POST', '/v1/auth/connections/{id}/partners', ['id'], [], true, 'json', 'postAuthConnectionsIdPartners', ['id'], 3],
@@ -1529,8 +1567,10 @@ trait Operations
         'postBillingActivate' => ['POST', '/v1/billing/activate', [], [], true, 'json', 'postBillingActivate', [], 2],
         'postBillingCheckout' => ['POST', '/v1/billing/checkout', [], [], true, 'json', 'postBillingCheckout', [], 2],
         'postBillingConnections' => ['POST', '/v1/billing/connections', [], [], true, 'json', 'postBillingConnections', [], 2],
+        'postBillingConnectionsIdEvents' => ['POST', '/v1/billing/connections/{id}/events', ['id'], [], true, 'json', 'postBillingConnectionsIdEvents', ['id'], 3],
         'postBillingConnectionsIdRotateSecret' => ['POST', '/v1/billing/connections/{id}/rotate-secret', ['id'], [], false, 'json', 'postBillingConnectionsIdRotateSecret', ['id'], 2],
         'postBillingConnectionsIdValueMappingPreview' => ['POST', '/v1/billing/connections/{id}/value-mapping/preview', ['id'], [], true, 'json', 'postBillingConnectionsIdValueMappingPreview', ['id'], 3],
+        'postBillingEventsIdRelease' => ['POST', '/v1/billing/events/{id}/release', ['id'], [], false, 'json', 'postBillingEventsIdRelease', ['id'], 2],
         'postBillingInternalCustomers' => ['POST', '/v1/billing/internal-customers', [], [], true, 'json', 'postBillingInternalCustomers', [], 2],
         'postBillingPortal' => ['POST', '/v1/billing/portal', [], [], false, 'json', 'postBillingPortal', [], 1],
         'postBrandingDomain' => ['POST', '/v1/branding/domain', [], [], true, 'json', 'postBrandingDomain', [], 2],
@@ -1645,6 +1685,7 @@ trait Operations
         'postPublicProgramsHandleJoin' => ['POST', '/v1/public/programs/{handle}/join', ['handle'], [], true, 'json', 'postPublicProgramsHandleJoin', ['handle'], 3],
         'postQualityRecompute' => ['POST', '/v1/quality/recompute', [], [], false, 'json', 'postQualityRecompute', [], 1],
         'postReferralsAssociate' => ['POST', '/v1/referrals/associate', [], [], true, 'json', 'postReferralsAssociate', [], 2],
+        'postReferralsHandoffTokens' => ['POST', '/v1/referrals/handoff-tokens', [], [], true, 'json', 'postReferralsHandoffTokens', [], 2],
         'postReferralsIdApprove' => ['POST', '/v1/referrals/{id}/approve', ['id'], [], false, 'json', 'postReferralsIdApprove', ['id'], 2],
         'postReferralsIdReassign' => ['POST', '/v1/referrals/{id}/reassign', ['id'], [], true, 'json', 'postReferralsIdReassign', ['id'], 3],
         'postReferralsIdVoid' => ['POST', '/v1/referrals/{id}/void', ['id'], [], false, 'json', 'postReferralsIdVoid', ['id'], 2],
@@ -1674,7 +1715,9 @@ trait Operations
         'postWidgetTokens' => ['POST', '/v1/widget/tokens', [], [], true, 'json', 'postWidgetTokens', [], 2],
         'postZapierConversions' => ['POST', '/v1/zapier/conversions', [], [], true, 'json', 'postZapierConversions', [], 2],
         'postZapierHooks' => ['POST', '/v1/zapier/hooks', [], [], true, 'json', 'postZapierHooks', [], 2],
+        'putAuthConnectionsIdOrigins' => ['PUT', '/v1/auth/connections/{id}/origins', ['id'], [], true, 'json', 'putAuthConnectionsIdOrigins', ['id'], 3],
         'putAuthConnectionsIdSecret' => ['PUT', '/v1/auth/connections/{id}/secret', ['id'], [], true, 'json', 'putAuthConnectionsIdSecret', ['id'], 3],
+        'putBillingAccountsAccountRefOwner' => ['PUT', '/v1/billing/accounts/{accountRef}/owner', ['accountRef'], [], true, 'json', 'putBillingAccountsAccountRefOwner', ['accountRef'], 3],
         'putBillingConnectionsIdCredentials' => ['PUT', '/v1/billing/connections/{id}/credentials', ['id'], [], true, 'json', 'putBillingConnectionsIdCredentials', ['id'], 3],
         'putBillingConnectionsIdSecret' => ['PUT', '/v1/billing/connections/{id}/secret', ['id'], [], true, 'json', 'putBillingConnectionsIdSecret', ['id'], 3],
         'putBillingConnectionsIdValueMapping' => ['PUT', '/v1/billing/connections/{id}/value-mapping', ['id'], [], true, 'json', 'putBillingConnectionsIdValueMapping', ['id'], 3],
@@ -1725,11 +1768,11 @@ trait Operations
     /**
      * Revoke an API key. DELETE /v1/api-keys/{id}
      *
-     * Revokes a key at once. `cascade=true` also revokes every key it minted (and theirs); `pair=true` also revokes its live/test twin. Returns the revoked ids. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Revokes a key at once. `cascade=true` also revokes every key it minted (and theirs); `pair=true` also revokes its live/test twin. Returns the revoked ids. Needs an owner or admin session, or an API key with the `admin` scope. A key holding `api_keys:mint` may also do this for keys it minted itself (403 for any other). Audited.
      *
-     * **Auth:** an API key with `team:write`, or a session of any role.
+     * **Auth:** an API key with `api_keys:mint`, or a session of any role.
      *
-     * **Scopes:** `team:write`, `full`, `admin`.
+     * **Scopes:** `api_keys:mint`, `admin`.
      *
      * cascade: true: also revoke every key this key minted, and theirs.
      * pair: true: also revoke its live/test twin.
@@ -1768,6 +1811,21 @@ trait Operations
     public function deleteAuthConnectionsId(string $id, ?string $idempotencyKey = null): mixed
     {
         return $this->request('DELETE', '/v1/auth/connections/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Delete a billing account. DELETE /v1/billing/accounts/{accountRef}
+     *
+     * The organization was deleted: it has no owner from now on, and its provider customers stop resolving to the old owner, so later payments under it earn nothing. Commissions already earned stay, and refunds still reverse them. Setting an owner again restores it for later payments (payments made while it was deleted are not replayed). Returns the same shape as `PUT …/owner` with `deleted: true` and `ownerCustomerRef: null`; deleting an account with nothing recorded (or already deleted) answers `changed: false`. Publishes `billing_account.owner_changed`. Needs `billing:write`. Audited.
+     *
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
+     * @return PutBillingAccountsAccountRefOwnerResponse
+     */
+    public function deleteBillingAccountsAccountRef(string $accountRef, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('DELETE', '/v1/billing/accounts/' . self::seg($accountRef) . '', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2516,7 +2574,7 @@ trait Operations
     /**
      * List auth connections. GET /v1/auth/connections
      *
-     * Auth-platform connections with provider, program, status, signature version and rotation state. Secrets are never returned.
+     * Auth-platform connections with provider, program, status, signature version, rotation state and `lastSignupAt` (when it last filed a new sign-up; null when never). Secrets are never returned.
      *
      * **Auth:** an API key with `integrations:read`, or a session of any role.
      *
@@ -2541,6 +2599,21 @@ trait Operations
     public function getAuthConnectionsEach(?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
         return $this->paginate(fn (?string $cursor) => $this->getAuthConnections(limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+    }
+
+    /**
+     * Get an auth connection. GET /v1/auth/connections/{id}
+     *
+     * One auth-platform connection, as in the list: provider, program, status, `allowedOrigins`, `tokenVerification` (without its secret), signature version and rotation state. Secrets are never returned. Unknown or deleted connections are 404.
+     *
+     * **Auth:** an API key with `integrations:read`, or a session of any role.
+     *
+     * **Scopes:** `integrations:read`, `integrations:write`, `connections:read`, `connections:write`, `read`, `full`, `admin`.
+     * @return AuthConnection
+     */
+    public function getAuthConnectionsId(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/auth/connections/' . self::seg($id) . '', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -2598,6 +2671,21 @@ trait Operations
     }
 
     /**
+     * Get a billing account's owner. GET /v1/billing/accounts/{accountRef}
+     *
+     * What is recorded for a billing account: `{ accountRef, ownerCustomerRef, since, renamedTo, deleted }`. A renamed id answers with `renamedTo` (and `ownerCustomerRef: null`); it follows that account. `404` when nothing is recorded.
+     *
+     * **Auth:** an API key with `billing:read`, or a session of any role.
+     *
+     * **Scopes:** `billing:read`, `billing:write`, `read`, `full`, `admin`.
+     * @return GetBillingAccountsAccountRefResponse
+     */
+    public function getBillingAccountsAccountRef(string $accountRef, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/billing/accounts/' . self::seg($accountRef) . '', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * List billing connections. GET /v1/billing/connections
      *
      * Billing connections (deleted ones excluded), with status (`active`, `paused`, or `awaiting_secret` until a provider-issued secret is set), `programIds`, whether credentials are needed and set, the value mapping and secret-rotation state. A program-scoped API key sees only connections whose `programIds` are all within its own.
@@ -2645,7 +2733,7 @@ trait Operations
     /**
      * List billing events. GET /v1/billing/events
      *
-     * Payments, refunds and other billing events received from every connection, newest first. Filter with `customerRef`, or `status=ignored_by_filter` for the events a product filter or the internal-customer list set aside (recorded, never processed). `ignoredReason: "no_referral_in_scope"` (with `status: "processed"`) marks a payment on a connection limited to some programs from a customer referred only in other programs: it earned nothing.
+     * Payments, refunds and other billing events received from every connection, newest first. Filter with `customerRef`, or `status=ignored_by_filter` for the events a product filter or the internal-customer list set aside (recorded, never processed), or `status=parked` for the refunds and disputes waiting for their payment: applied when it arrives, or dropped after 7 days with a `billing_event.expired` webhook event. `ignoredReason: "no_referral_in_scope"` (with `status: "processed"`) marks a payment on a connection limited to some programs from a customer referred only in other programs: it earned nothing.
      *
      * **Auth:** an API key with `billing:read`, or a session of any role.
      *
@@ -2900,18 +2988,18 @@ trait Operations
      * created[lte]: Only items created at or before this time (ISO 8601), on lists of timestamped records. From API version 2026-11-01; ignored under 2026-10-21, where lists are a capped plain array.
      * @return array{object: string, data: list<CommissionEvent>, has_more: bool, next_cursor: string|null}
      */
-    public function getCommissions(?string $partnerId = null, ?string $programId = null, ?string $type = null, ?string $referralId = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
+    public function getCommissions(?string $partnerId = null, ?string $programId = null, ?string $type = null, ?string $referralId = null, ?string $customerRef = null, ?int $limit = null, ?string $startingAfter = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/commissions', ['partnerId' => $partnerId, 'programId' => $programId, 'type' => $type, 'referralId' => $referralId, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
+        return $this->request('GET', '/v1/commissions', ['partnerId' => $partnerId, 'programId' => $programId, 'type' => $type, 'referralId' => $referralId, 'customerRef' => $customerRef, 'limit' => $limit, 'starting_after' => $startingAfter, 'ending_before' => $endingBefore, 'created[gte]' => $createdGte, 'created[lte]' => $createdLte], null, $idempotencyKey, 'list');
     }
 
     /**
      * Every item of {@see getCommissions()}, following the pages.
      * @return \Generator<int, CommissionEvent>
      */
-    public function getCommissionsEach(?string $partnerId = null, ?string $programId = null, ?string $type = null, ?string $referralId = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
+    public function getCommissionsEach(?string $partnerId = null, ?string $programId = null, ?string $type = null, ?string $referralId = null, ?string $customerRef = null, ?int $limit = null, ?string $endingBefore = null, ?string $createdGte = null, ?string $createdLte = null, ?string $idempotencyKey = null): \Generator
     {
-        return $this->paginate(fn (?string $cursor) => $this->getCommissions(partnerId: $partnerId, programId: $programId, type: $type, referralId: $referralId, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
+        return $this->paginate(fn (?string $cursor) => $this->getCommissions(partnerId: $partnerId, programId: $programId, type: $type, referralId: $referralId, customerRef: $customerRef, limit: $limit, startingAfter: $cursor, endingBefore: $endingBefore, createdGte: $createdGte, createdLte: $createdLte, idempotencyKey: $idempotencyKey));
     }
 
     /**
@@ -3515,11 +3603,11 @@ trait Operations
     /**
      * Get the current caller. GET /v1/me
      *
-     * Who is calling. With a user session: the user and their org memberships (no `x-org-id` needed). With an API key: `{ user: null, memberships: [], apiKey, org: { id, name } }`, where `apiKey` holds the key (name, prefix, scopes, pinned `apiVersion`, `livemode`, owner, expiry, `programIds`). The mode is `apiKey.livemode`; there is no top-level `livemode`.
+     * Who is calling. With a user session: the user and their org memberships (no `x-org-id` needed). With an API key: `{ user: null, memberships: [], apiKey, org: { id, name } }`, where `apiKey` holds the key (name, prefix, scopes, pinned `apiVersion`, `livemode`, owner, expiry, `programIds`). The mode is `apiKey.livemode`; there is no top-level `livemode`. Any key may call it, whatever its scopes.
      *
-     * **Auth:** an API key with `team:read`, or a session of any role.
+     * **Auth:** an API key with `null`, or a session of any role.
      *
-     * **Scopes:** `team:read`, `team:write`, `read`, `full`, `admin`.
+     * **Scopes:** .
      * @return GetMeResponse
      */
     public function getMe(?string $idempotencyKey = null): mixed
@@ -3899,6 +3987,21 @@ trait Operations
     public function getOrgTrackingConsent(?string $idempotencyKey = null): mixed
     {
         return $this->request('GET', '/v1/org/tracking-consent', [], null, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Both modes' tracking tokens. GET /v1/org/tracking-tokens
+     *
+     * The org's public tracking values for live and test mode, labelled: `{ mode, live, test }`, each with `orgId`, `trackingToken`, `scriptUrl` (aff.js), `linkBaseUrl` (the verified link domain, else Referalli's origin) and `linkTemplate` (`…/go/{token}/{code}`). `mode` is the caller's. Any key reads both, live or test; nothing else crosses modes. The test org is created on first use.
+     *
+     * **Auth:** an API key with `org:read`, or a session of any role.
+     *
+     * **Scopes:** `org:read`, `org:write`, `read`, `full`, `admin`.
+     * @return TrackingTokens
+     */
+    public function getOrgTrackingTokens(?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/org/tracking-tokens', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -5182,6 +5285,21 @@ trait Operations
     }
 
     /**
+     * Check a public handle. GET /v1/programs/handle-availability
+     *
+     * Whether `handle` can be set as a program's `publicHandle`, using the same rules as `POST`/`PATCH /v1/programs`: `available: false` with `reason: "invalid"` when it is not 3 to 48 characters of `a-z`, `0-9` and `-`, or `reason: "taken"` when any program (in any org, including your own) already has it. Handles are claimed only by setting them, so a free handle can still be taken before you do; the setter's `409` names `details.field: "publicHandle"`.
+     *
+     * **Auth:** an API key with `programs:read`, or a session of any role.
+     *
+     * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
+     * @return GetProgramsHandleAvailabilityResponse
+     */
+    public function getProgramsHandleAvailability(string $handle, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('GET', '/v1/programs/handle-availability', ['handle' => $handle], null, $idempotencyKey, 'json');
+    }
+
+    /**
      * Get a program. GET /v1/programs/{id}
      *
      * One program with its settings (defaults filled in) and public page.
@@ -5440,16 +5558,16 @@ trait Operations
     /**
      * Get a program's terms. GET /v1/programs/{id}/terms
      *
-     * The program's commission terms for product copy, from its latest commission rule version (`ruleVersion`): the `base` (`percentBps`, or `amountMinor` and `currency`), how long it recurs, the hold, and `summary.en`, an English sentence built deterministically from the rule, such as "20% of every payment for 12 months" or "$50.00 for the first payment only". Bounties are added (", plus $5.00 per signup"); rule conditions add "(conditions apply)"; overrides, tiers or new-vs-expansion rates set `ratesVary` and add "(rates vary)" rather than quote one rate. Partner-group rates and promotions are not included. Publishing a new rule version changes the terms on the next read. `404` when the program has no rule yet. Program-scoped keys read their own programs.
+     * The program's commission terms for product copy, from its latest commission rule version (`ruleVersion`): the `base` (`percentBps`, or `amountMinor` and `currency`), how long it recurs, the hold, and `summary`, the same sentence in each partner-portal locale (`en`, `es`, `de`, `fr`, `pt`, `it`, `nl`, `sv`, `ja`, `zh`), built deterministically from the rule, such as "20% of every payment for 12 months" or "$50.00 for the first payment only". Bounties are added (", plus $5.00 per signup"); rule conditions add "(conditions apply)"; overrides, tiers or new-vs-expansion rates set `ratesVary` and add "(rates vary)" rather than quote one rate. With `?locale=de` or an `Accept-Language` header the response also names the chosen `locale` and its sentence as `text` (an unsupported language gets `en`). Bounty event names are kept as written. Partner-group rates and promotions are not included. Publishing a new rule version changes the terms on the next read. `404` when the program has no rule yet. Program-scoped keys read their own programs.
      *
      * **Auth:** an API key with `programs:read`, or a session of any role.
      *
      * **Scopes:** `programs:read`, `programs:write`, `read`, `full`, `admin`.
      * @return ProgramTerms
      */
-    public function getProgramsIdTerms(string $id, ?string $idempotencyKey = null): mixed
+    public function getProgramsIdTerms(string $id, ?string $locale = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/programs/' . self::seg($id) . '/terms', [], null, $idempotencyKey, 'json');
+        return $this->request('GET', '/v1/programs/' . self::seg($id) . '/terms', ['locale' => $locale], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -5515,14 +5633,14 @@ trait Operations
     /**
      * Get a program's public page. GET /v1/public/programs/{handle}
      *
-     * What a program's public join page shows: the program and merchant names, pitch, cookie window, terms, base commission, branding and whether joining is approved at once. No authentication; only active live programs with a `publicHandle` are found.
+     * What a program's public join page shows: the program and merchant names, pitch, cookie window, terms, base commission, branding and whether joining is approved at once. `terms` is the program's commission terms as `GET /v1/programs/{id}/terms` gives them (the rule's base, how long it recurs, hold and `summary` in each portal locale), or null when it has no rule yet; with `?locale=` or `Accept-Language` it also names the chosen `locale` and its sentence as `text`. No authentication; only active live programs with a `publicHandle` are found.
      *
      * **Auth:** none.
      * @return GetPublicProgramsHandleResponse
      */
-    public function getPublicProgramsHandle(string $handle, ?string $idempotencyKey = null): mixed
+    public function getPublicProgramsHandle(string $handle, ?string $locale = null, ?string $idempotencyKey = null): mixed
     {
-        return $this->request('GET', '/v1/public/programs/' . self::seg($handle) . '', [], null, $idempotencyKey, 'json');
+        return $this->request('GET', '/v1/public/programs/' . self::seg($handle) . '', ['locale' => $locale], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -6429,11 +6547,11 @@ trait Operations
     /**
      * Update an API key. PATCH /v1/api-keys/{id}
      *
-     * Changes a key's pinned `apiVersion`, `owner`, expiry (`expiresInDays` from now; `null` removes it) or `programIds` (`null` makes it org-wide); `apiVersion: "latest"` pins it to today's newest version. A new expiry re-arms the `api_key.expiring` notices. Revoked keys are 404. Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Renames a key or changes its pinned `apiVersion`, `owner`, expiry (`expiresInDays` from now, or `expiresAt`, an ISO 8601 time at most 3650 days out, not both; `null` removes it) or `programIds` (`null` makes it org-wide); `apiVersion: "latest"` pins it to today's newest version. A new expiry re-arms the `api_key.expiring` notices. `name` renames it; `scopes` replaces its scopes. Revoked keys are 404. Needs an owner or admin session, or an API key with the `admin` scope. A key holding `api_keys:mint` may also do this for keys it minted itself (403 for any other), but only to narrow `scopes` and `programIds`, never widen them or make the key org-wide. Audited.
      *
-     * **Auth:** an API key with `team:write`, or a session of any role.
+     * **Auth:** an API key with `api_keys:mint`, or a session of any role.
      *
-     * **Scopes:** `team:write`, `full`, `admin`.
+     * **Scopes:** `api_keys:mint`, `admin`.
      * @param PatchApiKeysIdBody $body
      * @return PatchApiKeysIdResponse
      */
@@ -6445,7 +6563,7 @@ trait Operations
     /**
      * Update an auth connection. PATCH /v1/auth/connections/{id}
      *
-     * Pauses or resumes a connection, renames it, changes `autoEnrollUsers` or the destination of auto-created links, turns `resolveBillingCustomers` on or off, or (signed-protocol connections) sets `signatureVersion`: `v2` to require request-line signatures, `v1+v2` to accept both again. `resolveBillingCustomers` (any provider, default false): a billing customer that arrives with no customerRef (no `referalli_customer_ref` metadata, no `customerRefMetadataKey` hit) in a program this connection serves (within the billing connection's `programIds`) is resolved through this connection's users: `referalli_user_id` or `<provider>_user_id` metadata naming a user it reported, else exactly one user whose current email is the customer's and verified. The billing link is recorded as metadata would record it; none or several matches record `ignoredReason: "identity_unresolved"` / `"identity_ambiguous"` on the billing event. Explicit metadata always wins. Matching uses only the org's own data. `tokenVerification` replaces the widget-session verifier (an HS256 secret is kept when `sharedSecret` is left out; `null` removes it) and `allowedOrigins` replaces the origin list.
+     * Pauses or resumes a connection, renames it, changes `autoEnrollUsers` or the destination of auto-created links, turns `resolveBillingCustomers` on or off, or (signed-protocol connections) sets `signatureVersion`: `v2` to require request-line signatures, `v1+v2` to accept both again. `resolveBillingCustomers` (any provider, default false): a billing customer that arrives with no customerRef (no `referalli_customer_ref` metadata, no `customerRefMetadataKey` hit) in a program this connection serves (within the billing connection's `programIds`) is resolved through this connection's users: `referalli_user_id` or `<provider>_user_id` metadata naming a user it reported, else exactly one user whose current email is the customer's and verified. The billing link is recorded as metadata would record it; none or several matches record `ignoredReason: "identity_unresolved"` / `"identity_ambiguous"` on the billing event. Explicit metadata always wins. Matching uses only the org's own data. `tokenVerification` replaces the widget-session verifier (an HS256 secret is kept when `sharedSecret` is left out; `null` removes it) and `allowedOrigins` replaces the origin list. The auth platform itself can also call this path, signed with the connection secret and with only `allowedOrigins` in the body (no session), to set its origins; see `PUT /v1/auth/connections/{id}/origins`.
      *
      * **Auth:** an API key with `integrations:write`, or a session with role `owner`, `admin`.
      *
@@ -6456,6 +6574,20 @@ trait Operations
     public function patchAuthConnectionsId(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('PATCH', '/v1/auth/connections/' . self::seg($id) . '', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Set a connection's allowed origins (signed protocol, PATCH). PATCH /v1/auth/connections/{id}/origins
+     *
+     * The same as `PUT /v1/auth/connections/{id}/origins`. Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
+     *
+     * **Auth:** none.
+     * @param PatchAuthConnectionsIdOriginsBody $body
+     * @return PatchAuthConnectionsIdOriginsResponse
+     */
+    public function patchAuthConnectionsIdOrigins(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PATCH', '/v1/auth/connections/' . self::seg($id) . '/origins', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -6589,7 +6721,7 @@ trait Operations
     /**
      * Update a program. PATCH /v1/programs/{id}
      *
-     * Changes any program field or setting; omitted fields keep their value, and `publicPage` is merged. Changing `termsMd` records a new terms version. Setting `status` to `paused` or `archived` stops new attribution. `mobileApp` (iOS Team ID and bundle id, Android package and signing-certificate fingerprints) publishes the program's apps in the universal-links and App Links files on the org's link hosts. `destinationUrl` moves the program's default link destination: every link still on the old default (the widget's or a sign-in connection's) is repointed in the same call, custom destinations stay, and links already shared follow at click time; `{code}` in it becomes the link's code. Audited.
+     * Changes any program field or setting; omitted fields keep their value, and `publicPage` is merged. Changing `termsMd` records a new terms version. Setting `status` to `paused` or `archived` stops new attribution. `signupPaymentGraceMinutes` (0 to 1440, default 5) is how long before the referral's sign-up time a payment still earns. `mobileApp` (iOS Team ID and bundle id, Android package and signing-certificate fingerprints) publishes the program's apps in the universal-links and App Links files on the org's link hosts. `destinationUrl` moves the program's default link destination: every link still on the old default (the widget's or a sign-in connection's) is repointed in the same call, custom destinations stay, and links already shared follow at click time; `{code}` in it becomes the link's code. A `publicHandle` another program has is `409 conflict` with `details: { field: 'publicHandle' }`. Audited.
      *
      * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
      *
@@ -6775,11 +6907,11 @@ trait Operations
     /**
      * Create an API key. POST /v1/api-keys
      *
-     * Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response (and in its `Idempotency-Key` replay: a retry with the same key and body within 24 hours returns this response again, secret included, without minting another). `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key to a version, or `latest` (the default) to the newest version at the time of the call; the pin never moves on its own (a key keeps answering in that version after newer ones ship) until you `PATCH` it or send a `referalli-version` header. A key pinned to `2026-10-21` gets every list as a capped plain array instead of the paginated envelope. `programIds` limits the key to those programs (their partners, links, referrals, commissions, enrollments, webhook endpoints whose `programIds` are all within the key's, with their deliveries, and billing connections likewise); a program-scoped key gets 403 `program_scoped_key` on org-wide endpoints (keys, team, org settings, the rest of billing, payouts, the event feed, analytics, creating programs). An `api_keys:mint` key may also call this (and no other key endpoint): it can't mint `admin` or `api_keys:mint` keys or scopes it doesn't hold, and a program-scoped one must send `programIds` within its own (`403` otherwise). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Expiry is `expiresInDays` or `expiresAt` (ISO 8601, at most 3650 days out), not both. Mints a secret key (`rk_live_…` / `rk_test_…`), shown only in this response (and in its `Idempotency-Key` replay: a retry with the same key and body within 24 hours returns this response again, secret included, without minting another). `scopes` defaults to `full`; a key can't grant scopes it doesn't hold. `mode` picks live, test or a matching pair of both (`both` returns `{ pairId, live, test }`); a test-mode caller can mint test keys only. `publishable: true` mints a browser-safe `rk_pub_` key limited to `programs:read` and `events:write` from `allowedOrigins`. `apiVersion` pins the key to a version, or `latest` (the default) to the newest version at the time of the call; the pin never moves on its own (a key keeps answering in that version after newer ones ship) until you `PATCH` it or send a `referalli-version` header. A key pinned to `2026-10-21` gets every list as a capped plain array instead of the paginated envelope. `programIds` limits the key to those programs (their partners, links, referrals, commissions, enrollments, webhook endpoints whose `programIds` are all within the key's, with their deliveries, billing connections likewise, auth connections of those programs, and privacy lookup, export, forget and requests for people in those programs); a program-scoped key gets 403 `program_scoped_key` on org-wide endpoints (keys, team, org settings, the rest of billing, payouts, the event feed, analytics, creating programs). An `api_keys:mint` key may also call this (and no other key endpoint): it can't mint `admin` or `api_keys:mint` keys or scopes it doesn't hold, and a program-scoped one must send `programIds` within its own (`403` otherwise). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
      *
-     * **Auth:** an API key with `team:write`, or a session of any role.
+     * **Auth:** an API key with `api_keys:mint`, or a session of any role.
      *
-     * **Scopes:** `team:write`, `api_keys:mint`, `full`, `admin`.
+     * **Scopes:** `api_keys:mint`, `admin`.
      * @param PostApiKeysBody $body
      * @return PostApiKeysResponse
      */
@@ -6791,11 +6923,11 @@ trait Operations
     /**
      * Rotate an API key. POST /v1/api-keys/{id}/rotate
      *
-     * Mints a replacement key with the same name, scopes, origins, version pin, owner, programs and lifetime (an expiring key's new expiry is the same length from now), returned once with `rotatedFrom: { id, expiresAt }`. The old key keeps working for `graceHours` (default 24, at most 168, 0 = stop now), then expires; it gets no `api_key.expiring` notice. An expired or revoked key can't be rotated (409 `api_key_expired` / 404). Needs an owner or admin session, or an API key with the `admin` scope. Audited.
+     * Mints a replacement key with the same name, scopes, origins, version pin, owner, programs and lifetime (an expiring key's new expiry is the same length from now), returned once with `rotatedFrom: { id, expiresAt }`. The old key keeps working for `graceHours` (default 24, at most 168, 0 = stop now), then expires; it gets no `api_key.expiring` notice. An expired or revoked key can't be rotated (409 `api_key_expired` / 404). Needs an owner or admin session, or an API key with the `admin` scope. A key holding `api_keys:mint` may also do this for keys it minted itself (403 for any other). Audited.
      *
-     * **Auth:** an API key with `team:write`, or a session of any role.
+     * **Auth:** an API key with `api_keys:mint`, or a session of any role.
      *
-     * **Scopes:** `team:write`, `full`, `admin`.
+     * **Scopes:** `api_keys:mint`, `admin`.
      * @param PostApiKeysIdRotateBody $body
      * @return PostApiKeysIdRotateResponse
      */
@@ -6867,6 +6999,20 @@ trait Operations
     }
 
     /**
+     * Set an organization's owner (signed protocol). POST /v1/auth/connections/{id}/accounts
+     *
+     * The `accounts` capability: an organization the app bills under (`accountRef`: its id in billing metadata, e.g. Atlas's `external_id`) is owned by `ownerCustomerRef` (a user the connection reports). Its payments earn for the owner's referral; send it again whenever ownership changes. When the organization's id changes, send the new id as `accountRef` with the old one as `previousAccountRef` (the owner carries over unless `ownerCustomerRef` is sent): the old id then follows the new one. When it is deleted, send `{ accountRef, deleted: true }`: it has no owner from then on, so its payments earn nothing (earned commissions stay; refunds still reverse them). Same as `PUT /v1/billing/accounts/{accountRef}/owner` and `DELETE /v1/billing/accounts/{accountRef}`; returns `{ ok, accountRef, ownerCustomerRef, previousOwnerCustomerRef, renamedFrom, deleted, changed, relinked, reprocessedPayments }`; a repeat answers `changed: false`. Publishes `billing_account.owner_changed`. Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
+     *
+     * **Auth:** none.
+     * @param PostAuthConnectionsIdAccountsBody $body
+     * @return PostAuthConnectionsIdAccountsResponse
+     */
+    public function postAuthConnectionsIdAccounts(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/auth/connections/' . self::seg($id) . '/accounts', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Change a user's id (signed protocol). POST /v1/auth/connections/{id}/aliases
      *
      * The app stamped or changed a user's id after the sign-up was filed: referrals and identity move from `fromCustomerRef` to `toCustomerRef`. Publishes `customer.aliased`. Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
@@ -6911,7 +7057,7 @@ trait Operations
     /**
      * Test an auth connection (signed protocol). POST /v1/auth/connections/{id}/ping
      *
-     * Proves the secret works: returns the connection, its program and org, the server time (to check clock skew) and `capabilities` (`{ partners: true }`: user-chosen referral codes through `/partners`). Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
+     * Proves the secret works: returns the connection, its program and org, the server time (to check clock skew) and `capabilities` (`{ partners: true, origins: true, accounts: true }`: user-chosen referral codes through `/partners`, setting `allowedOrigins` through `PUT …/origins` or a signed PATCH, and organization owners through `/accounts`). Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
      *
      * **Auth:** a signature (see above); no API key.
      * @param array<string, mixed> $body
@@ -7086,6 +7232,22 @@ trait Operations
     }
 
     /**
+     * Send events to a generic connection. POST /v1/billing/connections/{id}/events
+     *
+     * The generic connection's webhook body (`{ "events": [...] }`, up to 500) sent with an API key instead of the connection's HMAC signature, so your server needs no second secret. Runs the same processing as `POST /webhooks/billing/{id}`: paid invoices become conversions and commissions, refunds and disputes reverse them, and each event is idempotent by `providerEventId` (a resend answers `duplicate: true`), whichever of the two routes sent it first. Needs `billing:write`; a program-scoped key reaches only connections limited to its own programs. `404` for an unknown, deleted or paused connection; `409 conflict` for a connection that isn't `generic` (those take their provider's webhooks).
+     *
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
+     * @param PostBillingConnectionsIdEventsBody $body
+     * @return PostBillingConnectionsIdEventsResponse
+     */
+    public function postBillingConnectionsIdEvents(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/billing/connections/' . self::seg($id) . '/events', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Rotate the webhook signing secret. POST /v1/billing/connections/{id}/rotate-secret
      *
      * Generates a new signing secret, returned once. The previous one keeps verifying until `previousSecretExpiresAt` (24 hours). Audited.
@@ -7114,6 +7276,21 @@ trait Operations
     public function postBillingConnectionsIdValueMappingPreview(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/billing/connections/' . self::seg($id) . '/value-mapping/preview', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Release a held payment. POST /v1/billing/events/{id}/release
+     *
+     * A payment over its connection's `maxAmountMinor` (default 1,000,000,000 minor units), or dated more than a day ahead, is recorded with `status: "held"` and earns nothing. Releasing it says it is real: it earns as it would have on arrival, and any refund that waited for it applies.
+     *
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
+     * @return PostBillingEventsIdReleaseResponse
+     */
+    public function postBillingEventsIdRelease(string $id, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/billing/events/' . self::seg($id) . '/release', [], null, $idempotencyKey, 'json');
     }
 
     /**
@@ -7929,7 +8106,7 @@ trait Operations
     /**
      * Mint an executor key under a Cookie Munch partner link. POST /v1/orgs/{orgId}/privacy/executor-key
      *
-     * Called by Cookie Munch, not by you (CMU-X25): mints (or rotates) this org's cm-standard-v2 executor key so Cookie Munch's `referalli` executor preset can connect without a pasted key. The request must be signed by Cookie Munch's partner key exactly like its consent deliveries: `CookieMunch-Partner-Signature: t=<unix seconds>,kid=<key id>,ed25519=<base64url>` over `<t>.<raw body>`, with the key named in `https://api.cookiemunch.net/v1/partner/jwks.json` (300 s window; each signed request and each body `nonce` works once, a replay is 409; `partner` must be `referalli` and `externalId` the org in the path). Referalli then confirms the partner link with Cookie Munch over its own partner token (`GET /v1/partner/links`): it must be `active` or `waiting_on_partner`, name this org as `externalId`, sit on a site this org registered (`PUT /v1/org/consent-partners/cookiemunch`), and match `cbid`/`linkId` when sent; otherwise 403 `no_grant`. 201 `{secret, executorUrl, contract, orgId, linkId, cbid, rotated}`: `secret` is shown once and is the bearer key for `executorUrl` (`https://referalli.com/api`, the cm-standard-v2 baseUrl: calls go to `<executorUrl>/privacy/*`), where it reaches only this org's referred customers and partners. The old key stops working at once. Audited (`privacy.executor_key_minted`).
+     * Called by Cookie Munch, not by you (CMU-X25): mints (or rotates) this org's cm-standard-v2 executor key, limited to `programIds` when sent so Cookie Munch's `referalli` executor preset can connect without a pasted key. The request must be signed by Cookie Munch's partner key exactly like its consent deliveries: `CookieMunch-Partner-Signature: t=<unix seconds>,kid=<key id>,ed25519=<base64url>` over `<t>.<raw body>`, with the key named in `https://api.cookiemunch.net/v1/partner/jwks.json` (300 s window; each signed request and each body `nonce` works once, a replay is 409; `partner` must be `referalli` and `externalId` the org in the path). Referalli then confirms the partner link with Cookie Munch over its own partner token (`GET /v1/partner/links`): it must be `active` or `waiting_on_partner`, name this org as `externalId`, sit on a site this org registered (`PUT /v1/org/consent-partners/cookiemunch`), and match `cbid`/`linkId` when sent; otherwise 403 `no_grant`. 201 `{secret, executorUrl, contract, orgId, linkId, cbid, rotated}`: `secret` is shown once and is the bearer key for `executorUrl` (`https://referalli.com/api`, the cm-standard-v2 baseUrl: calls go to `<executorUrl>/privacy/*`), where it reaches only this org's referred customers and partners. The old key stops working at once. Audited (`privacy.executor_key_minted`).
      *
      * **Auth:** none.
      * @param PostOrgsOrgIdPrivacyExecutorKeyBody $body
@@ -8616,7 +8793,7 @@ trait Operations
     /**
      * Create a program. POST /v1/programs
      *
-     * Creates an affiliate program: its attribution model, cookie window, how long after sign-up a conversion still counts (`signupToConversionDays`, 1 to 1095, default 365; `cookieWindowDays` is 1 to 400, default 60), terms, public page and settings. `slug` is unique per org. Terms are versioned so partners can be asked to accept new ones. Over the plan's program limit this is `402 payment_required`.
+     * Creates an affiliate program: its attribution model, cookie window, how long after sign-up a conversion still counts (`signupToConversionDays`, 1 to 1095, default 365; `cookieWindowDays` is 1 to 400, default 60), terms, public page and settings (`signupPaymentGraceMinutes`, 0 to 1440, default 5: how long before the referral's sign-up time a payment still earns). `slug` is unique per org. Terms are versioned so partners can be asked to accept new ones. `publicHandle` is unique across every org (check it first with `GET /v1/programs/handle-availability`). A taken `slug` or `publicHandle` is `409 conflict` with `details.field` naming it (`slug` or `publicHandle`). Over the plan's program limit this is `402 payment_required`.
      *
      * **Auth:** an API key with `programs:write`, or a session with role `owner`, `admin`.
      *
@@ -8833,7 +9010,7 @@ trait Operations
     /**
      * Attribute a new customer. POST /v1/referrals/associate
      *
-     * The key server-side call: tell Referalli a customer signed up, with whatever you know about where they came from (`referralToken`/`ref_click_id`, `anonId`, `couponCode`, `emailHash`, IP and user agent). The attribution engine picks the partner under the program's model and windows. `referral` is `null` when no partner matched (not an error); `reasoning.notes` says why. Repeating `idempotencyKey` returns the existing referral. `occurredAt` records a late call at the real sign-up time (up to 5 minutes of clock skew is tolerated) and backfills payments since. `emailDomain` lets burner-email sign-ups be held for review. Publishes `referral.created` (or `referral.held`).
+     * The key server-side call: tell Referalli a customer signed up, with whatever you know about where they came from (`referralToken`/`ref_click_id`, `anonId`, `couponCode`, `emailHash`, IP and user agent). The attribution engine picks the partner under the program's model and windows. `referral` is `null` when no partner matched (not an error); `reasoning.notes` says why. Repeating `idempotencyKey` returns the existing referral. `occurredAt` records a late call at the real sign-up time (up to 5 minutes of clock skew is tolerated) and backfills payments since. `emailDomain` lets burner-email sign-ups be held for review. `handoffToken` (from `POST /t/{orgToken}/handoff` or `POST /v1/referrals/handoff-tokens`) fills `anonId`, `referralToken` and `couponCode` where they are not sent; a malformed, expired or other org's token is `400 invalid_handoff_token`. Publishes `referral.created` (or `referral.held`).
      *
      * **Auth:** an API key with `referrals:write`, or a session of any role.
      *
@@ -8844,6 +9021,22 @@ trait Operations
     public function postReferralsAssociate(array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('POST', '/v1/referrals/associate', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Mint a hand-off token. POST /v1/referrals/handoff-tokens
+     *
+     * The server-side twin of `POST /t/{orgToken}/handoff`: signs `anonId`, `clickId` and/or `code` (at least one) into a token valid for 24 hours, for this org only, to pass later to `POST /v1/referrals/associate` as `handoffToken`. Use it when the server that saw the landing (`?ref_click_id=`) is not the one that files the sign-up.
+     *
+     * **Auth:** an API key with `referrals:write`, or a session of any role.
+     *
+     * **Scopes:** `referrals:write`, `full`, `admin`.
+     * @param PostReferralsHandoffTokensBody $body
+     * @return HandoffToken
+     */
+    public function postReferralsHandoffTokens(array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('POST', '/v1/referrals/handoff-tokens', [], $body, $idempotencyKey, 'json');
     }
 
     /**
@@ -8975,7 +9168,7 @@ trait Operations
     /**
      * Simulate billing history. POST /v1/sandbox/simulate
      *
-     * Generates deterministic billing history through the real commission pipeline, so you can see commissions flow without a provider: a new sandbox customer referred to the partner, `months` (default 3) of subscription payments at `priceMinor`, then for `scenario: "refund"` a half refund of the first invoice or for `churn` a cancellation. Returns the customer and what was created. Audited.
+     * Generates deterministic billing history through the real commission pipeline, so you can see commissions flow without a provider: a new sandbox customer referred to the partner, `months` (default 3) of subscription payments at `priceMinor`, then for `scenario: "refund"` a half refund of the first invoice or for `churn` a cancellation. Returns the customer and what was created. `scenario: "signup_and_pay"` (test mode only, `409 test_mode_only` otherwise) proves the whole loop instead: a sign-up of `customerRef` (default a new `cus_sandbox_…`) referred by `partnerId` (a click on their link) or by `code` (a link or coupon code), filed through auth connection `authConnectionId` exactly as its signed `POST /v1/auth/connections/{id}/signups` would file it (auto-enroll included) or, without one, as `POST /v1/referrals/associate`; then a provider-neutral `payment.paid` of `amountMinor` (default 4900) in `currency` (default USD) through billing connection `billingConnectionId` (default the org's only active one, else `409`), run through the same pipeline as `POST /v1/sandbox/billing-fixtures`. Answers `{ scenario, ok, steps: [signup, payment], commissions }`; a step that could not succeed answers `ok: false` with `notes` saying why (sign-up not credited, auth connection paused or in another program, billing connection `awaiting_secret`, paused or limited to other programs, payment ignored, program without a commission rule) rather than an error. Audited.
      *
      * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
      *
@@ -9297,6 +9490,20 @@ trait Operations
     }
 
     /**
+     * Set a connection's allowed origins (signed protocol). PUT /v1/auth/connections/{id}/origins
+     *
+     * The `origins` capability: the auth platform replaces this connection's own `allowedOrigins` (the browser origins that may call `POST /v1/widget/session`) when its app's origins change. Exact origins only (`https://app.example.com`, no path or wildcard; `http` only for localhost), at most 50; the body takes nothing else. Returns `{ id, allowedOrigins }`. Audited. A connection-signed `PATCH /v1/auth/connections/{id}` with the same body does the same. Signed with the connection secret in `x-referalli-signature: t=<unix>,v1=…,v2=…` (v2 also signs the request line; once a connection has seen v2 it requires it), with a unique `x-referalli-id` per call. The legacy header names from before the rename are also accepted, for existing integrations. Calls older than 5 minutes, reused ids (`409 replay`), paused connections (`423 connection_paused`) and unknown fields (`422`) are refused.
+     *
+     * **Auth:** none.
+     * @param PutAuthConnectionsIdOriginsBody $body
+     * @return PutAuthConnectionsIdOriginsResponse
+     */
+    public function putAuthConnectionsIdOrigins(string $id, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/auth/connections/' . self::seg($id) . '/origins', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
      * Set a vendor-issued secret. PUT /v1/auth/connections/{id}/secret
      *
      * For webhook connectors whose vendor issues the signing secret (Clerk, Stytch, WorkOS) or key set (Kinde's JWKS document): replaces the connection's secret. The previous one keeps verifying for 24 hours. Signed-protocol connections rotate instead. Audited.
@@ -9310,6 +9517,22 @@ trait Operations
     public function putAuthConnectionsIdSecret(string $id, array $body, ?string $idempotencyKey = null): mixed
     {
         return $this->request('PUT', '/v1/auth/connections/' . self::seg($id) . '/secret', [], $body, $idempotencyKey, 'json');
+    }
+
+    /**
+     * Set a billing account's owner. PUT /v1/billing/accounts/{accountRef}/owner
+     *
+     * For products that bill an organization (a team, a workspace) rather than a person. `accountRef` is the id your billing events carry for the organization (the `customerRef` of a generic event, or the metadata value a connection's `customerRefMetadataKey` reads, e.g. `organization_id`); `ownerCustomerRef` is the user whose referral its payments earn for. From then on the account's payments earn for the owner's referral (unless a referral is filed under the account itself). The first owner set replays the account's earlier payments for that owner's referral. Changing the owner re-points the account's provider customers, so later payments earn for the new owner's referral; payments made before the change stay with the previous owner's referral. When the organization's id changed, call it under the new id with `previousAccountRef` (the old one) instead of, or as well as, `ownerCustomerRef`: the old id then follows the new one (payments still arriving under it earn for the new id's owner), and the owner carries over unless named. Returns `{ accountRef, ownerCustomerRef, previousOwnerCustomerRef, renamedFrom, deleted, changed, relinked, reprocessedPayments }`; the same call again answers `changed: false`. Publishes `billing_account.owner_changed`. Auth platforms with the `accounts` capability (Atlas) send this for you through `POST /v1/auth/connections/{id}/accounts`. Needs `billing:write`. Audited.
+     *
+     * **Auth:** an API key with `billing:write`, or a session with role `owner`, `admin`.
+     *
+     * **Scopes:** `billing:write`, `full`, `admin`.
+     * @param PutBillingAccountsAccountRefOwnerBody $body
+     * @return PutBillingAccountsAccountRefOwnerResponse
+     */
+    public function putBillingAccountsAccountRefOwner(string $accountRef, array $body, ?string $idempotencyKey = null): mixed
+    {
+        return $this->request('PUT', '/v1/billing/accounts/' . self::seg($accountRef) . '/owner', [], $body, $idempotencyKey, 'json');
     }
 
     /**
